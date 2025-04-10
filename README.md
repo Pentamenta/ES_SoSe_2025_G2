@@ -13,9 +13,9 @@ Vor dem commit wird ein weiteres mal gepullt, um Mergefehler durch paralleles Ar
 Im Repository befinden sich zwei Ordner mit darin jeweils gleichnamigen Arduino Programmen.
 - Code_Car	  --> Code_Car.ino
 - Code_ Dashboard --> Code_Dashboard.ino
-Diese können nicht umbenannt werden, aber dienen als "main".
 
-Bestenfalls werden einzelne Programmteile in eigenen Dateien zu schreiben und der main als Funktionen zur Verfügung zu stellen.
+In diesen Dateien wird programmiert. Ein Aufteilen in mehrere Dateien ist unter Arduino NICHT möglich.
+Um den main loop jeder Datei möglichst sauber zu halten, ist so viel wie möglich über Funktionen zu regeln.
 
 ## Fahrzeug
 

@@ -1,6 +1,22 @@
 # ES_SoSe_2025_G1
  Projekt zur Entwicklung eines automatisierten Fahrzeuges und eines Dashboards für den Kurs Embedded Systems 1 an der BHT Berlin.
 
+## Workflow
+
+Es wird mit Git gearbeitet. 
+Vor jeder Arbeitsphase wird das Repository gepullt.
+Gearbeitet wird nur in Branches, niemals direkt im Main. Es wird nur gemerged, wenn der Branch erfolgreich getestet wurde.
+Vor dem commit wird ein weiteres mal gepullt, um Mergefehler durch paralleles Arbeiten zu vermeiden.
+
+## Softwarestruktur
+
+Im Repository befinden sich zwei Ordner mit darin jeweils gleichnamigen Arduino Programmen.
+- Code_Car	  --> Code_Car.ino
+- Code_ Dashboard --> Code_Dashboard.ino
+Diese können nicht umbenannt werden, aber dienen als "main".
+
+Bestenfalls werden einzelne Programmteile in eigenen Dateien zu schreiben und der main als Funktionen zur Verfügung zu stellen.
+
 ## Fahrzeug
 
 Eigenes Chassy oder eigenes Design?

@@ -8,7 +8,24 @@ Vor jeder Arbeitsphase wird das Repository gepullt.
 Gearbeitet wird nur in Branches, niemals direkt im Main. Es wird nur gemerged, wenn der Branch erfolgreich getestet wurde.
 Vor dem commit wird ein weiteres mal gepullt, um Mergefehler durch paralleles Arbeiten zu vermeiden.
 
-## Softwarestruktur
+## Hardware
+
+Als Basis für beide Projektteile wird ein Arduino Nano BLE Sense verwendet.
+Weitere Arduinos können ins Projekt implementiert werden, der Nano BLE muss aber die Zentrale Anlaufstelle bleiben.
+Um das Board zu bespielen:
+ 1. Unter Werkzeuge --> Board --> Boardverwalter wählen
+ 2. Nach "Arduino Mbed OS Nano Boards" suchen und installieren
+ 3. Unter Board erscheint nun die neue Option "Arduino Mbed OS Nano Boards"
+ 4. Dort "Arduino Nano 33 BLE" wählen
+
+## Software
+
+### Bibliotheken (Bitte erweitern)
+
+Für das Projekt zu installierende Bibliotheken:
+- ArduinoBLE
+
+### Softwarestruktur
 
 Im Repository befinden sich zwei Ordner mit darin jeweils gleichnamigen Arduino Programmen.
 - Code_Car	  --> Code_Car.ino

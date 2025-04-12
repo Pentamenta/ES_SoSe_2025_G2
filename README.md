@@ -3,10 +3,13 @@
 
 ## Workflow
 
+### Git
+
 Es wird mit Git gearbeitet. 
 Vor jeder Arbeitsphase wird das Repository gepullt.
 Gearbeitet wird nur in Branches, niemals direkt im Main. Es wird nur gemerged, wenn der Branch erfolgreich getestet wurde.
 Vor dem commit wird ein weiteres mal gepullt, um Mergefehler durch paralleles Arbeiten zu vermeiden.
+
 
 ## Hardware
 
@@ -32,7 +35,14 @@ Im Repository befinden sich zwei Ordner mit darin jeweils gleichnamigen Arduino 
 - Code_ Dashboard --> Code_Dashboard.ino
 
 In diesen Dateien wird programmiert. Ein Aufteilen in mehrere Dateien ist unter Arduino NICHT möglich.
-Um den main loop jeder Datei möglichst sauber zu halten, ist so viel wie möglich über Funktionen zu regeln.
+
+Beide Programme müssen die custom Bibliothek EBS_BLE_Lib einbinden.
+In dieser werden Variablen für die BLE Kommunikation definiert, die in beiden Programmen gleich seien müssen.
+
+### Coding
+
+- Es ist soviel wir möglich über Funktionen zu lösen, um den Main loop so übersichtlich wie möglich zu halten.
+- Bitte kommentiert den Code ausführlich und fügt am Ende das Kommentars euren Namen hinzu, um Rückfragen zu vereinfachen.
 
 ### BLE Documentation
 

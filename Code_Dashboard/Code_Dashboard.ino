@@ -1,3 +1,5 @@
+#define DASH //Flag für Precompiler (Adrian)
+
 #include <ArduinoBLE.h> 
 #include "EBS_BLE.h"  //Custom Header mit BLE definitionen (Adrian)
 
@@ -39,7 +41,7 @@ bool send_speed(){ //Testfunktion zum Senden einer Variable ans Auto (Adrian)
     return 0;
   }
 
-BLECharacteristic speed_target_dash = car.characteristic(speed_target_Uuid); //Weise Charakteristik des Autos zu
+speed_target = car.characteristic(speed_target_Uuid); //Weise Charakteristik des Autos zu
 
  if (!speed_target) { //Überprufe erreichbarkeit und Schreibbarkeit der Charakteristik --> Im Fehlerfall return 0
     Serial.println("* Car does not have gesture_type characteristic!");

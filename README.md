@@ -36,13 +36,12 @@ Im Repository befinden sich zwei Ordner mit darin jeweils gleichnamigen Arduino 
 
 In diesen Dateien wird programmiert. Ein Aufteilen in mehrere Dateien ist unter Arduino NICHT möglich.
 
-Beide Programme müssen die custom Bibliothek EBS_BLE_Lib einbinden.
-In dieser werden Variablen für die BLE Kommunikation definiert, die in beiden Programmen gleich seien müssen.
+In dder Externen Datei EBS_BLE.h werden Variablen für die BLE Kommunikation definiert, die in beiden Programmen gleich seien müssen. Aufgrund von beschränkungen der Arduino IDE kann diese Datei nicht extern verlinkt werden, sondern muss in jedem Programmordner einzeln existieren. Deshalb ist es Extrem Wichtig, dass diese Beiden Dateien immer auf dem selben stand sind.
 
 ### Coding
 
 - Es ist soviel wir möglich über Funktionen zu lösen, um den Main loop so übersichtlich wie möglich zu halten.
-- Bitte kommentiert den Code ausführlich und fügt am Ende das Kommentars euren Namen hinzu, um Rückfragen zu vereinfachen.
+- Bitte kommentiert den Code ausführlich und fügt am Ende das Kommentars euren Namen hinzu, um Rückfragen zu vereinfachen. Es Reicht wenn der Namen einmal vor einer ganzen Funktion angegeben wird.
 
 ### BLE Documentation
 

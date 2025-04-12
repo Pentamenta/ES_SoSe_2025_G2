@@ -5,14 +5,23 @@ void setup() {
 Serial.begin(9600);
 
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Peripherial Device (Adrian)
-
+Dash_connect(); //Verbindung mit dem Dashboard herstellen (Adrian)
 
 }
 
 void loop() {
 
+read_speed_target();
+
+}
 
 
+void read_speed_target(){ //Debug Funktion zum Testen von BLE (Adrian)
+  if (speed_target.written()) {
+         speed_target_val = speed_target.value();
+         Serial.println("Geschwindigkeit empfangen:");
+         Serial.println(speed_target_val);
+       }
 }
 
 void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Peripherial Device (Adrian)
@@ -36,4 +45,17 @@ void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Periphe
   Serial.println("Car (Dashboard Device)");
   Serial.println(" ");
   
+}
+
+void Dash_connect(){ //Verbindung mit dem Dashboard herstellen (Adrian)
+  Serial.println("- Discovering Dashboard...");
+  delay(500);
+
+  if (dashboard) {
+    Serial.println("* Connected to Dashboard!");
+    Serial.print("* Device MAC address: ");
+    Serial.println(dashboard.address());
+    Serial.println(" ");
+  }
+
 }

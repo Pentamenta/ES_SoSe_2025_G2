@@ -6,13 +6,64 @@ Serial.begin(9600);
 
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Central Device (Adrian)
 connect_car(); //Stellt Verbindung mit dem Auto her (Adrian)
-
+send_speed();  //Testfunktion zum Senden einer Variable ans Auto (Adrian)
 }
 
 void loop() {
 
 
 
+
+}
+
+bool send_speed(){ //Testfunktion zum Senden einer Variable ans Auto (Adrian)
+    Serial.println("- Connecting to car...");
+
+  if (car.connect()) { //Verbindung überprüfen --> Im Fehlerfall return 0
+    Serial.println("* Connected to car!");
+    Serial.println(" ");
+  } else {
+    Serial.println("* Connection to car failed!");
+    Serial.println(" ");
+    return 0;
+  }
+
+  Serial.println("- Discovering car attributes...");
+  if (car.discoverAttributes()) { //Attribute überprüfen --> Im Fehlerfall return 0
+    Serial.println("* Car attributes discovered!");
+    Serial.println(" ");
+  } else {
+    Serial.println("* Car attributes discovery failed!");
+    Serial.println(" ");
+    car.disconnect();
+    return 0;
+  }
+
+BLECharacteristic speed_target_dash = car.characteristic(speed_target_Uuid); //Weise Charakteristik des Autos zu
+
+ if (!speed_target) { //Überprufe erreichbarkeit und Schreibbarkeit der Charakteristik --> Im Fehlerfall return 0
+    Serial.println("* Car does not have gesture_type characteristic!");
+    car.disconnect();
+    return 0;
+  } else if (!speed_target.canWrite()) {
+    Serial.println("* Peripheral does not have a writable gesture_type characteristic!");
+    car.disconnect();
+    return 0;
+  }
+
+//######################################################### Test Block
+    while (car.connected()) {
+    speed_target_val = random(1, 100);
+    
+      Serial.print("* Writing value to gesture_type characteristic: ");
+      Serial.println(speed_target_val);
+      speed_target.writeValue((int)speed_target_val);
+      Serial.println("* Writing value to gesture_type characteristic done!");
+      Serial.println(" ");
+  
+  }
+  Serial.println("- Car disconnected!");
+//######################################################### Test Block
 }
 
 void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Central Device (Adrian)
@@ -32,7 +83,6 @@ void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Central
 }
 
 void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
-  BLEDevice car; //Erstellt das Objekt car
 
   Serial.println("- Searching for car...");
 

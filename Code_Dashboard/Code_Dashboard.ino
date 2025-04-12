@@ -59,7 +59,7 @@ speed_target = car.characteristic(speed_target_Uuid); //Weise Charakteristik des
     
       Serial.print("* Writing value to gesture_type characteristic: ");
       Serial.println(speed_target_val);
-      speed_target.writeValue((int)speed_target_val);
+      speed_target.writeValue((byte)speed_target_val);
       Serial.println("* Writing value to gesture_type characteristic done!");
       Serial.println(" ");
   

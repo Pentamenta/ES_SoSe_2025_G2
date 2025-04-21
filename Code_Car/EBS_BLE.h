@@ -18,10 +18,11 @@ const char* speed_actual_Uuid = "a56a5afb-44ad-4a5b-9f31-36e0aa80f513"; //Ist-Ge
 #ifdef DASH  //Defines für Dashboard
     BLEDevice car;
     BLECharacteristic speed_target; 
+    speed_target = car.characteristic(speed_target_Uuid); //Weise Charakteristik des Autos zu
     #endif
 
 #ifdef CAR//Defines für Car
-    BLEDevice dashboard = BLE.central();
+    BLEDevice dashboard; 
     BLEService remote_service(remote_service_Uuid);
     BLEIntCharacteristic speed_target(speed_target_Uuid, BLERead | BLEWrite);
     #endif

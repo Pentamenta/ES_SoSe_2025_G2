@@ -5,6 +5,7 @@
 
 void setup() {
 Serial.begin(9600);
+delay(50);
 
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Central Device (Adrian)
 connect_car(); //Stellt Verbindung mit dem Auto her (Adrian)
@@ -41,14 +42,12 @@ bool send_speed(){ //Testfunktion zum Senden einer Variable ans Auto (Adrian)
     return 0;
   }
 
-speed_target = car.characteristic(speed_target_Uuid); //Weise Charakteristik des Autos zu
-
  if (!speed_target) { //Überprufe erreichbarkeit und Schreibbarkeit der Charakteristik --> Im Fehlerfall return 0
-    Serial.println("* Car does not have gesture_type characteristic!");
+    Serial.println("* Car does not have characteristic!");
     car.disconnect();
     return 0;
   } else if (!speed_target.canWrite()) {
-    Serial.println("* Peripheral does not have a writable gesture_type characteristic!");
+    Serial.println("* Peripheral does not have a writable characteristic!");
     car.disconnect();
     return 0;
   }

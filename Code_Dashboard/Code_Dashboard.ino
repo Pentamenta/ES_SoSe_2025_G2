@@ -9,7 +9,6 @@ delay(50);
 
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Central Device (Adrian)
 connect_car(); //Stellt Verbindung mit dem Auto her (Adrian)
-send_speed();  //Testfunktion zum Senden einer Variable ans Auto (Adrian)
 }
 
 void loop() {
@@ -42,6 +41,7 @@ bool send_speed(){ //Testfunktion zum Senden einer Variable ans Auto (Adrian)
     return 0;
   }
 
+/*
  if (!speed_target) { //Überprufe erreichbarkeit und Schreibbarkeit der Charakteristik --> Im Fehlerfall return 0
     Serial.println("* Car does not have characteristic!");
     car.disconnect();
@@ -51,20 +51,8 @@ bool send_speed(){ //Testfunktion zum Senden einer Variable ans Auto (Adrian)
     car.disconnect();
     return 0;
   }
+*/
 
-//######################################################### Test Block
-    while (car.connected()) {
-    speed_target_val = random(1, 100);
-    
-      Serial.print("* Writing value to gesture_type characteristic: ");
-      Serial.println(speed_target_val);
-      speed_target.writeValue((byte)speed_target_val);
-      Serial.println("* Writing value to gesture_type characteristic done!");
-      Serial.println(" ");
-  
-  }
-  Serial.println("- Car disconnected!");
-//######################################################### Test Block
 }
 
 void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Central Device (Adrian)

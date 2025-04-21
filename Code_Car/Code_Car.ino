@@ -10,7 +10,6 @@ delay(50);
 
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Peripherial Device (Adrian)
 Dash_connect(); //Verbindung mit dem Dashboard herstellen (Adrian)
-read_speed_target();
 
 }
 
@@ -18,21 +17,6 @@ void loop() {
 
 
 
-}
-
-
-void read_speed_target(){ //Debug Funktion zum Testen von BLE (Adrian)
-
-while (dashboard.connected()){
-  if (speed_target.written()) {
-         speed_target_val = speed_target.value();
-         Serial.println("Geschwindigkeit empfangen:");
-         Serial.println(speed_target_val);
-       }
-  else {
-    Serial.println("Nichts gelesen");
-  }
-}
 }
 
 

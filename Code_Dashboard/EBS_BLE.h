@@ -48,17 +48,21 @@ const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
 
 #ifdef DASH  // Defines für Dashboard
     BLEDevice car;
-    BLECharacteristic speed_target = car.characteristic(speed_target_Uuid); 
+    BLECharacteristic speed_target;
+    //speed_target = car.characteristic(speed_target_Uuid); 
+    BLECharacteristic speed_actual;
+    //speed_actual = car.characteristic(speed_actual_Uuid);
 
-    BLECharacteristic speed_actual = car.characteristic(speed_actual_Uuid);
+    BLECharacteristic stear_target;
+    //stear_target = car.characteristic(stear_target_Uuid)
+    BLECharacteristic stear_actual;
+    //stear_actual = car.characteristic(stear_actual_Uuid);
 
-    BLECharacteristic stear_target = car.characteristic(stear_target_Uuid);
+    BLECharacteristic boolean_to_car;
+    //boolean_to_car = car.characteristic(boolean_to_car_Uuid);
 
-    BLECharacteristic stear_actual = car.characteristic(stear_actual_Uuid);
-
-    BLECharacteristic boolean_to_car = car.characteristic(boolean_to_car_Uuid);
-
-    BLECharacteristic boolean_to_dash = car.characteristic(boolean_to_dash_Uuid);
+    BLECharacteristic boolean_to_dash;
+    //boolean_to_dash = car.characteristic(boolean_to_dash_Uuid);
 
     #endif
 

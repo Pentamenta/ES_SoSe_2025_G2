@@ -45,12 +45,17 @@ void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Periphe
 
 void Dash_connect(){ //Verbindung mit dem Dashboard herstellen (Adrian)
 
+  unsigned long t_wait = millis();
+
 do{
   dashboard = BLE.central();
-  Serial.println("- Discovering Dashboard...");
-  delay(500);
 
-  if (dashboard) {
+    if (millis() >= t_wait +1000){
+      Serial.println("- Discovering Dashboard...");
+      t_wait = millis();
+    }
+
+  if (dashboard.connected()) {
     Serial.println("* Connected to Dashboard!");
     Serial.print("* Device MAC address: ");
     Serial.println(dashboard.address());

@@ -42,6 +42,7 @@ In dder Externen Datei EBS_BLE.h werden Variablen für die BLE Kommunikation def
 
 - Es ist soviel wir möglich über Funktionen zu lösen, um den Main loop so übersichtlich wie möglich zu halten.
 - Bitte kommentiert den Code ausführlich und fügt am Ende das Kommentars euren Namen hinzu, um Rückfragen zu vereinfachen. Es Reicht wenn der Namen einmal vor einer ganzen Funktion angegeben wird.
+- Aufgrund der drahtlosen Verbindung muss der loop durchgehend laufen. Lange for-Schleifen und delays sind zu vermeiden. Verzögerungen sind über millis zu lösen.
 
 ### BLE Documentation
 
@@ -70,6 +71,8 @@ Eine Gruppe aus Service nennt man Profil.
 Jeder Service besitzt eine einzigartige UUID. Entdeckt ein Peripheral Device einen Service kann dieses, die darin enthaltenen Charakteristiken, lesen, beschreiben, oder überwachen.
 Jede Charakteristik besitzt ebenfalls eine einzigartige UUID.
 
+
+
 ## Fahrzeug
 
 Eigenes Chassy oder eigenes Design?
@@ -87,8 +90,7 @@ Features:
 
 - Akkustand
 - Steuerung
-	- Servolenkung mit Lenkrad und Pedal
-	- Joystick bei Tank Controlls
+	- Zwei Joysticks
 - Tacho auf Bildschirm
 - Taster für Blinker
 - Soundausgabe 

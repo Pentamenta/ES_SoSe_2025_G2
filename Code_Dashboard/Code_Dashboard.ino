@@ -90,7 +90,6 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
 
     if (millis() >= t_wait +1000){
       Serial.println("- Still Searching...");
-      Serial.println(ble_led_val);
       t_wait = millis();
       ble_led_val = !ble_led_val;
       digitalWrite(BLE_LED, ble_led_val);

@@ -1,11 +1,17 @@
 #define DASH //Flag für Precompiler (Adrian)
 
+#define BLE_LED 4
+
 #include <ArduinoBLE.h> 
 #include "EBS_BLE.h"  //Custom Header mit BLE definitionen (Adrian)
+
+bool ble_led_val = LOW;
 
 void setup() {
 Serial.begin(9600);
 delay(50);
+
+pinMode(BLE_LED, OUTPUT);
 
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Central Device (Adrian)
 connect_car(); //Stellt Verbindung mit dem Auto her (Adrian)
@@ -84,7 +90,10 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
 
     if (millis() >= t_wait +1000){
       Serial.println("- Still Searching...");
+      Serial.println(ble_led_val);
       t_wait = millis();
+      ble_led_val = !ble_led_val;
+      digitalWrite(BLE_LED, ble_led_val);
     }
   } while (!car);
 
@@ -98,5 +107,9 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
     Serial.println(car.advertisedServiceUuid());
     Serial.println(" ");
     BLE.stopScan();
+
+    ble_led_val = true;
+    digitalWrite(BLE_LED, ble_led_val);
+
   }
 }

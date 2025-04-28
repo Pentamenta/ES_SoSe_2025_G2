@@ -1,4 +1,4 @@
-#define CAR //Flag für Precompiler (Adrian)
+#define CAR_CONNECT //Flag für Precompiler (Adrian)
 
 #include <ArduinoBLE.h>
 #include "EBS_BLE.h" //Custom Header mit BLE definitionen (Adrian)

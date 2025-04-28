@@ -66,7 +66,7 @@ const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
 
     #endif
 
-#ifdef CAR // Defines für Car
+#ifdef CAR_CONNECT // Defines für Car
     BLEDevice dashboard; 
 
     //Services und Characteristics
@@ -80,5 +80,12 @@ const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
     BLEUnsignedIntCharacteristic boolean_to_car(boolean_to_car_Uuid, BLERead | BLEWrite);
     BLEUnsignedIntCharacteristic boolean_to_dash(boolean_to_dash_Uuid, BLERead | BLEWrite);
     #endif
+
+#ifdef CAR
+
+
+
+    #endif
+
 
 #endif

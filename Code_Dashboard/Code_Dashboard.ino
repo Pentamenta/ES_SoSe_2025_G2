@@ -5,9 +5,14 @@
 #include <ArduinoBLE.h> 
 #include "EBS_BLE.h"  //Custom Header mit BLE definitionen (Adrian)
 
+unsigned long t_debug;
+unsigned long t_exchange;
+
 void setup() {
 Serial.begin(9600);
 delay(50);
+t_debug = millis();
+t_exchange = millis();
 
 pinMode(BLE_LED, OUTPUT);
 
@@ -17,7 +22,7 @@ connect_car(); //Stellt Verbindung mit dem Auto her (Adrian)
 
 void loop() {
 
-  if (!car) { // Stellt Verbindung wieder her (Adrian)
+  if (!car.connected()) { // Stellt Verbindung wieder her (Adrian)
 
     // Anzeige auf dem Bildschirm
     // Fahrzeug Steuerung resetten
@@ -25,11 +30,45 @@ void loop() {
     connect_car();
   }
 
+  if (millis() >= t_exchange + 20) {
+    stear_target_val = random(0, 100);
 
+    BLE_val_exchange();
+    t_exchange = millis();
+  }
+
+  if (millis() >= t_debug + 500){ // Debug Loop
+    Serial.println("Bin im Main");
+
+    t_debug = millis();
+    }
 
 
 }
 
+void unpack_bool() { // heir werden die Boolean Variablen aus einem Int extrahiert (Adrian)
+
+  for (int i = 0; i < 16; i++) {
+    if ((boolean_to_dash_val & (1<<i))) {
+      boolean_to_dash_arr[i] = true;
+    }
+    else {
+      boolean_to_dash_arr[i] = false;
+    }
+  }
+
+}
+
+void package_bool(){ // hier werden die Boolean Variablen in einen int Zusammengefasst (Adrian)
+
+  for (int i = 0; i < 16; i++) {
+    if (boolean_to_car_arr[15-i]) {
+      boolean_to_car_val++;
+    }
+    boolean_to_car_val << 1;
+  }
+
+}
 
 void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Central Device (Adrian)
 // Ist unbedingt erst nach Serial.begin() auszuführen.
@@ -58,12 +97,26 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
     BLE.scanForUuid(remote_service_Uuid);
     car = BLE.available();
 
-    if (millis() >= t_wait +1000){
+    if (millis() >= t_wait + 500){
       Serial.println("- Still Searching...");
       t_wait = millis();
       digitalWrite(BLE_LED, !digitalRead(BLE_LED));
     }
   } while (!car);
+
+  car.connect();
+  car.discoverAttributes();
+
+  speed_target = car.characteristic(speed_target_Uuid); // Characteristika discovern
+  speed_actual = car.characteristic(speed_actual_Uuid);
+
+  stear_target = car.characteristic(stear_target_Uuid);
+  stear_actual = car.characteristic(stear_actual_Uuid);
+
+  boolean_to_car = car.characteristic(boolean_to_car_Uuid);
+  boolean_to_dash = car.characteristic(boolean_to_dash_Uuid);
+
+
 
  if (car) { //Einrichten des Autos
     Serial.println("* Found the Car!");
@@ -79,4 +132,20 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
     digitalWrite(BLE_LED, HIGH);
 
   }
+}
+
+void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
+
+  package_bool();
+  // Variablen Senden
+  speed_target.writeValue((uint16_t)speed_target_val);
+  stear_target.writeValue((uint16_t)stear_target_val);
+  boolean_to_car.writeValue((uint16_t)boolean_to_car_val);
+
+  // Variablen Lesen
+  speed_actual_val = (int)speed_actual.value();
+  stear_actual_val = (int)stear_actual.value();
+  boolean_to_dash_val = (unsigned int)boolean_to_dash.value();
+
+  unpack_bool();
 }

@@ -3,10 +3,15 @@
 #include <ArduinoBLE.h>
 #include "EBS_BLE.h" //Custom Header mit BLE definitionen (Adrian)
 
+#define BLE_LED 4 // LED for showing BLE connection
+
+String data_stream;
+
 void setup() {
 Serial.begin(9600);
 delay(50);
 
+pinMode(BLE_LED, OUTPUT);
 
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Peripherial Device (Adrian)
 Dash_connect(); //Verbindung mit dem Dashboard herstellen (Adrian)
@@ -14,6 +19,13 @@ Dash_connect(); //Verbindung mit dem Dashboard herstellen (Adrian)
 }
 
 void loop() {
+
+  if (!dashboard) { // try to reconnect if connection lost
+    // Alert car that connection was lost
+
+    Dash_connect();
+  }
+
 
 
 
@@ -35,10 +47,9 @@ void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Periphe
   
   BLE.addService(remote_service); //Fügt den Service zu der Liste an verfügbaren Services hinzu.
   
-  speed_target.writeValue(speed_target);
   BLE.advertise();
 
-  Serial.println("Car (Dashboard Device)");
+  Serial.println("Car (Slave Device)");
   Serial.println(" ");
   
 }
@@ -50,10 +61,14 @@ void Dash_connect(){ //Verbindung mit dem Dashboard herstellen (Adrian)
 do{
   dashboard = BLE.central();
 
-    if (millis() >= t_wait +1000){
+    if (millis() >= t_wait + 500){
       Serial.println("- Discovering Dashboard...");
       t_wait = millis();
+
+      digitalWrite(BLE_LED, !digitalRead(BLE_LED)); // blinks the LED while waiting for connection
+
     }
+    
 
   if (dashboard.connected()) {
     Serial.println("* Connected to Dashboard!");
@@ -63,4 +78,5 @@ do{
   }
 }while (!dashboard);
 
+digitalWrite(BLE_LED, HIGH);
 }

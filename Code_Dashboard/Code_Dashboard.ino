@@ -5,8 +5,6 @@
 #include <ArduinoBLE.h> 
 #include "EBS_BLE.h"  //Custom Header mit BLE definitionen (Adrian)
 
-bool ble_led_val = LOW;
-
 void setup() {
 Serial.begin(9600);
 delay(50);
@@ -19,47 +17,19 @@ connect_car(); //Stellt Verbindung mit dem Auto her (Adrian)
 
 void loop() {
 
+  if (!car) { // Stellt Verbindung wieder her (Adrian)
+
+    // Anzeige auf dem Bildschirm
+    // Fahrzeug Steuerung resetten
+
+    connect_car();
+  }
+
 
 
 
 }
 
-bool send_speed(){ //Testfunktion zum Senden einer Variable ans Auto (Adrian)
-    Serial.println("- Connecting to car...");
-
-  if (car.connect()) { //Verbindung überprüfen --> Im Fehlerfall return 0
-    Serial.println("* Connected to car!");
-    Serial.println(" ");
-  } else {
-    Serial.println("* Connection to car failed!");
-    Serial.println(" ");
-    return 0;
-  }
-
-  Serial.println("- Discovering car attributes...");
-  if (car.discoverAttributes()) { //Attribute überprüfen --> Im Fehlerfall return 0
-    Serial.println("* Car attributes discovered!");
-    Serial.println(" ");
-  } else {
-    Serial.println("* Car attributes discovery failed!");
-    Serial.println(" ");
-    car.disconnect();
-    return 0;
-  }
-
-/*
- if (!speed_target) { //Überprufe erreichbarkeit und Schreibbarkeit der Charakteristik --> Im Fehlerfall return 0
-    Serial.println("* Car does not have characteristic!");
-    car.disconnect();
-    return 0;
-  } else if (!speed_target.canWrite()) {
-    Serial.println("* Peripheral does not have a writable characteristic!");
-    car.disconnect();
-    return 0;
-  }
-*/
-
-}
 
 void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Central Device (Adrian)
 // Ist unbedingt erst nach Serial.begin() auszuführen.
@@ -91,8 +61,7 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
     if (millis() >= t_wait +1000){
       Serial.println("- Still Searching...");
       t_wait = millis();
-      ble_led_val = !ble_led_val;
-      digitalWrite(BLE_LED, ble_led_val);
+      digitalWrite(BLE_LED, !digitalRead(BLE_LED));
     }
   } while (!car);
 
@@ -107,8 +76,7 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
     Serial.println(" ");
     BLE.stopScan();
 
-    ble_led_val = true;
-    digitalWrite(BLE_LED, ble_led_val);
+    digitalWrite(BLE_LED, HIGH);
 
   }
 }

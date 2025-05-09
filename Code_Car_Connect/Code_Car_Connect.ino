@@ -5,14 +5,14 @@
 
 #define BLE_LED 4 // LED für BLE Verbindung
 
-String data_stream;
 
 unsigned long t_debug;
 unsigned long t_exchange;
 
 void setup() {
 Serial.begin(9600);
-delay(50);
+Serial1.begin(115200);
+
 t_debug = millis();
 t_exchange = millis();
 
@@ -31,9 +31,10 @@ void loop() {
     Dash_connect();
   }
 
-  if (millis() >= t_exchange + 20) {
+  if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
 
     BLE_val_exchange();
+    Serial_val_exchange();
 
     t_exchange = millis();
   }
@@ -51,11 +52,11 @@ void loop() {
 void unpack_bool() { // heir werden die Boolean Variablen aus einem Int extrahiert (Adrian)
 
   for (int i = 0; i < 16; i++) {
-    if ((boolean_to_car_val & (1<<i))) {
-      boolean_to_car_arr[i] = true;
+    if ((data.boolean_to_car_val & (1<<i))) {
+      data.boolean_to_car_arr[i] = true;
     }
     else {
-      boolean_to_car_arr[i] = false;
+      data.boolean_to_car_arr[i] = false;
     }
   }
 
@@ -64,10 +65,10 @@ void unpack_bool() { // heir werden die Boolean Variablen aus einem Int extrahie
 void package_bool(){ // hier werden die Boolean Variablen in einen int Zusammengefasst (Adrian)
 
   for (int i = 0; i < 16; i++) {
-    if (boolean_to_dash_arr[15-i]) {
-      boolean_to_dash_val++;
+    if (data.boolean_to_dash_arr[15-i]) {
+      data.boolean_to_dash_val++;
     }
-    boolean_to_dash_val << 1;
+    data.boolean_to_dash_val << 1;
   }
 
 }
@@ -133,18 +134,27 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
 
   package_bool();
   // Variablen Senden
-  speed_actual.writeValue((byte)speed_actual_val);
-  stear_actual.writeValue((byte)stear_actual_val);
-  boolean_to_dash.writeValue((byte)boolean_to_dash_val);
+  speed_actual.writeValue((byte)data.speed_actual_val);
+  stear_actual.writeValue((byte)data.stear_actual_val);
+  boolean_to_dash.writeValue((byte)data.boolean_to_dash_val);
 
   // Variablen Lesen
-  speed_target_val = speed_target.value();
-if (stear_target.written()) {
-  stear_target_val = stear_target.value();
-  Serial.println(stear_target_val);
-}
-  boolean_to_car_val = boolean_to_car.value();
+  data.speed_target_val = speed_target.value();
+  data.stear_target_val = stear_target.value();
+  data.boolean_to_car_val = boolean_to_car.value();
 
   unpack_bool();
+}
+
+void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
+
+  data_p = &data;
+  byte_p = (uint8_t*)data_p;
+
+  for (int i = 0; i < sizeof(data); i++) {
+    Serial1.write(*byte_p++);
+    Serial.print(*byte_p++, HEX);
+  }
+
 }
 

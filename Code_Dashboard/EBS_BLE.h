@@ -3,6 +3,7 @@
 
 /// BLE Variablen (Adrian)
 
+struct exchange_data { // Alle Variablen werden in einem Struct gespeichert.
 // Geschwindigkeitskontrolle
 // speed_val = 0 Stehen bleiben
 // speed_val > 0 vorwärts
@@ -34,7 +35,12 @@ bool boolean_to_car_arr[16];
 // Single Booleans to dash
 
 bool boolean_to_dash_arr[16];
+};
 
+exchange_data data; // Struct für den Austausch der Daten
+
+uint8_t *byte_p;
+exchange_data *data_p;
 
 /// UUID und BLE Dekleration (Adrian)
 

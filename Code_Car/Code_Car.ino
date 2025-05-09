@@ -1,9 +1,22 @@
+#define CAR //Flag für Precompiler (Adrian)
+
+
+unsigned long t_exchange;
+
 void setup() {
-  // put your setup code here, to run once:
+Serial.begin(9600);
+Serial1.begin(115200);
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+
+  if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
+
+
+    t_exchange = millis();
+  }
+
 
 }
+

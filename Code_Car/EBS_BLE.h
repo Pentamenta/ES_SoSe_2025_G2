@@ -39,7 +39,7 @@ bool boolean_to_dash_arr[16];
 
 exchange_data data; // Struct für den Austausch der Daten
 
-uint8_t *byte_p;
+uint8_t *byte_p;        // Poitner für die UART Übertragung
 exchange_data *data_p;
 
 /// UUID und BLE Dekleration (Adrian)

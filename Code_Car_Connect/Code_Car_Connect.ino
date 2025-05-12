@@ -11,7 +11,7 @@ unsigned long t_exchange;
 
 void setup() {
 Serial.begin(9600);
-Serial1.begin(115200);
+Serial1.begin(115200, SERIAL_8N1);
 
 t_debug = millis();
 t_exchange = millis();
@@ -42,6 +42,7 @@ void loop() {
   if (millis() >= t_debug + 500){ // Debug Loop
     Serial.println("Bin im Main");
     Serial.println(data.stear_target_val);
+    Serial.println(sizeof(data));
 
     t_debug = millis();
     }
@@ -151,12 +152,10 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
 
   data_p = &data;
   byte_p = (uint8_t*)data_p;
-
   for (int i = 0; i < sizeof(data); i++) {
     Serial1.write(*byte_p++);
-    Serial.print(*byte_p, HEX);
   }
-  Serial.println();
+  Serial1.flush();
 
 }
 

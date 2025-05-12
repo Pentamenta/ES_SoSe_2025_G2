@@ -7,7 +7,7 @@ unsigned long t_exchange;
 
 void setup() {
 Serial.begin(9600);
-Serial1.begin(115200);
+
 
 t_exchange = millis();
 t_debug = millis();
@@ -15,7 +15,7 @@ t_debug = millis();
 
 void loop() {
 
-  if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
+  if (millis() >= t_exchange + 80) { // BLE und Serial Kommunikation (Adrian)
     Serial_val_exchange();
 
     t_exchange = millis();
@@ -31,19 +31,22 @@ void loop() {
 }
 
 void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
-Serial.println(Serial1.available());
-if (Serial1.available()){
+
+Serial.print(Serial1.available());
+Serial.print("  ");
+Serial.println(sizeof(data));
+
+
+if (Serial1.available() == sizeof(data)){
+  data_p = &data;
+  byte_p = (uint8_t*)data_p;
   for (int i = 0; i < sizeof(data); i++) {
-    byte_p = Serial1.read();
-    Serial.print(*byte_p, HEX);
+    *byte_p = (byte)Serial1.read();
     byte_p++;
   }
-  Serial.println();
-  byte_p = byte_p - sizeof(data);
-
-  data_p = (struct exchange_data*)byte_p;
-  data = *data_p;
 }
+Serial1.end();
+Serial1.begin(115200, SERIAL_8N1);
 }
 
 void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)

@@ -32,10 +32,6 @@ void loop() {
 
 void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
 
-Serial.print(Serial1.available());
-Serial.print("  ");
-Serial.println(sizeof(data));
-
 
 if (Serial1.available() == sizeof(data)){
   data_p = &data;

@@ -8,25 +8,33 @@ struct exchange_data { // Alle Variablen werden in einem Struct gespeichert.
 // speed_val = 0 Stehen bleiben
 // speed_val > 0 vorwärts
 // speed_val < 0 rückwärts
-int speed_target_val = 0; // Zu erreichende Geschwindigkeit
-int speed_actual_val = 0; // Aktuelle Geschwindigkeit
+uint16_t speed_target_val = 0; // Zu erreichende Geschwindigkeit
+uint16_t speed_actual_val = 0; // Aktuelle Geschwindigkeit
 
 // Lenkung
 // stear_val = 0 Stehen bleiben
 // stear_val > 0 rechts
 // stear_val < 0 links
-int stear_target_val = 0; // Zu erreichende Lenkung
-int stear_actual_val = 0; // Aktuelle Lenkung
+uint16_t stear_target_val = 0; // Zu erreichende Lenkung
+uint16_t stear_actual_val = 0; // Aktuelle Lenkung
 
 // Boolean Übertragung an das Auto vom Dashboard
 // angefangen mit LSB:
 
-unsigned int boolean_to_car_val;
+uint16_t boolean_to_car_val = 0;
 
 // Boolean Übertragung an das Dashboard vom Auto
 // angefangen mit LSB:
 
-unsigned int boolean_to_dash_val;
+uint16_t boolean_to_dash_val = 0;
+
+};
+
+exchange_data data; // Struct für den Austausch der Daten
+
+uint8_t *byte_p;        // Poitner für die UART Übertragung
+exchange_data *data_p;
+
 
 // Single Booleans to car
 
@@ -35,12 +43,7 @@ bool boolean_to_car_arr[16];
 // Single Booleans to dash
 
 bool boolean_to_dash_arr[16];
-};
 
-exchange_data data; // Struct für den Austausch der Daten
-
-uint8_t *byte_p;        // Poitner für die UART Übertragung
-exchange_data *data_p;
 
 /// UUID und BLE Dekleration (Adrian)
 
@@ -85,14 +88,14 @@ const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
 
     //Services und Characteristics
     BLEService remote_service(remote_service_Uuid);
-    BLEIntCharacteristic speed_target(speed_target_Uuid, BLERead | BLEWrite);
-    BLEIntCharacteristic speed_actual(speed_actual_Uuid, BLERead | BLEWrite);
+    BLEUint16_tCharacteristic speed_target(speed_target_Uuid, BLERead | BLEWrite);
+    BLEUint16_tCharacteristic speed_actual(speed_actual_Uuid, BLERead | BLEWrite);
 
-    BLEIntCharacteristic stear_target(stear_target_Uuid, BLERead | BLEWrite);
-    BLEIntCharacteristic stear_actual(stear_actual_Uuid, BLERead | BLEWrite);
+    BLEUint16_tCharacteristic stear_target(stear_target_Uuid, BLERead | BLEWrite);
+    BLEUint16_tCharacteristic stear_actual(stear_actual_Uuid, BLERead | BLEWrite);
 
-    BLEUnsignedIntCharacteristic boolean_to_car(boolean_to_car_Uuid, BLERead | BLEWrite);
-    BLEUnsignedIntCharacteristic boolean_to_dash(boolean_to_dash_Uuid, BLERead | BLEWrite);
+    BLEUint16_tCharacteristic boolean_to_car(boolean_to_car_Uuid, BLERead | BLEWrite);
+    BLEUint16_tCharacteristic boolean_to_dash(boolean_to_dash_Uuid, BLERead | BLEWrite);
     #endif
 
 #ifdef CAR

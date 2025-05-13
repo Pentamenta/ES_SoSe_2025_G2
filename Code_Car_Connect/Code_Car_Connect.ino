@@ -55,10 +55,10 @@ void unpack_bool() { // heir werden die Boolean Variablen aus einem Int extrahie
 
   for (int i = 0; i < 16; i++) {
     if ((data.boolean_to_car_val & (1<<i))) {
-      data.boolean_to_car_arr[i] = true;
+      boolean_to_car_arr[i] = true;
     }
     else {
-      data.boolean_to_car_arr[i] = false;
+      boolean_to_car_arr[i] = false;
     }
   }
 
@@ -67,7 +67,7 @@ void unpack_bool() { // heir werden die Boolean Variablen aus einem Int extrahie
 void package_bool(){ // hier werden die Boolean Variablen in einen int Zusammengefasst (Adrian)
 
   for (int i = 0; i < 16; i++) {
-    if (data.boolean_to_dash_arr[15-i]) {
+    if (boolean_to_dash_arr[15-i]) {
       data.boolean_to_dash_val++;
     }
     data.boolean_to_dash_val << 1;
@@ -136,9 +136,9 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
 
   package_bool();
   // Variablen Senden
-  speed_actual.writeValue((byte)data.speed_actual_val);
-  stear_actual.writeValue((byte)data.stear_actual_val);
-  boolean_to_dash.writeValue((byte)data.boolean_to_dash_val);
+  speed_actual.writeValue(data.speed_actual_val);
+  stear_actual.writeValue(data.stear_actual_val);
+  boolean_to_dash.writeValue(data.boolean_to_dash_val);
 
   // Variablen Lesen
   data.speed_target_val = speed_target.value();

@@ -127,3 +127,20 @@ void package_bool() {  // hier werden die Boolean Variablen in einen int Zusamme
     data.boolean_to_car_val << 1;
   }
 }
+
+void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
+
+  Serial.println("Einmal der Data Struct:");
+  Serial.print("Speed_target: ");
+  Serial.println(data.speed_target_val);
+
+  Serial.print("Speed_actual: ");
+  Serial.println(data.speed_actual_val);
+
+  Serial.print("Stear_target: ");
+  Serial.println(data.stear_target_val);
+
+  Serial.print("Stear_actual: ");
+  Serial.println(data.stear_actual_val);
+
+}

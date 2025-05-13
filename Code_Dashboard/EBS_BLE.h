@@ -88,14 +88,14 @@ const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
 
     //Services und Characteristics
     BLEService remote_service(remote_service_Uuid);
-    BLEUint16_tCharacteristic speed_target(speed_target_Uuid, BLERead | BLEWrite);
-    BLEUint16_tCharacteristic speed_actual(speed_actual_Uuid, BLERead | BLEWrite);
+    BLEUnsignedIntCharacteristic speed_target(speed_target_Uuid, BLERead | BLEWrite);
+    BLEUnsignedIntCharacteristic speed_actual(speed_actual_Uuid, BLERead | BLEWrite);
 
-    BLEUint16_tCharacteristic stear_target(stear_target_Uuid, BLERead | BLEWrite);
-    BLEUint16_tCharacteristic stear_actual(stear_actual_Uuid, BLERead | BLEWrite);
+    BLEUnsignedIntCharacteristic stear_target(stear_target_Uuid, BLERead | BLEWrite);
+    BLEUnsignedIntCharacteristic stear_actual(stear_actual_Uuid, BLERead | BLEWrite);
 
-    BLEUint16_tCharacteristic boolean_to_car(boolean_to_car_Uuid, BLERead | BLEWrite);
-    BLEUint16_tCharacteristic boolean_to_dash(boolean_to_dash_Uuid, BLERead | BLEWrite);
+    BLEUnsignedIntCharacteristic boolean_to_car(boolean_to_car_Uuid, BLERead | BLEWrite);
+    BLEUnsignedIntCharacteristic boolean_to_dash(boolean_to_dash_Uuid, BLERead | BLEWrite);
     #endif
 
 #ifdef CAR
@@ -126,4 +126,21 @@ void package_bool() {  // hier werden die Boolean Variablen in einen int Zusamme
     }
     data.boolean_to_car_val << 1;
   }
+}
+
+void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
+
+  Serial.println("Einmal der Data Struct:");
+  Serial.print("Speed_target: ");
+  Serial.println(data.speed_target_val);
+
+  Serial.print("Speed_actual: ");
+  Serial.println(data.speed_actual_val);
+
+  Serial.print("Stear_target: ");
+  Serial.println(data.stear_target_val);
+
+  Serial.print("Stear_actual: ");
+  Serial.println(data.stear_actual_val);
+
 }

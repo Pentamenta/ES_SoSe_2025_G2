@@ -7,7 +7,7 @@ unsigned long t_exchange;
 
 void setup() {
 Serial.begin(9600);
-
+Serial1.begin(115200, SERIAL_8N1);
 
 t_exchange = millis();
 t_debug = millis();
@@ -31,33 +31,13 @@ void loop() {
 }
 
 void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
-
-
-if (Serial1.available() == sizeof(data)){
   data_p = &data;
   byte_p = (uint8_t*)data_p;
+  byte_p = byte_p + sizeof(data);
   for (int i = 0; i < sizeof(data); i++) {
     *byte_p = (byte)Serial1.read();
-    byte_p++;
+    byte_p--;
   }
-}
-Serial1.end();
-Serial1.begin(115200, SERIAL_8N1);
-}
-
-void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
-
-  Serial.println("Einmal der Data Struct:");
-  Serial.print("Speed_target: ");
-  Serial.println(data.speed_target_val);
-
-  Serial.print("Speed_actual: ");
-  Serial.println(data.speed_actual_val);
-
-  Serial.print("Stear_target: ");
-  Serial.println(data.stear_target_val);
-
-  Serial.print("Stear_actual: ");
-  Serial.println(data.stear_actual_val);
+  data = *data_p;
 
 }

@@ -43,6 +43,7 @@ void loop() {
     Serial.println("Bin im Main");
     Serial.println(data.stear_target_val);
     Serial.println(sizeof(data));
+    Debug_data();
 
     t_debug = millis();
     }

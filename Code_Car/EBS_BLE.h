@@ -88,14 +88,14 @@ const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
 
     //Services und Characteristics
     BLEService remote_service(remote_service_Uuid);
-    BLEIntCharacteristic speed_target(speed_target_Uuid, BLERead | BLEWrite);
-    BLEIntCharacteristic speed_actual(speed_actual_Uuid, BLERead | BLEWrite);
+    BLEUint16_tCharacteristic speed_target(speed_target_Uuid, BLERead | BLEWrite);
+    BLEUint16_tCharacteristic speed_actual(speed_actual_Uuid, BLERead | BLEWrite);
 
-    BLEIntCharacteristic stear_target(stear_target_Uuid, BLERead | BLEWrite);
-    BLEIntCharacteristic stear_actual(stear_actual_Uuid, BLERead | BLEWrite);
+    BLEUint16_tCharacteristic stear_target(stear_target_Uuid, BLERead | BLEWrite);
+    BLEUint16_tCharacteristic stear_actual(stear_actual_Uuid, BLERead | BLEWrite);
 
-    BLEUnsignedIntCharacteristic boolean_to_car(boolean_to_car_Uuid, BLERead | BLEWrite);
-    BLEUnsignedIntCharacteristic boolean_to_dash(boolean_to_dash_Uuid, BLERead | BLEWrite);
+    BLEUint16_tCharacteristic boolean_to_car(boolean_to_car_Uuid, BLERead | BLEWrite);
+    BLEUint16_tCharacteristic boolean_to_dash(boolean_to_dash_Uuid, BLERead | BLEWrite);
     #endif
 
 #ifdef CAR
@@ -106,3 +106,24 @@ const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
 
 
 #endif
+
+void unpack_bool() {  // heir werden die Boolean Variablen aus einem Int extrahiert (Adrian)
+
+  for (int i = 0; i < 16; i++) {
+    if ((data.boolean_to_dash_val & (1 << i))) {
+      boolean_to_dash_arr[i] = true;
+    } else {
+      boolean_to_dash_arr[i] = false;
+    }
+  }
+}
+
+void package_bool() {  // hier werden die Boolean Variablen in einen int Zusammengefasst (Adrian)
+
+  for (int i = 0; i < 16; i++) {
+    if (boolean_to_car_arr[15 - i]) {
+      data.boolean_to_car_val++;
+    }
+    data.boolean_to_car_val << 1;
+  }
+}

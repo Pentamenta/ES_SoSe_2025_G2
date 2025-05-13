@@ -106,3 +106,24 @@ const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
 
 
 #endif
+
+void unpack_bool() {  // heir werden die Boolean Variablen aus einem Int extrahiert (Adrian)
+
+  for (int i = 0; i < 16; i++) {
+    if ((data.boolean_to_dash_val & (1 << i))) {
+      boolean_to_dash_arr[i] = true;
+    } else {
+      boolean_to_dash_arr[i] = false;
+    }
+  }
+}
+
+void package_bool() {  // hier werden die Boolean Variablen in einen int Zusammengefasst (Adrian)
+
+  for (int i = 0; i < 16; i++) {
+    if (boolean_to_car_arr[15 - i]) {
+      data.boolean_to_car_val++;
+    }
+    data.boolean_to_car_val << 1;
+  }
+}

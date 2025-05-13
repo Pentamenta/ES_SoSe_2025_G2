@@ -49,32 +49,6 @@ void loop() {
 
 }
 
-
-
-void unpack_bool() { // heir werden die Boolean Variablen aus einem Int extrahiert (Adrian)
-
-  for (int i = 0; i < 16; i++) {
-    if ((data.boolean_to_car_val & (1<<i))) {
-      boolean_to_car_arr[i] = true;
-    }
-    else {
-      boolean_to_car_arr[i] = false;
-    }
-  }
-
-}
-
-void package_bool(){ // hier werden die Boolean Variablen in einen int Zusammengefasst (Adrian)
-
-  for (int i = 0; i < 16; i++) {
-    if (boolean_to_dash_arr[15-i]) {
-      data.boolean_to_dash_val++;
-    }
-    data.boolean_to_dash_val << 1;
-  }
-
-}
-
 void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Peripherial Device (Adrian)
 // Ist unbedingt erst nach Serial.begin() auszuführen.
 

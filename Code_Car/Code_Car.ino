@@ -22,7 +22,7 @@ void loop() {
   }
 
   if (millis() >= t_debug + 500){ // Debug Loop
-    Serial.println("Bin im Main");
+    //Serial.println("Bin im Main");
     Debug_data();
 
     t_debug = millis();
@@ -33,11 +33,20 @@ void loop() {
 void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
   data_p = &data;
   byte_p = (uint8_t*)data_p;
-  byte_p = byte_p + sizeof(data);
+  byte_p = byte_p + (sizeof(data)-1);
   for (int i = 0; i < sizeof(data); i++) {
     *byte_p = (byte)Serial1.read();
     byte_p--;
   }
+
+  /*
+  uint8_t *debug_p = (uint8_t*)data_p;
+  //Debug Loop
+  for (int i = 0; i < sizeof(data); i++) {
+    Serial.print(*debug_p++, BIN);
+  } 
+  Serial.println();
+  */
   data = *data_p;
 
 }

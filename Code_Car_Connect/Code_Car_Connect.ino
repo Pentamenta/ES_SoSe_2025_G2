@@ -33,6 +33,7 @@ void loop() {
 
   if (millis() >= t_exchange + 40) { // BLE und Serial Kommunikation (Adrian)
 
+
     BLE_val_exchange();
     Serial_val_exchange();
 
@@ -40,11 +41,12 @@ void loop() {
   }
 
   if (millis() >= t_debug + 500){ // Debug Loop
+    
     Serial.println("Bin im Main");
     Serial.println(data.stear_target_val);
     Serial.println(sizeof(data));
     Debug_data();
-
+    
     t_debug = millis();
     }
 
@@ -128,8 +130,10 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
   data_p = &data;
   byte_p = (uint8_t*)data_p;
   for (int i = 0; i < sizeof(data); i++) {
+    //Serial.print(*byte_p, BIN);
     Serial1.write(*byte_p++);
   }
+  //Serial.println();
   Serial1.flush();
 
 }

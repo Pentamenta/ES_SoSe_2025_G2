@@ -100,9 +100,9 @@ const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
 
 #ifdef CAR
 
+  exchange_data data_buffer; // Puffer für empfangene Daten über UART (Adrian)
 
-
-    #endif
+  #endif
 
 
 #endif

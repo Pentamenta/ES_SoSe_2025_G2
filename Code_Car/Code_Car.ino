@@ -15,7 +15,7 @@ t_debug = millis();
 
 void loop() {
 
-  if (millis() >= t_exchange + 80) { // BLE und Serial Kommunikation (Adrian)
+  if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
     Serial_val_exchange();
 
     t_exchange = millis();
@@ -31,22 +31,27 @@ void loop() {
 }
 
 void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
-  data_p = &data;
-  byte_p = (uint8_t*)data_p;
-  byte_p = byte_p + (sizeof(data)-1);
-  for (int i = 0; i < sizeof(data); i++) {
+  data_p = &data_buffer;      // Pointer vorbereiten
+  byte_p = (uint8_t*)data_p; 
+  //byte_p = byte_p + (sizeof(data)-1);
+
+  if(Serial1.read() == '<') { // Auf start-byte checken
+
+  for (int i = 0; i < sizeof(data); i++) { // Daten einlesen
     *byte_p = (byte)Serial1.read();
-    byte_p--;
+    byte_p++;
   }
 
+  if (Serial1.read() == '>') {
+    data = *data_p;
   /*
-  uint8_t *debug_p = (uint8_t*)data_p;
+  uint8_t *debug_p = (uint8_t*)&data;
   //Debug Loop
   for (int i = 0; i < sizeof(data); i++) {
     Serial.print(*debug_p++, BIN);
   } 
   Serial.println();
   */
-  data = *data_p;
-
+  }
+  }
 }

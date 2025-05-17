@@ -3,7 +3,8 @@
 #include <ArduinoBLE.h>
 #include "EBS_BLE.h" //Custom Header mit BLE definitionen (Adrian)
 
-#define BLE_LED 4 // LED für BLE Verbindung
+#define CONNECT_NOTIFY 2 // High wenn BLE Verbindung besteht (Adrian)
+#define BLE_LED 4 // LED für BLE Verbindung (Adrian)
 
 
 unsigned long t_debug;
@@ -17,7 +18,9 @@ t_debug = millis();
 t_exchange = millis();
 
 pinMode(BLE_LED, OUTPUT);
+pinMode(CONNECT_NOTIFY, OUTPUT);
 
+digitalWrite(CONNECT_NOTIFY, LOW);
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Peripherial Device (Adrian)
 Dash_connect(); //Verbindung mit dem Dashboard herstellen (Adrian)
 
@@ -27,7 +30,7 @@ void loop() {
 
   if (!dashboard.connected()) { // try to reconnect if connection lost
     // Alert car that connection was lost
-
+    digitalWrite(CONNECT_NOTIFY, LOW);
     Dash_connect();
   }
 
@@ -106,6 +109,7 @@ do{
     Serial.println(dashboard.address());
     Serial.println(" ");
     digitalWrite(BLE_LED, HIGH);
+    digitalWrite(CONNECT_NOTIFY, HIGH);
   }
 
 }

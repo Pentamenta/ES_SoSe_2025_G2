@@ -13,7 +13,8 @@ Vor dem commit wird ein weiteres mal gepullt, um Mergefehler durch paralleles Ar
 
 ## Hardware
 
-Als Basis für beide Projektteile wird ein Arduino Nano BLE Sense verwendet. Zusätzlich verfütg das Auto auch über einen Arduino Mega.
+Als Basis für beide Projektteile wird ein Arduino Nano BLE Sense verwendet.
+Weitere Arduinos können ins Projekt implementiert werden, der Nano BLE muss aber die Zentrale Anlaufstelle bleiben.
 Um das Board zu bespielen:
  1. Unter Werkzeuge --> Board --> Boardverwalter wählen
  2. Nach "Arduino Mbed OS Nano Boards" suchen und installieren
@@ -29,22 +30,20 @@ Für das Projekt zu installierende Bibliotheken:
 
 ### Softwarestruktur
 
-Im Repository befinden sich drei Ordner mit darin jeweils gleichnamigen Arduino Programmen.
-- Code_Car_Connect --> Code_Car_Connect.ino
+Im Repository befinden sich zwei Ordner mit darin jeweils gleichnamigen Arduino Programmen.
 - Code_Car	  --> Code_Car.ino
 - Code_ Dashboard --> Code_Dashboard.ino
 
 In diesen Dateien wird programmiert. Ein Aufteilen in mehrere Dateien ist unter Arduino NICHT möglich.
 
-In der Externen Datei EBS_BLE.h werden Variablen für die BLE und UART Kommunikation definiert, die in beiden Programmen gleich seien müssen. Aufgrund von beschränkungen der Arduino IDE kann diese Datei nicht extern verlinkt werden, sondern muss in jedem Programmordner einzeln existieren. Deshalb ist es extrem Wichtig, dass diese drei Dateien immer auf dem selben stand sind.
+In dder Externen Datei EBS_BLE.h werden Variablen für die BLE Kommunikation definiert, die in beiden Programmen gleich seien müssen. Aufgrund von beschränkungen der Arduino IDE kann diese Datei nicht extern verlinkt werden, sondern muss in jedem Programmordner einzeln existieren. Deshalb ist es Extrem Wichtig, dass diese Beiden Dateien immer auf dem selben stand sind.
 
 ### Coding
 
 - Es ist soviel wir möglich über Funktionen zu lösen, um den Main loop so übersichtlich wie möglich zu halten.
 - Bitte kommentiert den Code ausführlich und fügt am Ende das Kommentars euren Namen hinzu, um Rückfragen zu vereinfachen. Es Reicht wenn der Namen einmal vor einer ganzen Funktion angegeben wird.
-- Aufgrund der drahtlosen Verbindung muss der loop durchgehend laufen. Lange for-Schleifen und delays sind zu vermeiden. Verzögerungen sind über millis zu lösen.
 
-### BLE 
+### BLE Documentation
 
 Die Drahtlosverbindung zwischen Dashboard und Auto wird über Bluetooth Low Energy gelöst. 
 Hierbei dient das Dashboard als Central Device und das Auto als Peripheral Device.
@@ -71,18 +70,18 @@ Eine Gruppe aus Service nennt man Profil.
 Jeder Service besitzt eine einzigartige UUID. Entdeckt ein Peripheral Device einen Service kann dieses, die darin enthaltenen Charakteristiken, lesen, beschreiben, oder überwachen.
 Jede Charakteristik besitzt ebenfalls eine einzigartige UUID.
 
-### UART
 
-Da das Auto deutlich mehr Pins verlangt, als der Arduino BLE anbietet wird das Kernstück der Autosteuerung von einem Arduino Mega gebildet. Dieser ist über eine UART Verbindung mit dem Arduino BLE verbunden und steht über diesen in ständigem Austausch mit dem Dashboard.
+
 
 ## Fahrzeug
 
-Das Fahrzeug wird aus Lego konstruiert.
+Eigenes Chassy oder eigenes Design?
 
 Features:
 - Blinker / Warnlicht
 - Lenkung
-	- Heckantrieb mit Servolenkung vorne
+	- Heckantrieb mit Servolenkung vorne?
+	- Panzerkontrolle mit Mekanium?
 - Abstandssensor mit Buzzer
 - Geschwindigkeitssensor
 - Tempomat
@@ -91,7 +90,8 @@ Features:
 
 - Akkustand
 - Steuerung
-	- Zwei Joysticks
+	- Servolenkung mit Lenkrad und Pedal
+	- Joystick bei Tank Controlls
 - Tacho auf Bildschirm
 - Taster für Blinker
 - Soundausgabe 

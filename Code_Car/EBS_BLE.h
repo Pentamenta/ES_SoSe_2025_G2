@@ -3,38 +3,44 @@
 
 /// BLE Variablen (Adrian)
 
-struct exchange_data { // Alle Variablen werden in einem Struct gespeichert.
+struct exchange_data_to_car { // Alle Variablen vom Dashboard zum Auto
 // Geschwindigkeitskontrolle
 // speed_val = 0 Stehen bleiben
 // speed_val > 0 vorwärts
 // speed_val < 0 rückwärts
 uint16_t speed_target_val = 0; // Zu erreichende Geschwindigkeit
-uint16_t speed_actual_val = 0; // Aktuelle Geschwindigkeit
 
 // Lenkung
 // stear_val = 0 Stehen bleiben
 // stear_val > 0 rechts
 // stear_val < 0 links
 uint16_t stear_target_val = 0; // Zu erreichende Lenkung
-uint16_t stear_actual_val = 0; // Aktuelle Lenkung
 
 // Boolean Übertragung an das Auto vom Dashboard
 // angefangen mit LSB:
 
-uint16_t boolean_to_car_val = 0;
+uint16_t boolean_val = 0;
+};
+
+struct exchange_data_to_dash { // Alle Variablen vom Auto zum Dashboard
+
+uint16_t speed_actual_val = 0; // Aktuelle Geschwindigkeit
+uint16_t stear_actual_val = 0; // Aktuelle Lenkung
 
 // Boolean Übertragung an das Dashboard vom Auto
 // angefangen mit LSB:
 
-uint16_t boolean_to_dash_val = 0;
+uint16_t boolean_val = 0;
 
 };
 
-exchange_data data; // Struct für den Austausch der Daten
+exchange_data_to_car data_to_car;   // Struct zum Senden der Daten zum Auto
+exchange_data_to_dash data_to_dash;  // Struct zum Senden der Daten zum Dashboard
+
 
 uint8_t *byte_p;        // Poitner für die UART Übertragung
-exchange_data *data_p;
-
+exchange_data_to_car *data_p_c;
+exchange_data_to_dash *data_p_d;
 
 // Single Booleans to car
 
@@ -96,12 +102,13 @@ const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
 
     BLEUnsignedIntCharacteristic boolean_to_car(boolean_to_car_Uuid, BLERead | BLEWrite);
     BLEUnsignedIntCharacteristic boolean_to_dash(boolean_to_dash_Uuid, BLERead | BLEWrite);
+
+    exchange_data_to_dash data_buffer; // Buffer für empfangene Daten über UART (Adrian)
     #endif
 
 #ifdef CAR
 
-  exchange_data data_buffer; // Puffer für empfangene Daten über UART (Adrian)
-
+  exchange_data_to_car data_buffer; // Buffer für empfangene Daten über UART (Adrian)
   #endif
 
 
@@ -112,7 +119,7 @@ const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
 void unpack_bool() {  // heir werden die Boolean Variablen aus einem Int extrahiert (Adrian)
 
   for (int i = 0; i < 16; i++) {
-    if ((data.boolean_to_dash_val & (1 << i))) {
+    if ((data_to_dash.boolean_val & (1 << i))) {
       boolean_to_dash_arr[i] = true;
     } else {
       boolean_to_dash_arr[i] = false;
@@ -124,9 +131,9 @@ void package_bool() {  // hier werden die Boolean Variablen in einen int Zusamme
 
   for (int i = 0; i < 16; i++) {
     if (boolean_to_car_arr[15 - i]) {
-      data.boolean_to_car_val++;
+      data_to_car.boolean_val++;
     }
-    data.boolean_to_car_val << 1;
+    data_to_car.boolean_val << 1;
   }
 }
 
@@ -134,15 +141,15 @@ void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
 
   Serial.println("Einmal der Data Struct:");
   Serial.print("Speed_target: ");
-  Serial.println(data.speed_target_val);
+  Serial.println(data_to_car.speed_target_val);
 
   Serial.print("Speed_actual: ");
-  Serial.println(data.speed_actual_val);
+  Serial.println(data_to_dash.speed_actual_val);
 
   Serial.print("Stear_target: ");
-  Serial.println(data.stear_target_val);
+  Serial.println(data_to_car.stear_target_val);
 
   Serial.print("Stear_actual: ");
-  Serial.println(data.stear_actual_val);
+  Serial.println(data_to_dash.stear_actual_val);
 
 }

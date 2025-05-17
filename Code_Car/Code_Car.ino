@@ -43,27 +43,31 @@ if (millis() >= t_debug + 500){ // Debug Loop
 }
 
 void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
-  data_p = &data_buffer;      // Pointer vorbereiten
-  byte_p = (uint8_t*)data_p; 
-  //byte_p = byte_p + (sizeof(data)-1);
+
+  // Daten vom Dashboard empfangen
+  data_p_c = &data_buffer;      // Pointer vorbereiten
+  byte_p = (uint8_t*)data_p_c; 
 
   if(Serial1.read() == '<') { // Auf start-byte checken
 
-  for (int i = 0; i < sizeof(data); i++) { // Daten einlesen
+  for (int i = 0; i < sizeof(data_to_car); i++) { // Daten einlesen
     *byte_p = (byte)Serial1.read();
     byte_p++;
   }
 
   if (Serial1.read() == '>') {
-    data = *data_p;
-  /*
-  uint8_t *debug_p = (uint8_t*)&data;
-  //Debug Loop
-  for (int i = 0; i < sizeof(data); i++) {
-    Serial.print(*debug_p++, BIN);
-  } 
-  Serial.println();
-  */
+    data_to_car = *data_p_c;
   }
   }
+
+  data_p_d = &data_to_dash; // Senden der Daten zum Dashboard
+  byte_p = (uint8_t*)data_p_d;
+  Serial1.write('<');
+  for (int i = 0; i < sizeof(data_to_dash); i++) {
+    //Serial.print(*byte_p, BIN);
+    Serial1.write(*byte_p++);
+  }
+  //Serial.println();
+  Serial1.write('>');
+  Serial1.flush(); // Warten bis alle Daten im Puffer gesendet wurden
 }

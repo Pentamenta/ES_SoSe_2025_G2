@@ -36,7 +36,6 @@ void loop() {
 
   if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
 
-
     BLE_val_exchange();
     //data.stear_target_val = 11;
     Serial_val_exchange();
@@ -47,8 +46,8 @@ void loop() {
   if (millis() >= t_debug + 500){ // Debug Loop
     
     Serial.println("Bin im Main");
-    //Serial.println(data.stear_target_val);
-    //Serial.println(sizeof(data));
+    //Serial.println(data_to_car.stear_target_val);
+    Serial.println(sizeof(data_to_car));
     Debug_data();
     
     t_debug = millis();
@@ -118,24 +117,40 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
 
   package_bool();
   // Variablen Senden
-  speed_actual.writeValue(data.speed_actual_val);
-  stear_actual.writeValue(data.stear_actual_val);
-  boolean_to_dash.writeValue(data.boolean_to_dash_val);
+  speed_actual.writeValue(data_to_dash.speed_actual_val);
+  stear_actual.writeValue(data_to_dash.stear_actual_val);
+  boolean_to_dash.writeValue(data_to_dash.boolean_val);
 
   // Variablen Lesen
-  data.speed_target_val = speed_target.value();
-  data.stear_target_val = stear_target.value();
-  data.boolean_to_car_val = boolean_to_car.value();
+  data_to_car.speed_target_val = speed_target.value();
+  data_to_car.stear_target_val = stear_target.value();
+  data_to_car.boolean_val = boolean_to_car.value();
 
   unpack_bool();
 }
 
 void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
 
-  data_p = &data;
-  byte_p = (uint8_t*)data_p;
+  // Daten zum Dashboard empfangen
+  data_p_d = &data_buffer;      // Pointer vorbereiten
+  byte_p = (uint8_t*)data_p_d; 
+
+  if(Serial1.read() == '<') { // Auf start-byte checken
+
+  for (int i = 0; i < sizeof(data_to_dash); i++) { // Daten einlesen
+    *byte_p = (byte)Serial1.read();
+    byte_p++;
+  }
+
+  if (Serial1.read() == '>') {
+    data_to_dash = *data_p_d;
+  }
+  }
+
+  data_p_c = &data_to_car;
+  byte_p = (uint8_t*)data_p_c;
   Serial1.write('<');
-  for (int i = 0; i < sizeof(data); i++) {
+  for (int i = 0; i < sizeof(data_to_car); i++) {
     //Serial.print(*byte_p, BIN);
     Serial1.write(*byte_p++);
   }

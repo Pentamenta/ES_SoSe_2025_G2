@@ -26,20 +26,18 @@ void loop() {
 
     // Anzeige auf dem Bildschirm
     // Fahrzeug Steuerung resetten
-
     connect_car();
   }
 
   if (millis() >= t_exchange + 20) {
-    data.stear_target_val = random(0, 100);
-
+    data_to_car.speed_target_val = random(1,100);
+    data_to_car.stear_target_val = random(1,100);
     BLE_val_exchange();
     t_exchange = millis();
   }
 
   if (millis() >= t_debug + 500){ // Debug Loop
     Serial.println("Bin im Main");
-
     t_debug = millis();
     }
 
@@ -114,14 +112,14 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
 
   package_bool();
   // Variablen Senden
-  speed_target.writeValue(data.speed_target_val);
-  stear_target.writeValue(data.stear_target_val);
-  boolean_to_car.writeValue(data.boolean_to_car_val);
+  speed_target.writeValue(data_to_car.speed_target_val);
+  stear_target.writeValue(data_to_car.stear_target_val);
+  boolean_to_car.writeValue(data_to_car.boolean_val);
 
   // Variablen Lesen
-  speed_actual.readValue(data.speed_actual_val);
-  stear_actual.readValue(data.stear_actual_val);
-  boolean_to_dash.readValue(data.boolean_to_dash_val);
+  speed_actual.readValue(data_to_dash.speed_actual_val);
+  stear_actual.readValue(data_to_dash.stear_actual_val);
+  boolean_to_dash.readValue(data_to_dash.boolean_val);
 
   unpack_bool();
 }

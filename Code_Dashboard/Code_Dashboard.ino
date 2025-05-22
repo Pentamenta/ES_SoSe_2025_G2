@@ -5,6 +5,10 @@
 #include <ArduinoBLE.h> 
 #include "EBS_BLE.h"  //Custom Header mit BLE definitionen (Adrian)
 
+#include <U8g2lib.h> //Software I2C Display Ansteuerung (Eva)
+
+U8G2_SSD1306_128X64_NONAME_F_SW_I2C display(U8G2_R0, /* clock=*/ 8, /* data=*/ 9, /* reset=*/ U8X8_PIN_NONE); //Software I2C Pininitialisierung (Eva)
+
 unsigned long t_debug;
 unsigned long t_exchange;
 
@@ -126,4 +130,15 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
   boolean_to_dash_1.readValue(data_to_dash.boolean_1_val);
 
   unpack_bool();
+}
+
+void writeDisplay_softI2C(uint16_t data){       //über Software I2C wird Wert der Variable auf Display angezeigt(Eva)
+  display.begin();
+  display.clearBuffer();                         // Bildspeicher löschen
+
+  String dataStr = String(data) + " km/h";     // Umwandlung von data int Wert in String und Hinzufügen von " km/h"
+  
+  display.setFont(u8g2_font_ncenB18_tr);        // 18pt Schriftgröße
+  display.drawStr(1, 40, dataStr.c_str());     // Anzeige der Zahl mit Text
+  display.sendBuffer();                         // An Display senden
 }

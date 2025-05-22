@@ -21,6 +21,9 @@ uint16_t stear_target_val = 0; // Zu erreichende Lenkung
 // Boolean Übertragung an das Auto vom Dashboard
 // angefangen mit LSB:
 
+uint16_t angleX;
+uint16_t angleY;
+
 uint16_t boolean_0_val;
 uint16_t boolean_1_val;
 };
@@ -129,8 +132,14 @@ void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
   Serial.print("Bool 1 to car: ");
   Serial.println(data_to_car.boolean_0_val, BIN);
   
-   Serial.print("Bool 1 to dash: ");
+  Serial.print("Bool 1 to dash: ");
   Serial.println(data_to_dash.boolean_0_val, BIN);
+  
+  Serial.print("AngleX: ");
+  Serial.println((int)data_to_car.angleX);
+  
+  Serial.print("AngleY: ");
+  Serial.println((int)data_to_car.angleY);
 
 }
 
@@ -377,11 +386,10 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
 #ifdef CAR
 
   exchange_data_to_car data_buffer; // Buffer für empfangene Daten über UART (Adrian)
-
   
-void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
+  void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
 
-  // Daten vom Dashboard empfangen
+  // Daten zum Auto empfangen
   data_p_c = &data_buffer;      // Pointer vorbereiten
   byte_p = (uint8_t*)data_p_c; 
 
@@ -397,7 +405,7 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
   }
   }
 
-  data_p_d = &data_to_dash; // Senden der Daten zum Dashboard
+  data_p_d = &data_to_dash;
   byte_p = (uint8_t*)data_p_d;
   Serial1.write('<');
   for (int i = 0; i < sizeof(data_to_dash); i++) {
@@ -407,8 +415,11 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
   //Serial.println();
   Serial1.write('>');
   Serial1.flush(); // Warten bis alle Daten im Puffer gesendet wurden
-}
 
+}
+  
+  
+  
   #endif
 
 

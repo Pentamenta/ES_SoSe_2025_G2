@@ -27,6 +27,7 @@ Um das Board zu bespielen:
 
 Für das Projekt zu installierende Bibliotheken:
 - ArduinoBLE
+- U8g2lib bzw. U8g2 von olikraus
 
 ### Softwarestruktur
 

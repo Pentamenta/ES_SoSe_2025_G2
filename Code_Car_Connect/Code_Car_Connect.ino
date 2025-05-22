@@ -1,10 +1,15 @@
 #define CAR_CONNECT //Flag für Precompiler (Adrian)
 
-#define CONNECT_NOTIFY 2 // High wenn BLE Verbindung besteht (Adrian)
-#define BLE_LED 4 // LED für BLE Verbindung (Adrian)
+// Definitionen für Accelerometer (Adrian)
+#define WAIT_TIME 500 // Zyklus zum lesen der Daten
+// Definitionen für BLE Verbindung (Adrian)
+#define CONNECT_NOTIFY 2 // High wenn BLE Verbindung besteht
+#define BLE_LED 4 // LED für BLE Verbindung
 
+#include <Arduino_LSM9DS1.h>
 #include <ArduinoBLE.h>
 #include "EBS_BLE.h" //Custom Header mit BLE definitionen (Adrian)
+#include "acc_data.h" // Custom Header mit Funktionen für Accelerometer
 
 unsigned long t_debug;
 unsigned long t_exchange;
@@ -18,6 +23,8 @@ t_exchange = millis();
 
 pinMode(BLE_LED, OUTPUT);
 pinMode(CONNECT_NOTIFY, OUTPUT);
+
+Acc_Setup();
 
 digitalWrite(CONNECT_NOTIFY, LOW);
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Peripherial Device (Adrian)

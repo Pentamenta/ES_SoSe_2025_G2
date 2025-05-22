@@ -93,6 +93,10 @@ Features:
 - Steuerung
 	- Servolenkung mit Lenkrad und Pedal
 	- Joystick bei Tank Controlls
-- Tacho auf Bildschirm
+- Tacho auf Bildschirm 
 - Taster für Blinker
-- Soundausgabe 
+- Soundausgabe
+- Bildschirme (1-3): Tachoanzeige, Parkanzeige, Akkustand, Tempomat Geschwindigkeit, 
+- Bildschirm links: Akkustand Car und Akkustand Dashboard gleichzeitig,
+- Bildschirm Mitte: Tachoanzeige, Tempomat Geschwindigkeit (Anzeige wechselt wenn Tempomat an/aus geschaltet wird)
+- Bildschirm rechts: Parkanzeige 

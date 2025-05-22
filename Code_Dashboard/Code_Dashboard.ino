@@ -8,7 +8,7 @@
 #include <U8g2lib.h> //Software I2C Display Ansteuerung (Eva)
 #include <math.h>    //für Grafiken auf Displays (Eva)
 
-U8G2_SSD1306_128X64_NONAME_F_SW_I2C display(U8G2_R0, /* clock=*/ 8, /* data=*/ 9, /* reset=*/ U8X8_PIN_NONE); //Software I2C Pininitialisierung (Eva)
+#include "Tacho_Tempomat.h" //Einbindung der Funktionen/Variablen für mittleres Display: Tache & Tempomat (Eva)
 
 unsigned long t_debug;
 unsigned long t_exchange;
@@ -23,6 +23,7 @@ pinMode(BLE_LED, OUTPUT);
 
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Central Device (Adrian)
 connect_car(); //Stellt Verbindung mit dem Auto her (Adrian)
+mdisplay.begin();
 }
 
 void loop() {

@@ -72,8 +72,11 @@ void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Periphe
   remote_service.addCharacteristic(stear_target); 
   remote_service.addCharacteristic(stear_actual); 
 
-  remote_service.addCharacteristic(boolean_to_car); 
-  remote_service.addCharacteristic(boolean_to_dash); 
+  remote_service.addCharacteristic(boolean_to_car_0);
+  remote_service.addCharacteristic(boolean_to_car_1);
+
+  remote_service.addCharacteristic(boolean_to_dash_0); 
+  remote_service.addCharacteristic(boolean_to_dash_1);
 
 
   BLE.addService(remote_service); //Fügt den Service zu der Liste an verfügbaren Services hinzu.
@@ -119,12 +122,14 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
   // Variablen Senden
   speed_actual.writeValue(data_to_dash.speed_actual_val);
   stear_actual.writeValue(data_to_dash.stear_actual_val);
-  boolean_to_dash.writeValue(data_to_dash.boolean_val);
+  boolean_to_dash_0.writeValue(data_to_dash.boolean_0_val);
+  boolean_to_dash_1.writeValue(data_to_dash.boolean_1_val);
 
   // Variablen Lesen
   data_to_car.speed_target_val = speed_target.value();
   data_to_car.stear_target_val = stear_target.value();
-  data_to_car.boolean_val = boolean_to_car.value();
+  data_to_car.boolean_0_val = boolean_to_car_0.value();
+  data_to_car.boolean_1_val = boolean_to_car_1.value();
 
   unpack_bool();
 }

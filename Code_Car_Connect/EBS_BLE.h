@@ -1,6 +1,8 @@
 #ifndef EBS_BLE_H
 #define EBS_BLE_H
 
+#define BOOLNUM 2 // Anzahl der verwendeten bool Ints
+
 /// BLE Variablen (Adrian)
 
 struct exchange_data_to_car { // Alle Variablen vom Dashboard zum Auto
@@ -19,7 +21,8 @@ uint16_t stear_target_val = 0; // Zu erreichende Lenkung
 // Boolean Übertragung an das Auto vom Dashboard
 // angefangen mit LSB:
 
-uint16_t boolean_val = 0;
+uint16_t boolean_0_val;
+uint16_t boolean_1_val;
 };
 
 struct exchange_data_to_dash { // Alle Variablen vom Auto zum Dashboard
@@ -30,8 +33,8 @@ uint16_t stear_actual_val = 0; // Aktuelle Lenkung
 // Boolean Übertragung an das Dashboard vom Auto
 // angefangen mit LSB:
 
-uint16_t boolean_val = 0;
-
+uint16_t boolean_0_val;
+uint16_t boolean_1_val;
 };
 
 exchange_data_to_car data_to_car;   // Struct zum Senden der Daten zum Auto
@@ -44,11 +47,11 @@ exchange_data_to_dash *data_p_d;
 
 // Single Booleans to car
 
-bool boolean_to_car_arr[16];
+bool boolean_to_car_arr[BOOLNUM][16];
 
 // Single Booleans to dash
 
-bool boolean_to_dash_arr[16];
+bool boolean_to_dash_arr[BOOLNUM][16];
 
 
 /// UUID und BLE Dekleration (Adrian)
@@ -63,9 +66,11 @@ const char* speed_actual_Uuid       = "a56a5afb-44ad-4a5b-9f31-36e0aa80f513";
 const char* stear_target_Uuid       = "b6d4ffae-9e63-4a57-87b1-027d211b689b";
 const char* stear_actual_Uuid       = "f285339c-25ff-47ab-b121-644cc70973ae";
 
-const char* boolean_to_car_Uuid     = "6ab25277-1bf1-45c2-b375-0145246125a9";
+const char* boolean_to_car_0_Uuid     = "6ab25277-1bf1-45c2-b375-0145246125a9";
+const char* boolean_to_car_1_Uuid     = "6da77695-40f4-4f60-b7a3-050cf2dff13f";
 
-const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
+const char* boolean_to_dash_0_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
+const char* boolean_to_dash_1_Uuid    = "4c7f1db6-173c-46ea-9729-f2eb5cd2e839";
 
 //const char* stear_target_Uuid = "";
 
@@ -77,15 +82,14 @@ const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
     //speed_actual = car.characteristic(speed_actual_Uuid);
 
     BLECharacteristic stear_target;
-    //stear_target = car.characteristic(stear_target_Uuid);
+
     BLECharacteristic stear_actual;
-    //stear_actual = car.characteristic(stear_actual_Uuid);
 
-    BLECharacteristic boolean_to_car;
-    //boolean_to_car = car.characteristic(boolean_to_car_Uuid);
+    BLECharacteristic boolean_to_car_0;
+    BLECharacteristic boolean_to_car_1;
 
-    BLECharacteristic boolean_to_dash;
-    //boolean_to_dash = car.characteristic(boolean_to_dash_Uuid);
+    BLECharacteristic boolean_to_dash_0;
+    BLECharacteristic boolean_to_dash_1;
 
     #endif
 
@@ -100,8 +104,11 @@ const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
     BLEUnsignedIntCharacteristic stear_target(stear_target_Uuid, BLERead | BLEWrite);
     BLEUnsignedIntCharacteristic stear_actual(stear_actual_Uuid, BLERead | BLEWrite);
 
-    BLEUnsignedIntCharacteristic boolean_to_car(boolean_to_car_Uuid, BLERead | BLEWrite);
-    BLEUnsignedIntCharacteristic boolean_to_dash(boolean_to_dash_Uuid, BLERead | BLEWrite);
+    BLEUnsignedIntCharacteristic boolean_to_car_0(boolean_to_car_0_Uuid, BLERead | BLEWrite);
+    BLEUnsignedIntCharacteristic boolean_to_car_1(boolean_to_car_1_Uuid, BLERead | BLEWrite);
+
+    BLEUnsignedIntCharacteristic boolean_to_dash_0(boolean_to_dash_0_Uuid, BLERead | BLEWrite);
+    BLEUnsignedIntCharacteristic boolean_to_dash_1(boolean_to_dash_1_Uuid, BLERead | BLEWrite);
 
     exchange_data_to_dash data_buffer; // Buffer für empfangene Daten über UART (Adrian)
     #endif
@@ -118,22 +125,35 @@ const char* boolean_to_dash_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
 
 void unpack_bool() {  // heir werden die Boolean Variablen aus einem Int extrahiert (Adrian)
 
-  for (int i = 0; i < 16; i++) {
-    if ((data_to_dash.boolean_val & (1 << i))) {
-      boolean_to_dash_arr[i] = true;
+  for (int i = 0; i < 16; i++) {	// Erstes Int entpacken
+    if ((data_to_dash.boolean_0_val & (1 << i))) {
+      boolean_to_dash_arr[0][i] = true;
     } else {
-      boolean_to_dash_arr[i] = false;
+      boolean_to_dash_arr[0][i] = false;
+    }
+  }
+  for (int i = 0; i < 16; i++) {	// Erstes Int entpacken
+    if ((data_to_dash.boolean_1_val & (1 << i))) {
+      boolean_to_dash_arr[1][i] = true;
+    } else {
+      boolean_to_dash_arr[1][i] = false;
     }
   }
 }
 
 void package_bool() {  // hier werden die Boolean Variablen in einen int Zusammengefasst (Adrian)
 
-  for (int i = 0; i < 16; i++) {
-    if (boolean_to_car_arr[15 - i]) {
-      data_to_car.boolean_val++;
+  for (int i = 0; i < 16; i++) {	// Erstes Int verpacken
+    if (boolean_to_car_arr[0][15 - i]) {
+      data_to_car.boolean_0_val++;
     }
-    data_to_car.boolean_val << 1;
+    data_to_car.boolean_0_val << 1;
+  }
+  for (int i = 0; i < 16; i++) {	// Erstes Int verpacken
+    if (boolean_to_car_arr[1][15 - i]) {
+      data_to_car.boolean_1_val++;
+    }
+    data_to_car.boolean_1_val << 1;
   }
 }
 
@@ -151,5 +171,11 @@ void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
 
   Serial.print("Stear_actual: ");
   Serial.println(data_to_dash.stear_actual_val);
+  
+  Serial.print("Bool 1 to car: ");
+  Serial.println(data_to_car.boolean_0_val, BIN);
+  
+   Serial.print("Bool 1 to dash: ");
+  Serial.println(data_to_dash.boolean_0_val, BIN);
 
 }

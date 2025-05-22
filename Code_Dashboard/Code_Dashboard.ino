@@ -87,9 +87,11 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
   stear_target = car.characteristic(stear_target_Uuid);
   stear_actual = car.characteristic(stear_actual_Uuid);
 
-  boolean_to_car = car.characteristic(boolean_to_car_Uuid);
-  boolean_to_dash = car.characteristic(boolean_to_dash_Uuid);
+  boolean_to_car_0 = car.characteristic(boolean_to_car_0_Uuid);
+  boolean_to_car_1 = car.characteristic(boolean_to_car_1_Uuid);
 
+  boolean_to_dash_0 = car.characteristic(boolean_to_dash_0_Uuid);
+  boolean_to_dash_1 = car.characteristic(boolean_to_dash_1_Uuid);
 
 
  if (car) { //Einrichten des Autos
@@ -114,12 +116,14 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
   // Variablen Senden
   speed_target.writeValue(data_to_car.speed_target_val);
   stear_target.writeValue(data_to_car.stear_target_val);
-  boolean_to_car.writeValue(data_to_car.boolean_val);
+  boolean_to_car_0.writeValue(data_to_car.boolean_0_val);
+  boolean_to_car_1.writeValue(data_to_car.boolean_1_val);
 
   // Variablen Lesen
   speed_actual.readValue(data_to_dash.speed_actual_val);
   stear_actual.readValue(data_to_dash.stear_actual_val);
-  boolean_to_dash.readValue(data_to_dash.boolean_val);
+  boolean_to_dash_0.readValue(data_to_dash.boolean_0_val);
+  boolean_to_dash_1.readValue(data_to_dash.boolean_1_val);
 
   unpack_bool();
 }

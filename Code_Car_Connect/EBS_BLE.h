@@ -38,6 +38,9 @@ uint16_t stear_actual_val = 0; // Aktuelle Lenkung
 
 uint16_t boolean_0_val;
 uint16_t boolean_1_val;
+
+uint16_t angleX;
+uint16_t angleY;
 };
 
 exchange_data_to_car data_to_car;   // Struct zum Senden der Daten zum Auto
@@ -74,6 +77,9 @@ const char* boolean_to_car_1_Uuid     = "6da77695-40f4-4f60-b7a3-050cf2dff13f";
 
 const char* boolean_to_dash_0_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
 const char* boolean_to_dash_1_Uuid    = "4c7f1db6-173c-46ea-9729-f2eb5cd2e839";
+
+const char* angleX_Uuid               = "d457688d-774c-4263-83fe-a5ff0ccadf18";
+const char* angleY_Uuid               = "88596d2b-649e-4487-b654-f9b340242ebf";
 
 //const char* stear_target_Uuid = "";
 
@@ -161,6 +167,10 @@ void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
     BLECharacteristic boolean_to_dash_0;
     BLECharacteristic boolean_to_dash_1;
 
+    BLECharacteristic angleX;
+    BLECharacteristic angleY;
+
+
 // Dashboard Funktionen
 
 void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Central Device (Adrian)
@@ -212,6 +222,8 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
   boolean_to_dash_0 = car.characteristic(boolean_to_dash_0_Uuid);
   boolean_to_dash_1 = car.characteristic(boolean_to_dash_1_Uuid);
 
+  angleX = car.characteristic(angleX_Uuid);
+  angleY = car.characteristic(angleY_Uuid);
 
  if (car) { //Einrichten des Autos
     Serial.println("* Found the Car!");
@@ -243,6 +255,8 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
   stear_actual.readValue(data_to_dash.stear_actual_val);
   boolean_to_dash_0.readValue(data_to_dash.boolean_0_val);
   boolean_to_dash_1.readValue(data_to_dash.boolean_1_val);
+  angleX.readValue(data_to_car.angleX);
+  angleY.readValue(data_to_car.angleY);
 
   unpack_bool();
 }
@@ -268,6 +282,9 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
     BLEUnsignedIntCharacteristic boolean_to_dash_0(boolean_to_dash_0_Uuid, BLERead | BLEWrite);
     BLEUnsignedIntCharacteristic boolean_to_dash_1(boolean_to_dash_1_Uuid, BLERead | BLEWrite);
 
+    BLEUnsignedIntCharacteristic angleX(angleX_Uuid, BLERead | BLEWrite);
+    BLEUnsignedIntCharacteristic angleY(angleY_Uuid, BLERead | BLEWrite);
+
     exchange_data_to_dash data_buffer; // Buffer für empfangene Daten über UART (Adrian)
 
 // Funktionen
@@ -292,9 +309,11 @@ void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Periphe
   remote_service.addCharacteristic(boolean_to_car_0);
   remote_service.addCharacteristic(boolean_to_car_1);
 
-  remote_service.addCharacteristic(boolean_to_dash_0); 
+  remote_service.addCharacteristic(boolean_to_dash_0);
   remote_service.addCharacteristic(boolean_to_dash_1);
 
+  remote_service.addCharacteristic(angleX);
+  remote_service.addCharacteristic(angleY);
 
   BLE.addService(remote_service); //Fügt den Service zu der Liste an verfügbaren Services hinzu.
   
@@ -341,6 +360,8 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
   stear_actual.writeValue(data_to_dash.stear_actual_val);
   boolean_to_dash_0.writeValue(data_to_dash.boolean_0_val);
   boolean_to_dash_1.writeValue(data_to_dash.boolean_1_val);
+  angleX.writeValue(data_to_car.angleX);
+  angleY.writeValue(data_to_car.angleY);
 
   // Variablen Lesen
   data_to_car.speed_target_val = speed_target.value();
@@ -380,6 +401,24 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
   Serial1.write('>');
   Serial1.flush(); // Warten bis alle Daten im Puffer gesendet wurden
 
+/*
+  //Debug:
+  Serial.println("data_to_dash");
+  byte_p = (uint8_t*)data_p_d;
+  for (int j = 0; j < sizeof(data_to_dash); j++) {
+    Serial.print(*byte_p, BIN);
+    byte_p++;
+  }
+  Serial.println();
+
+  Serial.println("data_to_car");
+  byte_p = (uint8_t*)data_p_c;
+  for (int k = 0; k < sizeof(data_to_car); k++) {
+    Serial.print(*byte_p, BIN);
+    byte_p++;
+  }
+  Serial.println();
+*/
 }
     #endif
 
@@ -415,7 +454,24 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
   //Serial.println();
   Serial1.write('>');
   Serial1.flush(); // Warten bis alle Daten im Puffer gesendet wurden
+/*
+  //Debug:
+  Serial.println("data_to_dash");
+  byte_p = (uint8_t*)data_p_d;
+  for (int j = 0; j < sizeof(data_to_dash); j++) {
+    Serial.print(*byte_p, BIN);
+    byte_p++;
+  }
+  Serial.println();
 
+  Serial.println("data_to_car");
+  byte_p = (uint8_t*)data_p_c;
+  for (int k = 0; k < sizeof(data_to_car); k++) {
+    Serial.print(*byte_p, BIN);
+    byte_p++;
+  }
+  Serial.println();
+*/
 }
   
   

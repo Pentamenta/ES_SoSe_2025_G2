@@ -42,7 +42,7 @@ void loop() {
   if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
 
     BLE_val_exchange();
-    //data.stear_target_val = 11;
+    //data_to_car.stear_target_val = 11;
     Serial_val_exchange();
 
     t_exchange = millis();
@@ -56,11 +56,9 @@ void loop() {
   if (millis() >= t_debug + 500){ // Debug Loop
     
     Serial.println("Bin im Main");
-    Serial.println(data_to_car.angleX);
-    Serial.println(data_to_car.angleY);
     //Serial.println(data_to_car.stear_target_val);
-    //Serial.println(sizeof(data_to_car));
-    //Debug_data();
+    Serial.println(sizeof(data_to_car));
+    Debug_data();
     
     t_debug = millis();
     }

@@ -36,14 +36,15 @@ void loop() {
   }
 
   if (millis() >= t_exchange + 20) {
-    data_to_car.speed_target_val = random(1,100);
-    data_to_car.stear_target_val = random(1,100);
+    //data_to_car.speed_target_val = random(1,100); // Nur aktiv für DEBUG (Adrian)
+    //data_to_car.stear_target_val = random(1,100); // Nur aktiv für DEBUG (Adrian)
     BLE_val_exchange();
     t_exchange = millis();
   }
 
   if (millis() >= t_debug + 500){ // Debug Loop
     Serial.println("Bin im Main");
+    Debug_data();
     t_debug = millis();
     }
 

@@ -270,20 +270,20 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
 
     //Services und Characteristics
     BLEService remote_service(remote_service_Uuid);
-    BLEUnsignedIntCharacteristic speed_target(speed_target_Uuid, BLERead | BLEWrite);
-    BLEUnsignedIntCharacteristic speed_actual(speed_actual_Uuid, BLERead | BLEWrite);
+    BLEIntCharacteristic speed_target(speed_target_Uuid, BLERead | BLEWrite);
+    BLEIntCharacteristic speed_actual(speed_actual_Uuid, BLERead | BLEWrite);
 
-    BLEUnsignedIntCharacteristic stear_target(stear_target_Uuid, BLERead | BLEWrite);
-    BLEUnsignedIntCharacteristic stear_actual(stear_actual_Uuid, BLERead | BLEWrite);
+    BLEIntCharacteristic stear_target(stear_target_Uuid, BLERead | BLEWrite);
+    BLEIntCharacteristic stear_actual(stear_actual_Uuid, BLERead | BLEWrite);
 
-    BLEUnsignedIntCharacteristic boolean_to_car_0(boolean_to_car_0_Uuid, BLERead | BLEWrite);
-    BLEUnsignedIntCharacteristic boolean_to_car_1(boolean_to_car_1_Uuid, BLERead | BLEWrite);
+    BLEIntCharacteristic boolean_to_car_0(boolean_to_car_0_Uuid, BLERead | BLEWrite);
+    BLEIntCharacteristic boolean_to_car_1(boolean_to_car_1_Uuid, BLERead | BLEWrite);
 
     BLEUnsignedIntCharacteristic boolean_to_dash_0(boolean_to_dash_0_Uuid, BLERead | BLEWrite);
     BLEUnsignedIntCharacteristic boolean_to_dash_1(boolean_to_dash_1_Uuid, BLERead | BLEWrite);
 
-    BLEUnsignedIntCharacteristic angleX(angleX_Uuid, BLERead | BLEWrite);
-    BLEUnsignedIntCharacteristic angleY(angleY_Uuid, BLERead | BLEWrite);
+    BLEIntCharacteristic angleX(angleX_Uuid, BLERead | BLEWrite);
+    BLEIntCharacteristic angleY(angleY_Uuid, BLERead | BLEWrite);
 
     exchange_data_to_dash data_buffer; // Buffer für empfangene Daten über UART (Adrian)
 

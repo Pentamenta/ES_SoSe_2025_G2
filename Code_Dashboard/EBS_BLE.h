@@ -18,18 +18,15 @@ float speed_target_val = 0; // Zu erreichende Geschwindigkeit
 // stear_val < 0 links
 int stear_target_val = 0; // Zu erreichende Lenkung
 
-// Abstandssensoren
-
-int distance_f_val; // Sensor vorne
-int distance_b_val; // 
-
-
-// Boolean Übertragung an das Auto vom Dashboard
-// angefangen mit LSB:
 
 int angleX;
 int angleY;
+float dps_X_val;
+float dps_Y_val;
+float dps_Z_val;
 
+// Boolean Übertragung an das Auto vom Dashboard
+// angefangen mit LSB:
 unsigned int boolean_0_val;
 unsigned int boolean_1_val;
 };
@@ -39,9 +36,17 @@ struct exchange_data_to_dash { // Alle Variablen vom Auto zum Dashboard
 float speed_actual_val = 0; // Aktuelle Geschwindigkeit
 int stear_actual_val = 0; // Aktuelle Lenkung
 
+// Abstandssensoren
+int distance_f_val; // Sensor vorne
+int distance_b_val; // Sensor hinten
+int distance_r_f_val; //Sensor vorne rechts
+int distance_r_b_val; //Sensor hinten rechts
+int distance_l_f_val; //Sensor vorne links
+int distance_l_b_val; //Sensor hinten links
+
+
 // Boolean Übertragung an das Dashboard vom Auto
 // angefangen mit LSB:
-
 unsigned int boolean_0_val;
 unsigned int boolean_1_val;
 };
@@ -83,6 +88,17 @@ const char* boolean_to_dash_1_Uuid    = "4c7f1db6-173c-46ea-9729-f2eb5cd2e839";
 
 const char* angleX_Uuid               = "d457688d-774c-4263-83fe-a5ff0ccadf18";
 const char* angleY_Uuid               = "88596d2b-649e-4487-b654-f9b340242ebf";
+
+//const char* dps_X_Uuid				= "bae5d570-f4be-41ac-8b4f-af6855bd2732";
+//const char* dps_Y_Uuid				= "e48e5f2e-8f87-4df8-ad31-861477c22439";
+//const char* dps_Z_Uuid				= "058f0832-d281-4a27-a67c-778ae1c86cac";
+
+const char* distance_f_Uuid			= "bf0b2732-e7a1-4a5f-8a9e-9f090c689a22";
+const char* distance_b_Uuid			= "b4b6ade5-78a0-4274-bd4d-b47a55852ab1";
+const char* distance_r_f_Uuid		= "eb3fde35-0c2a-45dc-8bce-483143d776cb";
+const char* distance_r_b_Uuid		= "b219fde3-140f-4330-a82b-3ce08ebf968a";
+const char* distance_l_f_Uuid		= "40a50c5f-76d2-473d-94bf-55aa8d7f2802";
+const char* distance_l_b_Uuid		= "65e1ce7d-84d9-4bd9-a605-7856dcc2608f";
 
 //const char* stear_target_Uuid = "";
 
@@ -172,6 +188,13 @@ void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
 
     BLECharacteristic angleX;
     BLECharacteristic angleY;
+	
+	BLECharacteristic distance_f;
+	BLECharacteristic distance_b;
+	BLECharacteristic distance_r_f;
+	BLECharacteristic distance_r_b;
+	BLECharacteristic distance_l_f;
+	BLECharacteristic distance_l_b;
 
 
 // Dashboard Funktionen
@@ -260,6 +283,12 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
   boolean_to_dash_1.readValue(&data_to_dash.boolean_1_val, 4);
   angleX.readValue(&data_to_car.angleX, 4);
   angleY.readValue(&data_to_car.angleY, 4);
+  distance_f.readValue(&data_to_dash.distance_f_val, 4);
+  distance_b.readValue(&data_to_dash.distance_b_val, 4);
+  distance_r_f.readValue(&data_to_dash.distance_r_f_val, 4);
+  distance_r_b.readValue(&data_to_dash.distance_r_b_val, 4);
+  distance_l_f.readValue(&data_to_dash.distance_l_f_val, 4);
+  distance_l_b.readValue(&data_to_dash.distance_l_b_val, 4);
 
   unpack_bool();
 }
@@ -285,6 +314,14 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
 
     BLEIntCharacteristic angleX(angleX_Uuid, BLERead | BLEWrite);
     BLEIntCharacteristic angleY(angleY_Uuid, BLERead | BLEWrite);
+	
+	BLEFloatCharacteristic distance_f(distance_f_Uuid, BLERead | BLEWrite);
+	BLEFloatCharacteristic distance_b(distance_b_Uuid, BLERead | BLEWrite);
+	BLEFloatCharacteristic distance_r_f(distance_r_f_Uuid, BLERead | BLEWrite);
+	BLEFloatCharacteristic distance_r_b(distance_r_b_Uuid, BLERead | BLEWrite);
+	BLEFloatCharacteristic distance_l_f(distance_l_f_Uuid, BLERead | BLEWrite);
+	BLEFloatCharacteristic distance_l_b(distance_l_b_Uuid, BLERead | BLEWrite);
+
 
     exchange_data_to_dash data_buffer; // Buffer für empfangene Daten über UART (Adrian)
 
@@ -315,6 +352,13 @@ void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Periphe
 
   remote_service.addCharacteristic(angleX);
   remote_service.addCharacteristic(angleY);
+  
+  remote_service.addCharacteristic(distance_f);
+  remote_service.addCharacteristic(distance_b);
+  remote_service.addCharacteristic(distance_r_f);
+  remote_service.addCharacteristic(distance_r_b);
+  remote_service.addCharacteristic(distance_l_f);
+  remote_service.addCharacteristic(distance_l_b);
 
   BLE.addService(remote_service); //Fügt den Service zu der Liste an verfügbaren Services hinzu.
   
@@ -363,6 +407,12 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
   boolean_to_dash_1.writeValue(data_to_dash.boolean_1_val);
   angleX.writeValue(data_to_car.angleX);
   angleY.writeValue(data_to_car.angleY);
+  distance_f.writeValue(data_to_dash.distance_f_val);
+  distance_b.writeValue(data_to_dash.distance_b_val);
+  distance_r_f.writeValue(data_to_dash.distance_r_f_val);
+  distance_r_b.writeValue(data_to_dash.distance_r_b_val);
+  distance_l_f.writeValue(data_to_dash.distance_l_f_val);
+  distance_l_b.writeValue(data_to_dash.distance_l_b_val);
 
   // Variablen Lesen
   speed_target.readValue(&data_to_car.speed_target_val, 4);

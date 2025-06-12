@@ -42,7 +42,7 @@ void loop() {
   if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
 
     BLE_val_exchange();
-    //data_to_car.stear_target_val = 11;
+
     Serial_val_exchange();
 
     t_exchange = millis();

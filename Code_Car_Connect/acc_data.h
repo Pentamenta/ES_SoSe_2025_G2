@@ -50,8 +50,8 @@ void Acc_Read() {
     }
 	*/
 	
-	data_to_car.angleX = (uint16_t)angleX_int;
-	data_to_car.angleY = (uint16_t)angleY_int;
+	data_to_car.angleX = angleX_int;
+	data_to_car.angleY = angleY_int;
 	
   }
 	

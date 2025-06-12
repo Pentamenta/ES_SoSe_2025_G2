@@ -10,37 +10,40 @@ struct exchange_data_to_car { // Alle Variablen vom Dashboard zum Auto
 // speed_val = 0 Stehen bleiben
 // speed_val > 0 vorwärts
 // speed_val < 0 rückwärts
-uint16_t speed_target_val = 0; // Zu erreichende Geschwindigkeit
+float speed_target_val = 0; // Zu erreichende Geschwindigkeit
 
 // Lenkung
 // stear_val = 0 Stehen bleiben
 // stear_val > 0 rechts
 // stear_val < 0 links
-uint16_t stear_target_val = 0; // Zu erreichende Lenkung
+int stear_target_val = 0; // Zu erreichende Lenkung
+
+// Abstandssensoren
+
+int distance_f_val; // Sensor vorne
+int distance_b_val; // 
+
 
 // Boolean Übertragung an das Auto vom Dashboard
 // angefangen mit LSB:
 
-uint16_t angleX;
-uint16_t angleY;
+int angleX;
+int angleY;
 
-uint16_t boolean_0_val;
-uint16_t boolean_1_val;
+unsigned int boolean_0_val;
+unsigned int boolean_1_val;
 };
 
 struct exchange_data_to_dash { // Alle Variablen vom Auto zum Dashboard
 
-uint16_t speed_actual_val = 0; // Aktuelle Geschwindigkeit
-uint16_t stear_actual_val = 0; // Aktuelle Lenkung
+float speed_actual_val = 0; // Aktuelle Geschwindigkeit
+int stear_actual_val = 0; // Aktuelle Lenkung
 
 // Boolean Übertragung an das Dashboard vom Auto
 // angefangen mit LSB:
 
-uint16_t boolean_0_val;
-uint16_t boolean_1_val;
-
-uint16_t angleX;
-uint16_t angleY;
+unsigned int boolean_0_val;
+unsigned int boolean_1_val;
 };
 
 exchange_data_to_car data_to_car;   // Struct zum Senden der Daten zum Auto
@@ -142,10 +145,10 @@ void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
   Serial.println(data_to_dash.boolean_0_val, BIN);
   
   Serial.print("AngleX: ");
-  Serial.println((int)data_to_car.angleX);
+  Serial.println(data_to_car.angleX);
   
   Serial.print("AngleY: ");
-  Serial.println((int)data_to_car.angleY);
+  Serial.println(data_to_car.angleY);
 
 }
 
@@ -245,23 +248,21 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
 
   package_bool();
   // Variablen Senden
-  speed_target.writeValue(data_to_car.speed_target_val);
-  stear_target.writeValue(data_to_car.stear_target_val);
-  boolean_to_car_0.writeValue(data_to_car.boolean_0_val);
-  boolean_to_car_1.writeValue(data_to_car.boolean_1_val);
+  speed_target.writeValue(&data_to_car.speed_target_val, 4);  // Float
+  stear_target.writeValue(&data_to_car.stear_target_val, 4);  // Int
+  boolean_to_car_0.writeValue(&data_to_car.boolean_0_val, 4); // Unsigned Int
+  boolean_to_car_1.writeValue(&data_to_car.boolean_1_val, 4); // Unsigned Int
 
   // Variablen Lesen
-  speed_actual.readValue(data_to_dash.speed_actual_val);
-  stear_actual.readValue(data_to_dash.stear_actual_val);
-  boolean_to_dash_0.readValue(data_to_dash.boolean_0_val);
-  boolean_to_dash_1.readValue(data_to_dash.boolean_1_val);
-  angleX.readValue(data_to_car.angleX);
-  angleY.readValue(data_to_car.angleY);
+  speed_actual.readValue(&data_to_dash.speed_actual_val, 4);
+  stear_actual.readValue(&data_to_dash.stear_actual_val, 4);
+  boolean_to_dash_0.readValue(&data_to_dash.boolean_0_val, 4);
+  boolean_to_dash_1.readValue(&data_to_dash.boolean_1_val, 4);
+  angleX.readValue(&data_to_car.angleX, 4);
+  angleY.readValue(&data_to_car.angleY, 4);
 
   unpack_bool();
 }
-
-
 
     #endif
 
@@ -270,14 +271,14 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
 
     //Services und Characteristics
     BLEService remote_service(remote_service_Uuid);
-    BLEIntCharacteristic speed_target(speed_target_Uuid, BLERead | BLEWrite);
-    BLEIntCharacteristic speed_actual(speed_actual_Uuid, BLERead | BLEWrite);
+    BLEFloatCharacteristic speed_target(speed_target_Uuid, BLERead | BLEWrite);
+    BLEFloatCharacteristic speed_actual(speed_actual_Uuid, BLERead | BLEWrite);
 
     BLEIntCharacteristic stear_target(stear_target_Uuid, BLERead | BLEWrite);
     BLEIntCharacteristic stear_actual(stear_actual_Uuid, BLERead | BLEWrite);
 
-    BLEIntCharacteristic boolean_to_car_0(boolean_to_car_0_Uuid, BLERead | BLEWrite);
-    BLEIntCharacteristic boolean_to_car_1(boolean_to_car_1_Uuid, BLERead | BLEWrite);
+    BLEUnsignedIntCharacteristic boolean_to_car_0(boolean_to_car_0_Uuid, BLERead | BLEWrite);
+    BLEUnsignedIntCharacteristic boolean_to_car_1(boolean_to_car_1_Uuid, BLERead | BLEWrite);
 
     BLEUnsignedIntCharacteristic boolean_to_dash_0(boolean_to_dash_0_Uuid, BLERead | BLEWrite);
     BLEUnsignedIntCharacteristic boolean_to_dash_1(boolean_to_dash_1_Uuid, BLERead | BLEWrite);
@@ -364,10 +365,10 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
   angleY.writeValue(data_to_car.angleY);
 
   // Variablen Lesen
-  data_to_car.speed_target_val = speed_target.value();
-  data_to_car.stear_target_val = stear_target.value();
-  data_to_car.boolean_0_val = boolean_to_car_0.value();
-  data_to_car.boolean_1_val = boolean_to_car_1.value();
+  speed_target.readValue(&data_to_car.speed_target_val, 4);
+  stear_target.readValue(&data_to_car.stear_target_val, 4);
+  boolean_to_car_0.readValue(&data_to_car.boolean_0_val, 4);
+  boolean_to_car_1.readValue(&data_to_car.boolean_1_val, 4);
 
   unpack_bool();
 }

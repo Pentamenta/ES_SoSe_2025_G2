@@ -36,8 +36,7 @@ void loop() {
   }
 
   if (millis() >= t_exchange + 20) {
-    //data_to_car.speed_target_val = random(1,100); // Nur aktiv für DEBUG (Adrian)
-    //data_to_car.stear_target_val = random(1,100); // Nur aktiv für DEBUG (Adrian)
+
     BLE_val_exchange();
     t_exchange = millis();
   }

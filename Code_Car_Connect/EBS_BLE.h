@@ -39,6 +39,8 @@ struct exchange_data_to_dash { // Alle Variablen vom Auto zum Dashboard
 float speed_actual_val = 0; // Aktuelle Geschwindigkeit
 int stear_actual_val = 0; // Aktuelle Lenkung
 
+float temperature_val;
+
 // Abstandssensoren
 int distance_f_val; // Sensor vorne
 int distance_b_val; // Sensor hinten
@@ -88,6 +90,8 @@ const char* boolean_to_car_1_Uuid     = "6da77695-40f4-4f60-b7a3-050cf2dff13f";
 
 const char* boolean_to_dash_0_Uuid    = "4620eee8-251b-41bf-8343-4c14ddf73621";
 const char* boolean_to_dash_1_Uuid    = "4c7f1db6-173c-46ea-9729-f2eb5cd2e839";
+
+const char* temperature_Uuid		  = "3d7ae5af-3f77-4a6a-b17d-9ba9fd495f61";
 
 const char* angleX_Uuid               = "d457688d-774c-4263-83fe-a5ff0ccadf18";
 const char* angleY_Uuid               = "88596d2b-649e-4487-b654-f9b340242ebf";
@@ -188,6 +192,8 @@ void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
 
     BLECharacteristic boolean_to_dash_0;
     BLECharacteristic boolean_to_dash_1;
+	
+	BLECharacteristic temperature;
 
     BLECharacteristic angleX;
     BLECharacteristic angleY;
@@ -247,12 +253,21 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
 
   boolean_to_car_0 = car.characteristic(boolean_to_car_0_Uuid);
   boolean_to_car_1 = car.characteristic(boolean_to_car_1_Uuid);
+  
+  temperature = car.characteristic(temperature_Uuid);
 
   boolean_to_dash_0 = car.characteristic(boolean_to_dash_0_Uuid);
   boolean_to_dash_1 = car.characteristic(boolean_to_dash_1_Uuid);
 
   angleX = car.characteristic(angleX_Uuid);
   angleY = car.characteristic(angleY_Uuid);
+  
+  distance_f = car.characteristic(distance_f_Uuid);
+  distance_b = car.characteristic(distance_b_Uuid);
+  distance_r_f = car.characteristic(distance_r_f_Uuid);
+  distance_r_b = car.characteristic(distance_r_b_Uuid);
+  distance_l_f = car.characteristic(distance_l_f_Uuid);
+  distance_l_b = car.characteristic(distance_l_b_Uuid);
 
  if (car) { //Einrichten des Autos
     Serial.println("* Found the Car!");
@@ -286,6 +301,7 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
   boolean_to_dash_1.readValue(&data_to_dash.boolean_1_val, 4);
   angleX.readValue(&data_to_car.angleX, 4);
   angleY.readValue(&data_to_car.angleY, 4);
+  temperature.readValue(&data_to_dash.temperature_val, 4);
   distance_f.readValue(&data_to_dash.distance_f_val, 4);
   distance_b.readValue(&data_to_dash.distance_b_val, 4);
   distance_r_f.readValue(&data_to_dash.distance_r_f_val, 4);
@@ -314,6 +330,8 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
 
     BLEUnsignedIntCharacteristic boolean_to_dash_0(boolean_to_dash_0_Uuid, BLERead | BLEWrite);
     BLEUnsignedIntCharacteristic boolean_to_dash_1(boolean_to_dash_1_Uuid, BLERead | BLEWrite);
+	
+    BLEFloatCharacteristic temperature(temperature_Uuid, BLERead | BLEWrite);
 
     BLEIntCharacteristic angleX(angleX_Uuid, BLERead | BLEWrite);
     BLEIntCharacteristic angleY(angleY_Uuid, BLERead | BLEWrite);
@@ -352,6 +370,8 @@ void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Periphe
 
   remote_service.addCharacteristic(boolean_to_dash_0);
   remote_service.addCharacteristic(boolean_to_dash_1);
+
+  remote_service.addCharacteristic(temperature);
 
   remote_service.addCharacteristic(angleX);
   remote_service.addCharacteristic(angleY);
@@ -410,6 +430,7 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
   boolean_to_dash_1.writeValue(data_to_dash.boolean_1_val);
   angleX.writeValue(data_to_car.angleX);
   angleY.writeValue(data_to_car.angleY);
+  temperature.writeValue(data_to_dash.temperature_val);
   distance_f.writeValue(data_to_dash.distance_f_val);
   distance_b.writeValue(data_to_dash.distance_b_val);
   distance_r_f.writeValue(data_to_dash.distance_r_f_val);

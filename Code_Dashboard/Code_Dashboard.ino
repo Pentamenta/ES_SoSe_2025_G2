@@ -23,7 +23,7 @@ pinMode(BLE_LED, OUTPUT);
 
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Central Device (Adrian)
 connect_car(); //Stellt Verbindung mit dem Auto her (Adrian)
-mdisplay.begin();
+display.begin();
 }
 
 void loop() {

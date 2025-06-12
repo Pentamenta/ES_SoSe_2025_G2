@@ -6,14 +6,14 @@
 
 
 //Software I2C Pininitialisierung (Eva) für mittleres Display
-U8G2_SSD1306_128X64_NONAME_F_SW_I2C mdisplay(U8G2_R0, /* clock=*/ 8, /* data=*/ 9, /* reset=*/ U8X8_PIN_NONE);
+U8G2_SSD1306_128X64_NONAME_F_SW_I2C display(U8G2_R0, /* clock=*/ 8, /* data=*/ 9, /* reset=*/ U8X8_PIN_NONE);
 
-#define maxSpeed 200;  // Maximalgeschwindigkeit für Skala, 200 ist erstmal nur ein Beispielwert
+#define maxSpeed 200  // Maximalgeschwindigkeit für Skala, 200 ist erstmal nur ein Beispielwert
 
 //Variablen für Skala der Tachoanzeige (Eva)
-#define centerX 64;    //X pixelwert des Mittelpunktes des Skalenkreis
-#define centerY 60;    //Y pixelwert des Mittelpunktes des Skalenkreis
-#define radius  40;     //Radius des Halbkreises
+#define centerX 64    //X pixelwert des Mittelpunktes des Skalenkreis
+#define centerY 60    //Y pixelwert des Mittelpunktes des Skalenkreis
+#define radius  40     //Radius des Halbkreises
 
 void writeTacho(uint16_t speed){
   display.clearBuffer();

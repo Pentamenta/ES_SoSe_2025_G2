@@ -24,6 +24,9 @@ int angleY;
 float dps_X_val;
 float dps_Y_val;
 float dps_Z_val;
+float acc_X_val;
+float acc_Y_val;
+float acc_Z_val;
 
 // Boolean Übertragung an das Auto vom Dashboard
 // angefangen mit LSB:

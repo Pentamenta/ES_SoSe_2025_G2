@@ -52,9 +52,26 @@ void Acc_Read() {
 	
 	data_to_car.angleX = angleX_int;
 	data_to_car.angleY = angleY_int;
+	data_to_car.acc_X_val = x;
+	data_to_car.acc_Y_val = y;
+	data_to_car.acc_Z_val = z;
 	
+  }
+  
+  if (IMU.gyroscopeAvailable()) {
+	  
+	float gx, gy, gz;
+	  
+	IMU.readGyroscope(gx, gy, gz);
+	
+	data_to_car.dps_X_val = gx;
+	data_to_car.dps_Y_val = gy;
+	data_to_car.dps_Z_val = gz;
+	  
   }
 	
 }
+
+
 
 #endif

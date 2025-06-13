@@ -56,8 +56,7 @@ void loop() {
   if (millis() >= t_debug + 500){ // Debug Loop
     
     Serial.println("Bin im Main");
-    //Serial.println(data_to_car.stear_target_val);
-    Serial.println(sizeof(data_to_car));
+
     Debug_data();
     
     t_debug = millis();

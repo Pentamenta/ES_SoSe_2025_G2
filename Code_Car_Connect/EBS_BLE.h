@@ -193,17 +193,17 @@ void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
     BLECharacteristic boolean_to_dash_0;
     BLECharacteristic boolean_to_dash_1;
 	
-	BLECharacteristic temperature;
+    BLECharacteristic temperature;
 
     BLECharacteristic angleX;
     BLECharacteristic angleY;
 	
-	BLECharacteristic distance_f;
-	BLECharacteristic distance_b;
-	BLECharacteristic distance_r_f;
-	BLECharacteristic distance_r_b;
-	BLECharacteristic distance_l_f;
-	BLECharacteristic distance_l_b;
+    BLECharacteristic distance_f;
+    BLECharacteristic distance_b;
+    BLECharacteristic distance_r_f;
+    BLECharacteristic distance_r_b;
+    BLECharacteristic distance_l_f;
+    BLECharacteristic distance_l_b;
 
 
 // Dashboard Funktionen
@@ -336,12 +336,12 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
     BLEIntCharacteristic angleX(angleX_Uuid, BLERead | BLEWrite);
     BLEIntCharacteristic angleY(angleY_Uuid, BLERead | BLEWrite);
 	
-	BLEFloatCharacteristic distance_f(distance_f_Uuid, BLERead | BLEWrite);
-	BLEFloatCharacteristic distance_b(distance_b_Uuid, BLERead | BLEWrite);
-	BLEFloatCharacteristic distance_r_f(distance_r_f_Uuid, BLERead | BLEWrite);
-	BLEFloatCharacteristic distance_r_b(distance_r_b_Uuid, BLERead | BLEWrite);
-	BLEFloatCharacteristic distance_l_f(distance_l_f_Uuid, BLERead | BLEWrite);
-	BLEFloatCharacteristic distance_l_b(distance_l_b_Uuid, BLERead | BLEWrite);
+    BLEFloatCharacteristic distance_f(distance_f_Uuid, BLERead | BLEWrite);
+    BLEFloatCharacteristic distance_b(distance_b_Uuid, BLERead | BLEWrite);
+    BLEFloatCharacteristic distance_r_f(distance_r_f_Uuid, BLERead | BLEWrite);
+    BLEFloatCharacteristic distance_r_b(distance_r_b_Uuid, BLERead | BLEWrite);
+    BLEFloatCharacteristic distance_l_f(distance_l_f_Uuid, BLERead | BLEWrite);
+    BLEFloatCharacteristic distance_l_b(distance_l_b_Uuid, BLERead | BLEWrite);
 
 
     exchange_data_to_dash data_buffer; // Buffer für empfangene Daten über UART (Adrian)
@@ -476,7 +476,7 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
   Serial1.write('>');
   Serial1.flush(); // Warten bis alle Daten im Puffer gesendet wurden
 
-/*
+  /*
   //Debug:
   Serial.println("data_to_dash");
   byte_p = (uint8_t*)data_p_d;
@@ -493,7 +493,7 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
     byte_p++;
   }
   Serial.println();
-*/
+  */
 }
     #endif
 
@@ -529,7 +529,8 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
   //Serial.println();
   Serial1.write('>');
   Serial1.flush(); // Warten bis alle Daten im Puffer gesendet wurden
-/*
+
+  /*
   //Debug:
   Serial.println("data_to_dash");
   byte_p = (uint8_t*)data_p_d;

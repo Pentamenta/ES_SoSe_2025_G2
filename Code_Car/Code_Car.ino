@@ -3,7 +3,7 @@
 #include "EBS_BLE.h" //Custom Header mit BLE definitionen (Adrian)
 
 #define CONNECT_NOTIFY 4
-#define UART_LED 3
+#define UART_LED 5
 
 unsigned long t_debug;
 unsigned long t_exchange;
@@ -35,9 +35,10 @@ if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
   }
 
 if (millis() >= t_debug + 500){ // Debug Loop
-  //Serial.println("Bin im Main");
-  Serial.println(sizeof(data_to_car));
+  Serial.println("Bin im Main");
+
   Debug_data();
+
   t_debug = millis();
   }
 

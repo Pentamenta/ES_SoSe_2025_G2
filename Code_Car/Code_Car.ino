@@ -2,7 +2,7 @@
 
 #include "EBS_BLE.h" //Custom Header mit BLE definitionen (Adrian)
 
-#define CONNECT_NOTIFY 2
+#define CONNECT_NOTIFY 4
 #define UART_LED 3
 
 unsigned long t_debug;

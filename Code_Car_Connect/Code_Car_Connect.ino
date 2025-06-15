@@ -58,7 +58,11 @@ void loop() {
     Serial.println("Bin im Main");
 
     Debug_data();
-    
+    Serial.print("To Car: ");
+    Serial.println(sizeof(data_to_car));
+    Serial.print("To Dash: ");
+    Serial.println(sizeof(data_to_dash));
+
     t_debug = millis();
     }
 

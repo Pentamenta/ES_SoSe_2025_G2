@@ -16,11 +16,10 @@ float speed_target_val = 0; // Zu erreichende Geschwindigkeit
 // stear_val = 0 Stehen bleiben
 // stear_val > 0 rechts
 // stear_val < 0 links
-int stear_target_val = 0; // Zu erreichende Lenkung
+int16_t stear_target_val = 0; // Zu erreichende Lenkung
 
-
-int angleX;
-int angleY;
+int16_t angleX;
+int16_t angleY;
 float dps_X_val;
 float dps_Y_val;
 float dps_Z_val;
@@ -30,35 +29,31 @@ float acc_Z_val;
 
 // Boolean Übertragung an das Auto vom Dashboard
 // angefangen mit LSB:
-unsigned int boolean_0_val;
-unsigned int boolean_1_val;
+uint16_t boolean_0_val;
+uint16_t boolean_1_val;
 };
 
 struct exchange_data_to_dash { // Alle Variablen vom Auto zum Dashboard
-
 float speed_actual_val = 0; // Aktuelle Geschwindigkeit
-int stear_actual_val = 0; // Aktuelle Lenkung
-
+int16_t stear_actual_val = 0; // Aktuelle Lenkung
 float temperature_val;
 
 // Abstandssensoren
-int distance_f_val; // Sensor vorne
-int distance_b_val; // Sensor hinten
-int distance_r_f_val; //Sensor vorne rechts
-int distance_r_b_val; //Sensor hinten rechts
-int distance_l_f_val; //Sensor vorne links
-int distance_l_b_val; //Sensor hinten links
-
+int16_t distance_f_val; // Sensor vorne
+int16_t distance_b_val; // Sensor hinten
+int16_t distance_r_f_val; //Sensor vorne rechts
+int16_t distance_r_b_val; //Sensor hinten rechts
+int16_t distance_l_f_val; //Sensor vorne links
+int16_t distance_l_b_val; //Sensor hinten links
 
 // Boolean Übertragung an das Dashboard vom Auto
 // angefangen mit LSB:
-unsigned int boolean_0_val;
-unsigned int boolean_1_val;
+uint16_t boolean_0_val;
+uint16_t boolean_1_val;
 };
 
 exchange_data_to_car data_to_car;   // Struct zum Senden der Daten zum Auto
 exchange_data_to_dash data_to_dash;  // Struct zum Senden der Daten zum Dashboard
-
 
 uint8_t *byte_p;        // Poitner für die UART Übertragung
 exchange_data_to_car *data_p_c;
@@ -160,6 +155,7 @@ void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
 
   Serial.print("Stear_actual: ");
   Serial.println(data_to_dash.stear_actual_val);
+  
   
   Serial.print("Bool 1 to car: ");
   Serial.println(data_to_car.boolean_0_val, BIN);

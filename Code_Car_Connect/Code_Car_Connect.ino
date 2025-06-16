@@ -12,13 +12,13 @@
 #include "EBS_BLE.h" //Custom Header mit BLE definitionen (Adrian)
 #include "acc_data.h" // Custom Header mit Funktionen für Accelerometer
 
-unsigned long t_debug, t_exchange, t_acc;
+unsigned long t_debug, t_exchange, t_acc, t_led;
 
 void setup() {
 Serial.begin(9600);
 Serial1.begin(115200, SERIAL_8N1);
 
-t_debug, t_exchange, t_acc = millis();
+t_debug, t_exchange, t_acc, t_led = millis();
 
 pinMode(BLE_LED, OUTPUT);
 pinMode(CONNECT_NOTIFY, OUTPUT);
@@ -27,16 +27,23 @@ Acc_Setup();
 
 digitalWrite(CONNECT_NOTIFY, LOW);
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Peripherial Device (Adrian)
-Dash_connect(); //Verbindung mit dem Dashboard herstellen (Adrian)
 
 }
 
 void loop() {
 
+  BLE.poll();
+
   if (!dashboard.connected()) { // try to reconnect if connection lost
     // Alert car that connection was lost
     digitalWrite(CONNECT_NOTIFY, LOW);
-    Dash_connect();
+
+    // Blink BLE LED
+    if (millis() >= t_led + 500) {
+      digitalWrite(BLE_LED, digitalRead(BLE_LED));
+      t_led = millis();
+    }
+
   }
 
   if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
@@ -57,11 +64,13 @@ void loop() {
     
     Serial.println("Bin im Main");
 
-    Debug_data();
-    Serial.print("To Car: ");
-    Serial.println(sizeof(data_to_car));
-    Serial.print("To Dash: ");
-    Serial.println(sizeof(data_to_dash));
+    if (dashboard.connected()) {
+      Debug_data();
+      Serial.print("To Car: ");
+      Serial.println(sizeof(data_to_car));
+      Serial.print("To Dash: ");
+      Serial.println(sizeof(data_to_dash));
+    }
 
     t_debug = millis();
     }

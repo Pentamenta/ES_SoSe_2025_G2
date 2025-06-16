@@ -344,6 +344,28 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
 
 // Funktionen
 
+void DashConnectHandler(BLEDevice central){
+
+  dashboard = central;
+
+  if (dashboard.connect()) {
+    Serial.println("Connected to Central Device.");
+  }
+  else {
+    Serial.println("Connection to Central Device failed.");
+  }
+
+  digitalWrite(BLE_LED, HIGH);
+  digitalWrite(CONNECT_NOTIFY, HIGH);
+
+}
+
+void DashDisconnectHandler(BLEDevice central){
+
+  Serial.println("Connection to Dashboard closed.");
+  dashboard.disconnect();
+}
+
 void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Peripherial Device (Adrian)
 // Ist unbedingt erst nach Serial.begin() auszuführen.
 
@@ -380,14 +402,17 @@ void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Periphe
   remote_service.addCharacteristic(distance_l_b);
 
   BLE.addService(remote_service); //Fügt den Service zu der Liste an verfügbaren Services hinzu.
-  
   BLE.advertise();
+
+  BLE.setEventHandler(BLEConnected, DashConnectHandler);
+  BLE.setEventHandler(BLEDisconnected, DashDisconnectHandler);
 
   Serial.println("Car (Slave Device)");
   Serial.println(" ");
   
 }
 
+/*
 void Dash_connect() { //Verbindung mit dem Dashboard herstellen (Adrian)
 
   unsigned long t_wait = millis();
@@ -415,6 +440,7 @@ do{
   }
 
 }
+*/
 
 void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
 

@@ -4,7 +4,7 @@
 #define BOOLNUM 2 // Anzahl der verwendeten bool Ints
 
 /// BLE Variablen (Adrian)
-
+#pragma pack(1)
 struct exchange_data_to_car { // Alle Variablen vom Dashboard zum Auto
 // Geschwindigkeitskontrolle
 // speed_val = 0 Stehen bleiben

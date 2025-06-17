@@ -12,6 +12,13 @@ struct exchange_data_to_car { // Alle Variablen vom Dashboard zum Auto
 // speed_val < 0 rückwärts
 float speed_target_val = 0; // Zu erreichende Geschwindigkeit
 
+float dps_X_val;
+float dps_Y_val;
+float dps_Z_val;
+float acc_X_val;
+float acc_Y_val;
+float acc_Z_val;
+
 // Lenkung
 // stear_val = 0 Stehen bleiben
 // stear_val > 0 rechts
@@ -20,12 +27,6 @@ int16_t stear_target_val = 0; // Zu erreichende Lenkung
 
 int16_t angleX;
 int16_t angleY;
-float dps_X_val;
-float dps_Y_val;
-float dps_Z_val;
-float acc_X_val;
-float acc_Y_val;
-float acc_Z_val;
 
 // Boolean Übertragung an das Auto vom Dashboard
 // angefangen mit LSB:
@@ -34,10 +35,10 @@ uint16_t boolean_1_val;
 };
 
 struct exchange_data_to_dash { // Alle Variablen vom Auto zum Dashboard
-float speed_actual_val = 0; // Aktuelle Geschwindigkeit
-int16_t stear_actual_val = 0; // Aktuelle Lenkung
-float temperature_val;
 
+float speed_actual_val = 0; // Aktuelle Geschwindigkeit
+float temperature_val;		// Temperatur am Auto
+int16_t stear_actual_val = 0; // Aktuelle Lenkung
 // Abstandssensoren
 int16_t distance_f_val; // Sensor vorne
 int16_t distance_b_val; // Sensor hinten
@@ -139,6 +140,60 @@ void package_bool() {  // hier werden die Boolean Variablen in einen int Zusamme
     }
     data_to_car.boolean_1_val << 1;
   }
+}
+
+void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
+
+  package_bool();
+  
+#ifdef DASH
+  // Variablen Senden Dashboard
+  speed_target.writeValue(&data_to_car.speed_target_val, 4);  // Float
+  stear_target.writeValue(&data_to_car.stear_target_val, 4);  // Int
+  boolean_to_car_0.writeValue(&data_to_car.boolean_0_val, 4); // Unsigned Int
+  boolean_to_car_1.writeValue(&data_to_car.boolean_1_val, 4); // Unsigned Int
+#endif
+#ifdef CAR_CONNECT
+  // Variablen Senden Car
+  speed_actual.writeValue(data_to_dash.speed_actual_val);
+  stear_actual.writeValue(data_to_dash.stear_actual_val);
+  boolean_to_dash_0.writeValue(data_to_dash.boolean_0_val);
+  boolean_to_dash_1.writeValue(data_to_dash.boolean_1_val);
+  angleX.writeValue(data_to_car.angleX);
+  angleY.writeValue(data_to_car.angleY);
+  temperature.writeValue(data_to_dash.temperature_val);
+  distance_f.writeValue(data_to_dash.distance_f_val);
+  distance_b.writeValue(data_to_dash.distance_b_val);
+  distance_r_f.writeValue(data_to_dash.distance_r_f_val);
+  distance_r_b.writeValue(data_to_dash.distance_r_b_val);
+  distance_l_f.writeValue(data_to_dash.distance_l_f_val);
+  distance_l_b.writeValue(data_to_dash.distance_l_b_val);
+#endif
+#ifdef DASH
+  // Variablen Lesen Dashboard
+  speed_actual.readValue(&data_to_dash.speed_actual_val, 4);
+  stear_actual.readValue(&data_to_dash.stear_actual_val, 4);
+  boolean_to_dash_0.readValue(&data_to_dash.boolean_0_val, 4);
+  boolean_to_dash_1.readValue(&data_to_dash.boolean_1_val, 4);
+  angleX.readValue(&data_to_car.angleX, 4);
+  angleY.readValue(&data_to_car.angleY, 4);
+  temperature.readValue(&data_to_dash.temperature_val, 4);
+  distance_f.readValue(&data_to_dash.distance_f_val, 4);
+  distance_b.readValue(&data_to_dash.distance_b_val, 4);
+  distance_r_f.readValue(&data_to_dash.distance_r_f_val, 4);
+  distance_r_b.readValue(&data_to_dash.distance_r_b_val, 4);
+  distance_l_f.readValue(&data_to_dash.distance_l_f_val, 4);
+  distance_l_b.readValue(&data_to_dash.distance_l_b_val, 4);
+#endif
+#ifdef CAR_CONNECT
+  // Variablen Lesen
+  speed_target.readValue(&data_to_car.speed_target_val, 4);
+  stear_target.readValue(&data_to_car.stear_target_val, 4);
+  boolean_to_car_0.readValue(&data_to_car.boolean_0_val, 4);
+  boolean_to_car_1.readValue(&data_to_car.boolean_1_val, 4);
+#endif
+
+  unpack_bool();
 }
 
 void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
@@ -281,33 +336,6 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
   }
 }
 
-void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
-
-  package_bool();
-  // Variablen Senden
-  speed_target.writeValue(&data_to_car.speed_target_val, 4);  // Float
-  stear_target.writeValue(&data_to_car.stear_target_val, 4);  // Int
-  boolean_to_car_0.writeValue(&data_to_car.boolean_0_val, 4); // Unsigned Int
-  boolean_to_car_1.writeValue(&data_to_car.boolean_1_val, 4); // Unsigned Int
-
-  // Variablen Lesen
-  speed_actual.readValue(&data_to_dash.speed_actual_val, 4);
-  stear_actual.readValue(&data_to_dash.stear_actual_val, 4);
-  boolean_to_dash_0.readValue(&data_to_dash.boolean_0_val, 4);
-  boolean_to_dash_1.readValue(&data_to_dash.boolean_1_val, 4);
-  angleX.readValue(&data_to_car.angleX, 4);
-  angleY.readValue(&data_to_car.angleY, 4);
-  temperature.readValue(&data_to_dash.temperature_val, 4);
-  distance_f.readValue(&data_to_dash.distance_f_val, 4);
-  distance_b.readValue(&data_to_dash.distance_b_val, 4);
-  distance_r_f.readValue(&data_to_dash.distance_r_f_val, 4);
-  distance_r_b.readValue(&data_to_dash.distance_r_b_val, 4);
-  distance_l_f.readValue(&data_to_dash.distance_l_f_val, 4);
-  distance_l_b.readValue(&data_to_dash.distance_l_b_val, 4);
-
-  unpack_bool();
-}
-
     #endif
 
 #ifdef CAR_CONNECT // Defines für Car
@@ -338,7 +366,6 @@ void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
     BLEFloatCharacteristic distance_r_b(distance_r_b_Uuid, BLERead | BLEWrite);
     BLEFloatCharacteristic distance_l_f(distance_l_f_Uuid, BLERead | BLEWrite);
     BLEFloatCharacteristic distance_l_b(distance_l_b_Uuid, BLERead | BLEWrite);
-
 
     exchange_data_to_dash data_buffer; // Buffer für empfangene Daten über UART (Adrian)
 
@@ -429,63 +456,6 @@ void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Periphe
   Serial.println("Car (Slave Device)");
   Serial.println(" ");
   
-}
-
-/*
-void Dash_connect() { //Verbindung mit dem Dashboard herstellen (Adrian)
-
-  unsigned long t_wait = millis();
-
-do{
-  dashboard = BLE.central();
-
-    if (millis() >= t_wait + 500){
-      Serial.println("- Discovering Dashboard...");
-      t_wait = millis();
-
-      digitalWrite(BLE_LED, !digitalRead(BLE_LED)); // blinks the LED while waiting for connection
-
-    }
-    
-  } while (!dashboard);
-
-  if (dashboard) {
-    Serial.println("* Connected to Dashboard!");
-    Serial.print("* Device MAC address: ");
-    Serial.println(dashboard.address());
-    Serial.println(" ");
-    digitalWrite(BLE_LED, HIGH);
-    digitalWrite(CONNECT_NOTIFY, HIGH);
-  }
-
-}
-*/
-
-void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
-
-  package_bool();
-  // Variablen Senden
-  speed_actual.writeValue(data_to_dash.speed_actual_val);
-  stear_actual.writeValue(data_to_dash.stear_actual_val);
-  boolean_to_dash_0.writeValue(data_to_dash.boolean_0_val);
-  boolean_to_dash_1.writeValue(data_to_dash.boolean_1_val);
-  angleX.writeValue(data_to_car.angleX);
-  angleY.writeValue(data_to_car.angleY);
-  temperature.writeValue(data_to_dash.temperature_val);
-  distance_f.writeValue(data_to_dash.distance_f_val);
-  distance_b.writeValue(data_to_dash.distance_b_val);
-  distance_r_f.writeValue(data_to_dash.distance_r_f_val);
-  distance_r_b.writeValue(data_to_dash.distance_r_b_val);
-  distance_l_f.writeValue(data_to_dash.distance_l_f_val);
-  distance_l_b.writeValue(data_to_dash.distance_l_b_val);
-
-  // Variablen Lesen
-  speed_target.readValue(&data_to_car.speed_target_val, 4);
-  stear_target.readValue(&data_to_car.stear_target_val, 4);
-  boolean_to_car_0.readValue(&data_to_car.boolean_0_val, 4);
-  boolean_to_car_1.readValue(&data_to_car.boolean_1_val, 4);
-
-  unpack_bool();
 }
 
 void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
@@ -590,10 +560,7 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
   Serial.println();
 */
 }
-  
-  
-  
-  #endif
+#endif
 
 
 #endif

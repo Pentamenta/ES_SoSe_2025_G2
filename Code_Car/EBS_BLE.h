@@ -212,7 +212,7 @@ void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Central
     while (1);
   }
   
-  BLE.setLocalName("Dashboard (Central)"); //Namen des Central Devices Festlegen
+  BLE.setDeviceName("Dashboard (Central)"); //Namen des Central Devices Festlegen
   BLE.advertise();
 
   Serial.println("Dashboard (Central Device)");
@@ -354,6 +354,25 @@ void DashConnectHandler(BLEDevice central){
   else {
     Serial.println("Connection to Central Device failed.");
   }
+  
+  // Attribute erkennen
+  Serial.println("- Discovering Dashboard attributes...");
+  if (central.discoverAttributes()) { 
+    Serial.println("* Dashboard attributes discovered!");
+    Serial.println(" ");
+  } else {
+    Serial.println("* Dashboard attributes discovery failed!");
+    Serial.println(" ");
+    central.disconnect();
+    return;
+  }
+  
+  Serial.println("Neues Central Device Verbunden!");
+  Serial.print("Name: ");
+  Serial.println(central.deviceName());
+  Serial.print("Adresse: ");
+  Serial.println(central.address());
+  Serial.println();
 
   digitalWrite(BLE_LED, HIGH);
   digitalWrite(CONNECT_NOTIFY, HIGH);
@@ -374,7 +393,7 @@ void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Periphe
     while (1);
   }
   
-  BLE.setLocalName("Car (Peripherial)"); //Namen des Central Devices Festlegen
+  BLE.setDeviceName("Car (Peripherial)"); //Namen des Central Devices Festlegen
 
   BLE.setAdvertisedService(remote_service); //Setzt die UUID des Services, wenn er advertised wird
   remote_service.addCharacteristic(speed_target); //Charakteristiken zum Service hinzufügen

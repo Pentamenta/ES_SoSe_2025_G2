@@ -12,13 +12,13 @@
 #include "EBS_BLE.h" //Custom Header mit BLE definitionen (Adrian)
 #include "acc_data.h" // Custom Header mit Funktionen für Accelerometer
 
-unsigned long t_debug, t_exchange, t_acc, t_led;
+unsigned long t_debug, t_exchange, t_acc;
 
 void setup() {
 Serial.begin(9600);
 Serial1.begin(115200, SERIAL_8N1);
 
-t_debug, t_exchange, t_acc, t_led = millis();
+t_debug, t_exchange, t_acc = millis();
 
 pinMode(BLE_LED, OUTPUT);
 pinMode(CONNECT_NOTIFY, OUTPUT);
@@ -33,18 +33,6 @@ BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Peripherial 
 void loop() {
 
   BLE.poll();
-
-  if (!dashboard.connected()) { // try to reconnect if connection lost
-    // Alert car that connection was lost
-    digitalWrite(CONNECT_NOTIFY, LOW);
-
-    // Blink BLE LED
-    if (millis() >= t_led + 500) {
-      digitalWrite(BLE_LED, digitalRead(BLE_LED));
-      t_led = millis();
-    }
-
-  }
 
   if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
 
@@ -70,6 +58,12 @@ void loop() {
       Serial.println(sizeof(data_to_car));
       Serial.print("To Dash: ");
       Serial.println(sizeof(data_to_dash));
+    }
+    else {
+      // Alert car that connection was lost
+      digitalWrite(CONNECT_NOTIFY, LOW);
+
+      digitalWrite(BLE_LED, !digitalRead(BLE_LED));
     }
 
     t_debug = millis();

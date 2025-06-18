@@ -164,7 +164,6 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
 
   do  //Suche nach dem peripheral Device, bis es gefunden wurde
   {
-    BLE.scanForUuid(remote_service_Uuid);
     car = BLE.available();
 
     if (millis() >= t_wait + 500){
@@ -174,8 +173,17 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
     }
   } while (!car);
 
-  car.connect();
   BLE.stopScan();
+
+  Serial.println("- Connecting to peripheral Car...");
+  if (car.connect()) { 
+    Serial.println("* Connected to Car!");
+    Serial.println(" ");
+  } else {
+    Serial.println("* Connection to Car failed!");
+    Serial.println(" ");
+    return;
+  }
 
   if (car.discoverAttributes()) {
     Serial.println("Car Attributes discovered.");
@@ -186,6 +194,18 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
     return;
   }
 
+    Serial.println("* Found the Car!");
+    Serial.print("* Device MAC address: ");
+    Serial.println(car.address());
+    Serial.print("* Device name: ");
+    Serial.println(car.daviceName());
+    Serial.print("* Advertised service UUID: ");
+    Serial.println(car.advertisedServiceUuid());
+    Serial.println(" ");
+
+    digitalWrite(BLE_LED, HIGH);
+
+  // Setting up Characteristics
   speed_target = car.characteristic(speed_target_Uuid); // Characteristika discovern
   speed_actual = car.characteristic(speed_actual_Uuid);
 
@@ -209,22 +229,6 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
   distance_r_b = car.characteristic(distance_r_b_Uuid);
   distance_l_f = car.characteristic(distance_l_f_Uuid);
   distance_l_b = car.characteristic(distance_l_b_Uuid);
-
- if (car.connected()) { //Einrichten des Autos
-    Serial.println("* Found the Car!");
-    Serial.print("* Device MAC address: ");
-    Serial.println(car.address());
-    Serial.print("* Device name: ");
-    Serial.println(car.localName());
-    Serial.print("* Advertised service UUID: ");
-    Serial.println(car.advertisedServiceUuid());
-    Serial.println(" ");
-    BLE.stopScan();
-
-    digitalWrite(BLE_LED, HIGH);
-
-  }
-}
 
     #endif
 

@@ -63,7 +63,6 @@ float max = MAX_SPEED;
 float dead = DEADZONE_LOWER;
 
 float speed = (max/dead)*buffer;
-Serial.println(max/dead);
 return speed;
 
 }

@@ -12,13 +12,13 @@
 #include "EBS_BLE.h" //Custom Header mit BLE definitionen (Adrian)
 #include "acc_data.h" // Custom Header mit Funktionen für Accelerometer
 
-unsigned long t_debug, t_exchange, t_acc;
+unsigned long t_debug, t_fast, t_slow, t_acc;
 
 void setup() {
 Serial.begin(9600);
 Serial1.begin(115200, SERIAL_8N1);
 
-t_debug, t_exchange, t_acc = millis();
+t_debug, t_fast, t_slow, t_acc = millis();
 
 pinMode(BLE_LED, OUTPUT);
 pinMode(CONNECT_NOTIFY, OUTPUT);
@@ -34,13 +34,20 @@ void loop() {
 
   BLE.poll();
 
-  if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
+  if (millis() >= t_fast + FAST_CYCLE) { // schnelle BLE und Serial Kommunikation (Adrian)
 
-    BLE_val_exchange();
+    BLE_fast_exchange();
 
     Serial_val_exchange();
 
-    t_exchange = millis();
+    t_fast = millis();
+  }
+
+  if (millis() >= t_slow + SLOW_CYCLE) { // langsame BLE Kommunikation (Adrian)
+
+    BLE_slow_exchange();
+
+    t_slow = millis();
   }
 
   if (millis() >= t_acc + ACC_WAIT_TIME) { // Auslesen der Neigungswinkel (Adrian)

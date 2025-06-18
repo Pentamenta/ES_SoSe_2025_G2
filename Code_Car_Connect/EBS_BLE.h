@@ -2,6 +2,8 @@
 #define EBS_BLE_H
 
 #define BOOLNUM 2 // Anzahl der verwendeten bool Ints
+#define FAST_CYCLE 20 // Zeitintervall für schnelle BLE Übertragung + UART Übertragung
+#define SLOW_CYCLE 100 // Zeitintervall für langsame BLE Übertragung
 
 /// BLE Variablen (Adrian)
 #pragma pack(1)
@@ -105,128 +107,6 @@ const char* distance_l_b_Uuid		= "65e1ce7d-84d9-4bd9-a605-7856dcc2608f";
 
 //const char* stear_target_Uuid = "";
 
-
-// Übergreifende Funktionen
-
-void unpack_bool() {  // heir werden die Boolean Variablen aus einem Int extrahiert (Adrian)
-
-  for (int i = 0; i < 16; i++) {	// Erstes Int entpacken
-    if ((data_to_dash.boolean_0_val & (1 << i))) {
-      boolean_to_dash_arr[0][i] = true;
-    } else {
-      boolean_to_dash_arr[0][i] = false;
-    }
-  }
-  for (int i = 0; i < 16; i++) {	// Erstes Int entpacken
-    if ((data_to_dash.boolean_1_val & (1 << i))) {
-      boolean_to_dash_arr[1][i] = true;
-    } else {
-      boolean_to_dash_arr[1][i] = false;
-    }
-  }
-}
-
-void package_bool() {  // hier werden die Boolean Variablen in einen int Zusammengefasst (Adrian)
-
-  for (int i = 0; i < 16; i++) {	// Erstes Int verpacken
-    if (boolean_to_car_arr[0][15 - i]) {
-      data_to_car.boolean_0_val++;
-    }
-    data_to_car.boolean_0_val << 1;
-  }
-  for (int i = 0; i < 16; i++) {	// Erstes Int verpacken
-    if (boolean_to_car_arr[1][15 - i]) {
-      data_to_car.boolean_1_val++;
-    }
-    data_to_car.boolean_1_val << 1;
-  }
-}
-
-void BLE_val_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
-
-  package_bool();
-  
-#ifdef DASH
-  // Variablen Senden Dashboard
-  speed_target.writeValue(&data_to_car.speed_target_val, 4);  // Float
-  stear_target.writeValue(&data_to_car.stear_target_val, 4);  // Int
-  boolean_to_car_0.writeValue(&data_to_car.boolean_0_val, 4); // Unsigned Int
-  boolean_to_car_1.writeValue(&data_to_car.boolean_1_val, 4); // Unsigned Int
-#endif
-#ifdef CAR_CONNECT
-  // Variablen Senden Car
-  speed_actual.writeValue(data_to_dash.speed_actual_val);
-  stear_actual.writeValue(data_to_dash.stear_actual_val);
-  boolean_to_dash_0.writeValue(data_to_dash.boolean_0_val);
-  boolean_to_dash_1.writeValue(data_to_dash.boolean_1_val);
-  angleX.writeValue(data_to_car.angleX);
-  angleY.writeValue(data_to_car.angleY);
-  temperature.writeValue(data_to_dash.temperature_val);
-  distance_f.writeValue(data_to_dash.distance_f_val);
-  distance_b.writeValue(data_to_dash.distance_b_val);
-  distance_r_f.writeValue(data_to_dash.distance_r_f_val);
-  distance_r_b.writeValue(data_to_dash.distance_r_b_val);
-  distance_l_f.writeValue(data_to_dash.distance_l_f_val);
-  distance_l_b.writeValue(data_to_dash.distance_l_b_val);
-#endif
-#ifdef DASH
-  // Variablen Lesen Dashboard
-  speed_actual.readValue(&data_to_dash.speed_actual_val, 4);
-  stear_actual.readValue(&data_to_dash.stear_actual_val, 4);
-  boolean_to_dash_0.readValue(&data_to_dash.boolean_0_val, 4);
-  boolean_to_dash_1.readValue(&data_to_dash.boolean_1_val, 4);
-  angleX.readValue(&data_to_car.angleX, 4);
-  angleY.readValue(&data_to_car.angleY, 4);
-  temperature.readValue(&data_to_dash.temperature_val, 4);
-  distance_f.readValue(&data_to_dash.distance_f_val, 4);
-  distance_b.readValue(&data_to_dash.distance_b_val, 4);
-  distance_r_f.readValue(&data_to_dash.distance_r_f_val, 4);
-  distance_r_b.readValue(&data_to_dash.distance_r_b_val, 4);
-  distance_l_f.readValue(&data_to_dash.distance_l_f_val, 4);
-  distance_l_b.readValue(&data_to_dash.distance_l_b_val, 4);
-#endif
-#ifdef CAR_CONNECT
-  // Variablen Lesen
-  speed_target.readValue(&data_to_car.speed_target_val, 4);
-  stear_target.readValue(&data_to_car.stear_target_val, 4);
-  boolean_to_car_0.readValue(&data_to_car.boolean_0_val, 4);
-  boolean_to_car_1.readValue(&data_to_car.boolean_1_val, 4);
-#endif
-
-  unpack_bool();
-}
-
-void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
-
-  Serial.println("Einmal der Data Struct:");
-  Serial.print("Speed_target: ");
-  Serial.println(data_to_car.speed_target_val);
-
-  Serial.print("Speed_actual: ");
-  Serial.println(data_to_dash.speed_actual_val);
-
-  Serial.print("Stear_target: ");
-  Serial.println(data_to_car.stear_target_val);
-
-  Serial.print("Stear_actual: ");
-  Serial.println(data_to_dash.stear_actual_val);
-  
-  
-  Serial.print("Bool 1 to car: ");
-  Serial.println(data_to_car.boolean_0_val, BIN);
-  
-  Serial.print("Bool 1 to dash: ");
-  Serial.println(data_to_dash.boolean_0_val, BIN);
-  
-  Serial.print("AngleX: ");
-  Serial.println(data_to_car.angleX);
-  
-  Serial.print("AngleY: ");
-  Serial.println(data_to_car.angleY);
-
-}
-
-
 #ifdef DASH  // Defines für Dashboard
     BLEDevice car;
     BLECharacteristic speed_target;
@@ -278,8 +158,9 @@ void BLE_Setup(){ //Öffnet die BLE-Schnittstelle und initiallisiert das Central
 void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
 
   Serial.println("- Searching for car...");
-
   unsigned long t_wait = millis();
+
+  BLE.scan();
 
   do  //Suche nach dem peripheral Device, bis es gefunden wurde
   {
@@ -294,7 +175,16 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
   } while (!car);
 
   car.connect();
-  car.discoverAttributes();
+  BLE.stopScan();
+
+  if (car.discoverAttributes()) {
+    Serial.println("Car Attributes discovered.");
+  }
+  else {
+    Serial.println("Car Attributes discovery failed.");
+    car.disconnect();
+    return;
+  }
 
   speed_target = car.characteristic(speed_target_Uuid); // Characteristika discovern
   speed_actual = car.characteristic(speed_actual_Uuid);
@@ -320,7 +210,7 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
   distance_l_f = car.characteristic(distance_l_f_Uuid);
   distance_l_b = car.characteristic(distance_l_b_Uuid);
 
- if (car) { //Einrichten des Autos
+ if (car.connected()) { //Einrichten des Autos
     Serial.println("* Found the Car!");
     Serial.print("* Device MAC address: ");
     Serial.println(car.address());
@@ -485,7 +375,7 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
   }
   //Serial.println();
   Serial1.write('>');
-  Serial1.flush(); // Warten bis alle Daten im Puffer gesendet wurden
+  //Serial1.flush(); // Warten bis alle Daten im Puffer gesendet wurden
 
   /*
   //Debug:
@@ -539,7 +429,7 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
   }
   //Serial.println();
   Serial1.write('>');
-  Serial1.flush(); // Warten bis alle Daten im Puffer gesendet wurden
+  //Serial1.flush(); // Warten bis alle Daten im Puffer gesendet wurden
 
   /*
   //Debug:
@@ -562,5 +452,135 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
 }
 #endif
 
+// Übergreifende Funktionen
+
+void unpack_bool() {  // heir werden die Boolean Variablen aus einem Int extrahiert (Adrian)
+
+  for (int i = 0; i < 16; i++) {	// Erstes Int entpacken
+    if ((data_to_dash.boolean_0_val & (1 << i))) {
+      boolean_to_dash_arr[0][i] = true;
+    } else {
+      boolean_to_dash_arr[0][i] = false;
+    }
+  }
+  for (int i = 0; i < 16; i++) {	// Erstes Int entpacken
+    if ((data_to_dash.boolean_1_val & (1 << i))) {
+      boolean_to_dash_arr[1][i] = true;
+    } else {
+      boolean_to_dash_arr[1][i] = false;
+    }
+  }
+}
+
+void package_bool() {  // hier werden die Boolean Variablen in einen int Zusammengefasst (Adrian)
+
+  for (int i = 0; i < 16; i++) {	// Erstes Int verpacken
+    if (boolean_to_car_arr[0][15 - i]) {
+      data_to_car.boolean_0_val++;
+    }
+    data_to_car.boolean_0_val << 1;
+  }
+  for (int i = 0; i < 16; i++) {	// Erstes Int verpacken
+    if (boolean_to_car_arr[1][15 - i]) {
+      data_to_car.boolean_1_val++;
+    }
+    data_to_car.boolean_1_val << 1;
+  }
+}
+
+
+void BLE_fast_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
+
+  package_bool();
+  
+#ifdef DASH
+  // Variablen Senden Dashboard
+  speed_target.writeValue(&data_to_car.speed_target_val, 4);  // Float
+  stear_target.writeValue(&data_to_car.stear_target_val, 4);  // Int
+  boolean_to_car_0.writeValue(&data_to_car.boolean_0_val, 4); // Unsigned Int
+  boolean_to_car_1.writeValue(&data_to_car.boolean_1_val, 4); // Unsigned Int
+#endif
+#ifdef CAR_CONNECT
+  // Variablen Senden Car
+  speed_actual.writeValue(data_to_dash.speed_actual_val);
+  boolean_to_dash_0.writeValue(data_to_dash.boolean_0_val);
+  boolean_to_dash_1.writeValue(data_to_dash.boolean_1_val);
+#endif
+#ifdef DASH
+  // Variablen Lesen Dashboard
+  speed_actual.readValue(&data_to_dash.speed_actual_val, 4);
+  boolean_to_dash_0.readValue(&data_to_dash.boolean_0_val, 4);
+  boolean_to_dash_1.readValue(&data_to_dash.boolean_1_val, 4);
+#endif
+#ifdef CAR_CONNECT
+  // Variablen Lesen
+  speed_target.readValue(&data_to_car.speed_target_val, 4);
+  stear_target.readValue(&data_to_car.stear_target_val, 4);
+  boolean_to_car_0.readValue(&data_to_car.boolean_0_val, 4);
+  boolean_to_car_1.readValue(&data_to_car.boolean_1_val, 4);
+#endif
+
+  unpack_bool();
+}
+
+void BLE_slow_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
+
+#ifdef CAR_CONNECT
+  // Variablen Senden Car
+  stear_actual.writeValue(data_to_dash.stear_actual_val);
+  angleX.writeValue(data_to_car.angleX);
+  angleY.writeValue(data_to_car.angleY);
+  temperature.writeValue(data_to_dash.temperature_val);
+  distance_f.writeValue(data_to_dash.distance_f_val);
+  distance_b.writeValue(data_to_dash.distance_b_val);
+  distance_r_f.writeValue(data_to_dash.distance_r_f_val);
+  distance_r_b.writeValue(data_to_dash.distance_r_b_val);
+  distance_l_f.writeValue(data_to_dash.distance_l_f_val);
+  distance_l_b.writeValue(data_to_dash.distance_l_b_val);
+#endif
+#ifdef DASH
+  // Variablen Lesen Dashboard
+  stear_actual.readValue(&data_to_dash.stear_actual_val, 4);
+  angleX.readValue(&data_to_car.angleX, 4);
+  angleY.readValue(&data_to_car.angleY, 4);
+  temperature.readValue(&data_to_dash.temperature_val, 4);
+  distance_f.readValue(&data_to_dash.distance_f_val, 4);
+  distance_b.readValue(&data_to_dash.distance_b_val, 4);
+  distance_r_f.readValue(&data_to_dash.distance_r_f_val, 4);
+  distance_r_b.readValue(&data_to_dash.distance_r_b_val, 4);
+  distance_l_f.readValue(&data_to_dash.distance_l_f_val, 4);
+  distance_l_b.readValue(&data_to_dash.distance_l_b_val, 4);
+#endif
+  unpack_bool();
+}
+
+void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
+
+  Serial.println("Einmal der Data Struct:");
+  Serial.print("Speed_target: ");
+  Serial.println(data_to_car.speed_target_val);
+
+  Serial.print("Speed_actual: ");
+  Serial.println(data_to_dash.speed_actual_val);
+
+  Serial.print("Stear_target: ");
+  Serial.println(data_to_car.stear_target_val);
+
+  Serial.print("Stear_actual: ");
+  Serial.println(data_to_dash.stear_actual_val);
+  
+  Serial.print("Bool 1 to car: ");
+  Serial.println(data_to_car.boolean_0_val, BIN);
+  
+  Serial.print("Bool 1 to dash: ");
+  Serial.println(data_to_dash.boolean_0_val, BIN);
+  
+  Serial.print("AngleX: ");
+  Serial.println(data_to_car.angleX);
+  
+  Serial.print("AngleY: ");
+  Serial.println(data_to_car.angleY);
+
+}
 
 #endif

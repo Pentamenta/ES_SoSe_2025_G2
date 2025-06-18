@@ -10,14 +10,12 @@
 
 #include "Tacho_Tempomat.h" //Einbindung der Funktionen/Variablen für mittleres Display: Tache & Tempomat (Eva)
 
-unsigned long t_debug;
-unsigned long t_exchange;
+unsigned long t_debug, t_fast, t_slow;
 
 void setup() {
 Serial.begin(9600);
 delay(50);
-t_debug = millis();
-t_exchange = millis();
+t_debug, t_fast, t_slow = millis();
 
 pinMode(BLE_LED, OUTPUT);
 
@@ -35,10 +33,18 @@ void loop() {
     connect_car();
   }
 
-  if (millis() >= t_exchange + 20) {
+  if (millis() >= t_fast + FAST_CYCLE) { // schnelle BLE und Serial Kommunikation (Adrian)
 
-    BLE_val_exchange();
-    t_exchange = millis();
+    data_to_car.speed_target_val = random(-50,50);
+    BLE_fast_exchange();
+    t_fast = millis();
+  }
+
+  if (millis() >= t_slow + SLOW_CYCLE) { // langsame BLE Kommunikation (Adrian)
+
+    BLE_slow_exchange();
+
+    t_slow = millis();
   }
 
   if (millis() >= t_debug + 500){ // Debug Loop

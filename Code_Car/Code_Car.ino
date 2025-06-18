@@ -30,7 +30,6 @@ else {
 
 
 if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
-  data_to_dash.speed_actual_val = random(-50,50);
   Serial_val_exchange();
   t_exchange = millis();
   }

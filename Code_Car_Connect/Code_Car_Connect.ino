@@ -35,18 +35,13 @@ void loop() {
   BLE.poll();
 
   if (millis() >= t_fast + FAST_CYCLE) { // schnelle BLE und Serial Kommunikation (Adrian)
-
     BLE_fast_exchange();
-
     Serial_val_exchange();
-
     t_fast = millis();
   }
 
   if (millis() >= t_slow + SLOW_CYCLE) { // langsame BLE Kommunikation (Adrian)
-
     BLE_slow_exchange();
-
     t_slow = millis();
   }
 

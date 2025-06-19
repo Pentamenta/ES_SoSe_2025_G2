@@ -8,7 +8,7 @@
 #include "EBS_BLE.h"  // Custom Header mit BLE definitionen (Adrian)
 #include "joystick.h" // Custom Header mit Joystick Funktionen (Adrian)
 #include "Buttons.h"  // Custom Header für Button Anfrage (Adrian)
-
+#include "Leds.h"
 #include <U8g2lib.h> //Software I2C Display Ansteuerung (Eva)
 #include <math.h>    //für Grafiken auf Displays (Eva)
 
@@ -22,7 +22,7 @@ delay(50);
 t_debug, t_fast, t_slow = millis();
 
 pinMode(BLE_LED, OUTPUT);
-
+setup_Leds();
 joystick_setup(); // Initialisiert Joysticks (Adrian)
 Button_Setup();
 display.begin();
@@ -48,7 +48,7 @@ void loop() {
 
 // Funktionen Tasterabfrage + LEDs
 taster_abfragen();
-
+loop_Leds();
 
   if (millis() >= t_slow + SLOW_CYCLE) { // langsame BLE Kommunikation (Adrian)
     BLE_slow_exchange();

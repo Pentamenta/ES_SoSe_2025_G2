@@ -5,8 +5,9 @@
 #define MAX_STEAR 10 // Ausschlag zum Steuern
 
 #include <ArduinoBLE.h> 
-#include "EBS_BLE.h"  //Custom Header mit BLE definitionen (Adrian)
+#include "EBS_BLE.h"  // Custom Header mit BLE definitionen (Adrian)
 #include "joystick.h" // Custom Header mit Joystick Funktionen (Adrian)
+#include "Buttons.h"  // Custom Header für Button Anfrage (Adrian)
 
 #include <U8g2lib.h> //Software I2C Display Ansteuerung (Eva)
 #include <math.h>    //für Grafiken auf Displays (Eva)
@@ -23,6 +24,7 @@ t_debug, t_fast, t_slow = millis();
 pinMode(BLE_LED, OUTPUT);
 
 joystick_setup(); // Initialisiert Joysticks (Adrian)
+Button_Setup();
 display.begin();
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Central Device (Adrian)
 connect_car(); //Stellt Verbindung mit dem Auto her (Adrian)

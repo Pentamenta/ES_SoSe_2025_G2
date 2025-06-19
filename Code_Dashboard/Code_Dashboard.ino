@@ -1,8 +1,8 @@
 #define DASH //Flag für Precompiler (Adrian)
 
 #define BLE_LED 4
-#define MAX_SPEED 10 //m/s
-#define MAX_STEAR 10 // Ausschlag zum Steuern
+#define MAX_SPEED 10  // m/s
+#define MAX_STEAR 100 // Ausschlag zum Steuern
 
 #include <ArduinoBLE.h> 
 #include "EBS_BLE.h"  // Custom Header mit BLE definitionen (Adrian)
@@ -15,6 +15,10 @@
 #include "Tacho_Tempomat.h" //Einbindung der Funktionen/Variablen für mittleres Display: Tache & Tempomat (Eva)
 
 unsigned long t_debug, t_fast, t_slow;
+
+// Tempomat
+float tempo_speed = 0;      // Tempomat Geschwindigkeit
+bool tempo_on = false;  // Ist der Tempomat an?
 
 void setup() {
 Serial.begin(9600);
@@ -41,13 +45,14 @@ void loop() {
 
   if (millis() >= t_fast + FAST_CYCLE) { // schnelle BLE und Serial Kommunikation (Adrian)
     data_to_car.stear_target_val = read_stear();
-    data_to_car.speed_target_val = read_speed();
     BLE_fast_exchange();
     t_fast = millis();
   }
 
 // Funktionen Tasterabfrage + LEDs
-taster_abfragen();
+speed_control();
+button_check();
+button_eval();
 
 
   if (millis() >= t_slow + SLOW_CYCLE) { // langsame BLE Kommunikation (Adrian)
@@ -84,4 +89,62 @@ float dead = DEADZONE_LOWER;
 float stear = (max/dead)*buffer;
 return stear;
 
+}
+
+void speed_control() {
+
+  if (tempo_on && (read_speed() <= tempo_speed) && (read_speed() >= 0)) {
+    data_to_car.speed_target_val = tempo_speed;
+  }
+  else if (tempo_on && (read_speed() > tempo_speed) && (read_speed() >= 0)) { // Tempomat ist an und es wird beschleunigt
+    data_to_car.speed_target_val = read_speed();
+  }
+  else if (tempo_on && (read_speed() < 0)) { // Beim bremsen geht der Tempomat aus
+    tempo_on = false;
+    data_to_car.speed_target_val = read_speed();
+  }
+  else { // Tempomat ist aus
+      data_to_car.speed_target_val = read_speed();
+  }
+
+}
+
+void button_eval() {
+
+  // Button 1 - Tempomat on
+  if (t1 && !tempo_on) {  // Einschalten
+    tempo_speed = data_to_dash.speed_actual_val; // Tempomat Geschwindigkeit auf aktuellen Wert setzen
+    tempo_on = true;      // Tempomat einschalten
+    t1 = false;           // Button resetten
+  }
+  else if (t1 && tempo_on) {
+    tempo_on = false;     // Tempomat auschalten
+    t1 = false;           // Button resetten
+  }
+
+  // Button 2 - Tempomat set
+  if (t2 && !tempo_on) {  // Einschalten
+    if (tempo_speed == 0) {
+      // Tempomat Geschwindigkeit auf aktuellen Wert setzen, falls noch nicht gesetzt
+      tempo_speed = data_to_dash.speed_actual_val; 
+    }
+    tempo_on = true;      // Tempomat einschalten
+    t2 = false;           // Button resetten
+  }
+  else if (t2 && tempo_on) { // Tempomat auf aktuellen speed setzen
+    tempo_speed = tempo_speed = data_to_dash.speed_actual_val;
+    t2 = false;           // Button resetten
+  }
+
+  // Button 3 - Licht
+  if (t3) {
+    // Scheinwerfer toggeln
+    boolean_to_car_arr[0][3] = !boolean_to_car_arr[0][3];
+  }
+
+  // Button 4 - Fernlicht
+    if (t3 && boolean_to_dash_arr[0][3]) {
+    // Fernlicht toggeln
+    boolean_to_car_arr[0][4] = !boolean_to_car_arr[0][4];
+  }
 }

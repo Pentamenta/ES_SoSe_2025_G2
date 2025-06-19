@@ -23,7 +23,7 @@ void Button_Setup() {
     
 }
 
-void taster_abfragen() {
+void button_check() {
 
     if ((millis() >= t_t1 + DEBOUNCE) && digitalRead(T_1)) {
         t1 = HIGH;

@@ -18,10 +18,21 @@
 #define DEADZONE_UPPER  532
 #define DEADZONE_LOWER  492
 
+bool jr_sw, jl_sw = false;
+
+void i_jl() {
+    jl_sw = HIGH;
+}
+void i_jr() {
+    jr_sw = HIGH;
+}
+
 void joystick_setup() { // Initialisiert Joysticks (Adrian)
 
     pinMode(JL_SW, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(JL_SW), i_jl, FALLING);
     pinMode(JR_SW, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(JR_SW), i_jr, FALLING);
 
     pinMode(JL_X_p, INPUT);
     pinMode(JL_Y_p, INPUT);

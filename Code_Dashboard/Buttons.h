@@ -9,37 +9,31 @@ geschrieben von Adrian Behrens
 #define T_4         10    
 #define DEBOUNCE    50
 
-unsigned long t_t1, t_t2, t_t3, t_t4;
 bool t1, t2, t3, t4 = LOW;
+
+void i_t1() {
+    t1 = HIGH;
+}
+void i_t2() {
+    t2 = HIGH;
+}
+void i_t3() {
+    t3 = HIGH;
+}
+void i_t4() {
+    t4 = HIGH;
+}
 
 void Button_Setup() {
 
-    t_t1, t_t2, t_t3, t_t4 = millis();
-
     pinMode(T_1, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(T_1), i_t1, FALLING);
     pinMode(T_2, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(T_2), i_t2, FALLING);
     pinMode(T_3, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(T_3), i_t3, FALLING);
     pinMode(T_4, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(T_4), i_t4, FALLING);
     
-}
-
-void button_check() {
-
-    if ((millis() >= t_t1 + DEBOUNCE) && digitalRead(T_1)) {
-        t1 = HIGH;
-        t_t1 = millis();
-    }
-    if ((millis() >= t_t2 + DEBOUNCE) && digitalRead(T_2)) {
-        t2 = HIGH;
-        t_t2 = millis();
-    }
-    if ((millis() >= t_t3 + DEBOUNCE) && digitalRead(T_3)) {
-        t3 = HIGH;
-        t_t3 = millis();
-    }
-    if ((millis() >= t_t4 + DEBOUNCE) && digitalRead(T_4)) {
-        t4 = HIGH;
-        t_t4 = millis();
-    }
 
 }

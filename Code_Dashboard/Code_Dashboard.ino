@@ -51,7 +51,6 @@ void loop() {
 
 // Funktionen Tasterabfrage + LEDs
 speed_control();
-button_check();
 button_eval();
 
 
@@ -147,4 +146,20 @@ void button_eval() {
     // Fernlicht toggeln
     boolean_to_car_arr[0][4] = !boolean_to_car_arr[0][4];
   }
+
+  // Joystick Buttons - Blinker
+  if (jl_sw && jr_sw) { // Beide Taster Gleichzeitig --> Warnblinker
+    boolean_to_car_arr[0][2] = !boolean_to_car_arr[0][2];
+    jl_sw, jr_sw = false;
+  }
+  else if (jl_sw && !jr_sw) { // Blinker links
+    boolean_to_car_arr[0][1] = !boolean_to_car_arr[0][1];
+    jl_sw = false;
+  }
+  else if (!jl_sw && jr_sw) { // Blinker links
+    boolean_to_car_arr[0][0] = !boolean_to_car_arr[0][0];
+    jr_sw = false;
+  }
 }
+
+

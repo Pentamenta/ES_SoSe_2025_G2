@@ -50,7 +50,6 @@ void loop() {
   }
 
 // Funktionen Tasterabfrage + LEDs
-taster_abfragen();
 loop_Leds();
 speed_control();
 button_eval();
@@ -158,7 +157,7 @@ void button_eval() {
     boolean_to_car_arr[0][1] = !boolean_to_car_arr[0][1];
     jl_sw = false;
   }
-  else if (!jl_sw && jr_sw) { // Blinker links
+  else if (!jl_sw && jr_sw) { // Blinker rechts
     boolean_to_car_arr[0][0] = !boolean_to_car_arr[0][0];
     jr_sw = false;
   }

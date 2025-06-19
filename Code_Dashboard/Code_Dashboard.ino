@@ -46,6 +46,10 @@ void loop() {
     t_fast = millis();
   }
 
+// Funktionen Tasterabfrage + LEDs
+taster_abfragen();
+
+
   if (millis() >= t_slow + SLOW_CYCLE) { // langsame BLE Kommunikation (Adrian)
     BLE_slow_exchange();
     t_slow = millis();

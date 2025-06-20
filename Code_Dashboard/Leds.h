@@ -1,50 +1,58 @@
 // LED Pins
-const int led1_bluetooth = 2;
-const int led2_blinkerL  = 3;
-const int led3_blinkerR  = 4;
-const int led4_temp      = 5;
-const int led5_airbag    = 6;
-const int led6_abs       = 7;
+#define LED1  A6 // Blinker R
+#define LED2  A7 // Blinker L
+#define LED3  11 // Tempomat Aktiv
+#define LED4  12 // Airbag
+#define LED5  13 // ABS
+#define BLINK 500
 
-// Simulierte Daten
-bool boolean_to_car_val[1][16]; // Steuerdaten vom Dashboard
-float temperature_val = 52.5;   // Temperatur in °C
+unsigned long t_blink_l, t_blink_r, t_blink_w = millis();
 
-void setup_Leds() {
-  pinMode(led1_bluetooth, OUTPUT);
-  pinMode(led2_blinkerL, OUTPUT);
-  pinMode(led3_blinkerR, OUTPUT);
-  pinMode(led4_temp, OUTPUT);
-  pinMode(led5_airbag, OUTPUT);
-  pinMode(led6_abs, OUTPUT);
-
- 
+void Led_Setup() {
+  pinMode(LED1, OUTPUT);
+  pinMode(LED2, OUTPUT);
+  pinMode(LED3, OUTPUT);
+  pinMode(LED4, OUTPUT);
+  pinMode(LED5, OUTPUT);
 }
 
-void loop_Leds() {
-  // Beispielhafte Signale (du kannst das später durch echte Daten ersetzen)
-  boolean_to_car_val[0][0] = true;   // Bluetooth aktiv
-  boolean_to_car_val[0][1] = true;   // Blinker links
-  boolean_to_car_val[0][2] = false;  // Blinker rechts
-  boolean_to_car_val[0][3] = true;   // Airbag
-  boolean_to_car_val[0][4] = false;  // ABS
-  temperature_val = 52.5;
+void blinker()  {
+
+  if (boolean_to_dash_arr[0][2] && (millis() >= t_blink_w + BLINK)) { 
+    digitalWrite(LED1, !digitalRead(LED1)); // Warnblinker einschalten
+    digitalWrite(LED2, !digitalRead(LED2));
+    t_blink_w = millis();
+  }
+  else if (!boolean_to_dash_arr[0][2]){ // Warnblinker abschalten
+    digitalWrite(LED1, LOW);
+    digitalWrite(LED2, LOW);
+  }
+
+  if (boolean_to_dash_arr[0][0] && (millis() >= t_blink_r + BLINK) && !boolean_to_dash_arr[0][2]) { 
+    digitalWrite(LED1, !digitalRead(LED1)); // Blinker R einschalten
+    t_blink_r = millis();
+  }
+  else if (!boolean_to_dash_arr[0][0]){ // Blinker R abschalten
+    digitalWrite(LED1, LOW);
+  }
+
+  if (boolean_to_dash_arr[0][1] && (millis() >= t_blink_l + BLINK) && !boolean_to_dash_arr[0][2]) { 
+    digitalWrite(LED2, !digitalRead(LED2)); // Blinker L einschalten
+    t_blink_l = millis();
+  }
+  else if (!boolean_to_dash_arr[0][1]){ // Blinker L abschalten
+    digitalWrite(LED2, LOW);
+  }
+
+}
+
+void Led_Update() {
 
   // LEDs direkt nach boolean steuern
-  digitalWrite(led1_bluetooth, boolean_to_car_val[0][0] ? HIGH : LOW);
-  digitalWrite(led2_blinkerL,  boolean_to_car_val[0][1] ? HIGH : LOW);
-  digitalWrite(led3_blinkerR,  boolean_to_car_val[0][2] ? HIGH : LOW);
-  digitalWrite(led4_temp,      temperature_val > 50.0 ? HIGH : LOW);
-  digitalWrite(led5_airbag,    boolean_to_car_val[0][3] ? HIGH : LOW);
-  digitalWrite(led6_abs,       boolean_to_car_val[0][4] ? HIGH : LOW);
+  digitalWrite(LED3, tempo_on ? HIGH : LOW); // Check Tempomat
+  digitalWrite(LED4, boolean_to_dash_arr[0][13] ? HIGH : LOW); // Check Airbag
+  digitalWrite(LED5, boolean_to_dash_arr[0][10] ? HIGH : LOW); // Check ABS
 
-  // Debug anzeigen
-  Serial.print("Temp: ");
-  Serial.print(temperature_val);
-  Serial.print(" °C | ABS: ");
-  Serial.print(boolean_to_car_val[0][4]);
-  Serial.print(" | Airbag: ");
-  Serial.println(boolean_to_car_val[0][3]);
+  blinker();
 
-  delay(200);
 }

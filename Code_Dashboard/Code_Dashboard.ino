@@ -4,6 +4,10 @@
 #define MAX_SPEED 10  // m/s
 #define MAX_STEAR 100 // Ausschlag zum Steuern
 
+// Tempomat
+float tempo_speed = 0;      // Tempomat Geschwindigkeit
+bool tempo_on = false;  // Ist der Tempomat an?
+
 #include <ArduinoBLE.h> 
 #include "EBS_BLE.h"  // Custom Header mit BLE definitionen (Adrian)
 #include "joystick.h" // Custom Header mit Joystick Funktionen (Adrian)
@@ -16,17 +20,13 @@
 
 unsigned long t_debug, t_fast, t_slow;
 
-// Tempomat
-float tempo_speed = 0;      // Tempomat Geschwindigkeit
-bool tempo_on = false;  // Ist der Tempomat an?
-
 void setup() {
 Serial.begin(9600);
 delay(50);
 t_debug, t_fast, t_slow = millis();
 
 pinMode(BLE_LED, OUTPUT);
-setup_Leds();
+Led_Setup();
 joystick_setup(); // Initialisiert Joysticks (Adrian)
 Button_Setup();
 display.begin();
@@ -50,7 +50,7 @@ void loop() {
   }
 
 // Funktionen Tasterabfrage + LEDs
-loop_Leds();
+Led_Update();
 speed_control();
 button_eval();
 

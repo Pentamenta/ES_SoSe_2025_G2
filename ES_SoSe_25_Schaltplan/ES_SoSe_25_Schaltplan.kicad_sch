@@ -312,7 +312,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "SSD1806_1"
+		(symbol "SSD1806_2"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -359,7 +359,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "SSD1806_1_1_1"
+			(symbol "SSD1806_2_1_1"
 				(rectangle
 					(start -8.89 3.81)
 					(end 8.89 -3.81)
@@ -425,7 +425,7 @@
 							)
 						)
 					)
-					(number "3"
+					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -443,7 +443,7 @@
 							)
 						)
 					)
-					(number "4"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1756,7 +1756,7 @@
 							)
 						)
 					)
-					(number "3"
+					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1774,7 +1774,7 @@
 							)
 						)
 					)
-					(number "4"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2078,10 +2078,22 @@
 		(uuid "1a2c45f3-3af5-4bc3-a3cc-2f3c612c8afc")
 	)
 	(junction
+		(at 105.41 35.56)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3a8fb994-c876-41fa-815f-3a2e1234e061")
+	)
+	(junction
 		(at 81.28 114.3)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "3c5e7049-ad28-455d-bbd7-1da47eac7ffb")
+	)
+	(junction
+		(at 105.41 96.52)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "45e6ca02-efb4-4314-a4d4-5d16386fefd6")
 	)
 	(junction
 		(at 228.6 71.12)
@@ -2124,6 +2136,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "86ba66d6-4636-4a1b-8bd1-bb8579cefe6a")
+	)
+	(junction
+		(at 91.44 114.3)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "94bff5bd-bbfd-455e-b788-eff0f958afa1")
 	)
 	(junction
 		(at 172.72 99.06)
@@ -2247,7 +2265,7 @@
 	)
 	(wire
 		(pts
-			(xy 111.76 43.18) (xy 111.76 49.53)
+			(xy 101.6 30.48) (xy 101.6 44.45)
 		)
 		(stroke
 			(width 0)
@@ -2294,6 +2312,16 @@
 			(type default)
 		)
 		(uuid "0f20830d-e5bf-47e4-a10d-14ba29c170ed")
+	)
+	(wire
+		(pts
+			(xy 105.41 95.25) (xy 105.41 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1171e382-c392-45d3-8e9d-99577f7bdd7a")
 	)
 	(wire
 		(pts
@@ -2394,6 +2422,16 @@
 			(type default)
 		)
 		(uuid "2a9ac3e8-2466-40a7-abba-bab870c44b3e")
+	)
+	(wire
+		(pts
+			(xy 105.41 114.3) (xy 91.44 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2c0cdbd3-8efa-42fd-b65e-0c8ed2567af2")
 	)
 	(wire
 		(pts
@@ -2757,6 +2795,16 @@
 	)
 	(wire
 		(pts
+			(xy 105.41 96.52) (xy 121.92 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7f1127a3-6628-4025-9a8d-ae6c6a886726")
+	)
+	(wire
+		(pts
 			(xy 170.18 129.54) (xy 170.18 137.16)
 		)
 		(stroke
@@ -2814,16 +2862,6 @@
 			(type default)
 		)
 		(uuid "8719e25c-33a7-4316-aef0-ea81827faad6")
-	)
-	(wire
-		(pts
-			(xy 111.76 43.18) (xy 101.6 43.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8721fae4-d46d-478f-b80f-f4ccf3c40990")
 	)
 	(wire
 		(pts
@@ -3087,6 +3125,16 @@
 	)
 	(wire
 		(pts
+			(xy 105.41 87.63) (xy 105.41 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b4f4b106-7505-4cd4-8589-6773d6f4ea02")
+	)
+	(wire
+		(pts
 			(xy 181.61 68.58) (xy 181.61 38.1)
 		)
 		(stroke
@@ -3204,6 +3252,16 @@
 			(type default)
 		)
 		(uuid "cd724dce-be74-437f-8733-61ea41ee3fc5")
+	)
+	(wire
+		(pts
+			(xy 105.41 110.49) (xy 105.41 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cd7edc37-19f5-43f6-b5f5-f313cb6a7c5c")
 	)
 	(wire
 		(pts
@@ -3367,16 +3425,6 @@
 	)
 	(wire
 		(pts
-			(xy 101.6 43.18) (xy 101.6 30.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ef326c80-0dbd-4e8b-9cbb-561c208bb45a")
-	)
-	(wire
-		(pts
 			(xy 19.05 63.5) (xy 19.05 78.74)
 		)
 		(stroke
@@ -3404,6 +3452,16 @@
 			(type default)
 		)
 		(uuid "fb552e87-b5c3-4719-bac2-81a0bd6e8244")
+	)
+	(wire
+		(pts
+			(xy 105.41 96.52) (xy 105.41 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fc5329df-eec5-441a-aafc-d9bc119a7d87")
 	)
 	(wire
 		(pts
@@ -3437,7 +3495,7 @@
 			(fill
 				(type none)
 			)
-			(uuid cd31613c-f2da-447d-8c86-5f2f074e28df)
+			(uuid 8c572b1d-18a3-4c55-ad76-afc719fe2169)
 		)
 	)
 	(symbol
@@ -3871,7 +3929,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "41c002f5-4a91-4033-aa58-f0f87a4c369c")
-		(property "Reference" "SW4"
+		(property "Reference" "SW5"
 			(at 44.45 83.1849 90)
 			(effects
 				(font
@@ -3925,7 +3983,77 @@
 		(instances
 			(project "ES_SoSe_25_Schaltplan"
 				(path "/232146ae-6a38-4d21-b056-d9d96ad8f36d"
-					(reference "SW4")
+					(reference "SW5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Switch:SW_SPST")
+		(at 105.41 105.41 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "529de7b5-477f-4e2b-8d2c-335e0e9c8e69")
+		(property "Reference" "SW1"
+			(at 107.95 104.7749 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "~"
+			(at 107.95 106.68 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 105.41 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 105.41 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single Pole Single Throw (SPST) switch"
+			(at 105.41 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "ae629e8a-ad20-427c-8499-3cf00a8a1e64")
+		)
+		(pin "1"
+			(uuid "8d38629c-b467-4409-b139-e5cbbb800570")
+		)
+		(instances
+			(project "ES_SoSe_25_Schaltplan"
+				(path "/232146ae-6a38-4d21-b056-d9d96ad8f36d"
+					(reference "SW1")
 					(unit 1)
 				)
 			)
@@ -3941,7 +4069,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "60de5121-83ad-4559-9681-149a6622f429")
-		(property "Reference" "SW1"
+		(property "Reference" "SW2"
 			(at 21.59 83.1849 90)
 			(effects
 				(font
@@ -3995,7 +4123,7 @@
 		(instances
 			(project ""
 				(path "/232146ae-6a38-4d21-b056-d9d96ad8f36d"
-					(reference "SW1")
+					(reference "SW2")
 					(unit 1)
 				)
 			)
@@ -4310,7 +4438,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 111.76 49.53 0)
+		(at 101.6 44.45 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4319,7 +4447,7 @@
 		(fields_autoplaced yes)
 		(uuid "86ec58bd-31b5-4168-9c8f-25fbd60c6920")
 		(property "Reference" "#PWR04"
-			(at 111.76 55.88 0)
+			(at 101.6 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4328,7 +4456,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 111.76 54.61 0)
+			(at 101.6 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4336,7 +4464,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 111.76 49.53 0)
+			(at 101.6 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4345,7 +4473,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 111.76 49.53 0)
+			(at 101.6 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4354,7 +4482,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 111.76 49.53 0)
+			(at 101.6 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4439,6 +4567,76 @@
 			(project "ES_SoSe_25_Schaltplan"
 				(path "/232146ae-6a38-4d21-b056-d9d96ad8f36d"
 					(reference "R4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 105.41 91.44 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9d94535e-1b9b-4416-a509-4aa373206b90")
+		(property "Reference" "R9"
+			(at 107.95 90.1699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10kR"
+			(at 107.95 92.7099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 103.632 91.44 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 105.41 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 105.41 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "95a93f27-5bcd-44e6-9bf8-b6bad8b506ec")
+		)
+		(pin "2"
+			(uuid "5a7b29f0-f8ad-4108-bdc0-e48b114c53e8")
+		)
+		(instances
+			(project "ES_SoSe_25_Schaltplan"
+				(path "/232146ae-6a38-4d21-b056-d9d96ad8f36d"
+					(reference "R9")
 					(unit 1)
 				)
 			)
@@ -4959,7 +5157,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b85c0ede-6c5a-4652-b0eb-465fa0436fe5")
-		(property "Reference" "SW3"
+		(property "Reference" "SW4"
 			(at 36.83 83.1849 90)
 			(effects
 				(font
@@ -5013,7 +5211,7 @@
 		(instances
 			(project "ES_SoSe_25_Schaltplan"
 				(path "/232146ae-6a38-4d21-b056-d9d96ad8f36d"
-					(reference "SW3")
+					(reference "SW4")
 					(unit 1)
 				)
 			)
@@ -5161,7 +5359,6 @@
 		)
 	)
 	(symbol
-		(lib_name "SSD1806_1")
 		(lib_id "es_custom_symbols:SSD1806")
 		(at 99.06 24.13 0)
 		(unit 1)
@@ -5303,7 +5500,7 @@
 		)
 	)
 	(symbol
-		(lib_name "SSD1806_1")
+		(lib_name "SSD1806_2")
 		(lib_id "es_custom_symbols:SSD1806")
 		(at 231.14 44.45 0)
 		(unit 1)
@@ -5837,7 +6034,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fa059aed-b1b3-4880-8de2-0ba7aa5df4d7")
-		(property "Reference" "SW2"
+		(property "Reference" "SW3"
 			(at 29.21 83.1849 90)
 			(effects
 				(font
@@ -5891,7 +6088,7 @@
 		(instances
 			(project "ES_SoSe_25_Schaltplan"
 				(path "/232146ae-6a38-4d21-b056-d9d96ad8f36d"
-					(reference "SW2")
+					(reference "SW3")
 					(unit 1)
 				)
 			)

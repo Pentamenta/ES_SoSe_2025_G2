@@ -420,7 +420,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(property "Reference" "U"
-			(at 7.112 -3.048 0)
+			(at 9.652 -3.048 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -464,8 +464,8 @@
 		)
 		(symbol "SSD1806_1_1"
 			(rectangle
-				(start -6.35 3.81)
-				(end 6.35 -3.81)
+				(start -8.89 3.81)
+				(end 8.89 -3.81)
 				(stroke
 					(width 0)
 					(type solid)
@@ -483,7 +483,7 @@
 				)
 			)
 			(pin input line
-				(at -3.81 -6.35 90)
+				(at -6.35 -6.35 90)
 				(length 2.54)
 				(name "SDA"
 					(effects
@@ -501,7 +501,7 @@
 				)
 			)
 			(pin input line
-				(at 0 -6.35 90)
+				(at -2.54 -6.35 90)
 				(length 2.54)
 				(name "SCL"
 					(effects
@@ -519,7 +519,7 @@
 				)
 			)
 			(pin input line
-				(at 3.81 -6.35 90)
+				(at 2.54 -6.35 90)
 				(length 2.54)
 				(name "GND"
 					(effects
@@ -529,6 +529,24 @@
 					)
 				)
 				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 6.35 -6.35 90)
+				(length 2.54)
+				(name "Vcc"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "4"
 					(effects
 						(font
 							(size 1.27 1.27)

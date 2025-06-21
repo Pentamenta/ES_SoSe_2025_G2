@@ -14,7 +14,7 @@ const int ENA = 10;
 const int IN1 = 11;
 const int IN2 = 12;
 const int MIN_PWM = 50;
-int speed_target_val;
+float speed_target_val;
 int stear_target_val;
 int MotorGrad = 90;
 int pwm = 0;
@@ -106,31 +106,34 @@ void handleSteering() {
     MotorGrad = map(xVal, 5, 100, 90, 140); // Rechts
   }
   srv.write(MotorGrad);
-
+  
+  int stear_actual_val = xVal;
+  
   
 }
 
 //jan
 void handleDrive() {
-  int yVal = speed_target_val;
+  float yVal = speed_target_val;  // Wert im Bereich -10.0 bis +10.0
+  int pwm;
 
-  if (yVal > 0) {
+  if (yVal > 0.0) {
     // Vorwärts
-    float norm = (float)yVal / 100;
+    float norm = yVal / 10.0;  // Normierung auf 0.0 – 1.0
     pwm = MIN_PWM + norm * (255 - MIN_PWM);
 
     digitalWrite(IN1, HIGH);
     digitalWrite(IN2, LOW);
-    analogWrite(ENA, pwm);
+    analogWrite(ENA, (int)pwm);
   }
-  else if (yVal < 0) {
+  else if (yVal < 0.0) {
     // Rückwärts
-    float norm = (float) (-yVal) / 100;
+    float norm = -yVal / 10.0;  // Normierung auf 0.0 – 1.0
     pwm = MIN_PWM + norm * (255 - MIN_PWM);
 
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, HIGH);
-    analogWrite(ENA, pwm);
+    analogWrite(ENA, (int)pwm);
   }
   else {
     // Stop
@@ -139,8 +142,6 @@ void handleDrive() {
     analogWrite(ENA, 0);
     pwm = 0;
   }
-
-  int stear_actual_val = yVal;
 }
 
 //jan

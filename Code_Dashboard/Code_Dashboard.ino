@@ -10,7 +10,7 @@ bool tempo_on = false;  // Ist der Tempomat an?
 
 #include <ArduinoBLE.h> 
 #include "EBS_BLE.h"  // Custom Header mit BLE definitionen (Adrian)
-#include "joystick.h" // Custom Header mit Joystick Funktionen (Adrian)
+#include "Joystick.h" // Custom Header mit Joystick Funktionen (Adrian)
 #include "Buttons.h"  // Custom Header für Button Anfrage (Adrian)
 #include "Leds.h"
 #include <U8g2lib.h> //Software I2C Display Ansteuerung (Eva)

@@ -357,30 +357,26 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
 
   // Daten zum Dashboard empfangen
   data_p_d = &data_buffer;      // Pointer vorbereiten
-  byte_p = (uint8_t*)data_p_d; 
+  byte_p = (uint8_t*)data_p_d;  // Hilfspointer casten 
 
-  if(Serial1.read() == '<') { // Auf start-byte checken
+  if(Serial1.read() == '<') { // Auf Start-Byte checken
+    for (int i = 0; i < sizeof(data_to_dash); i++) { // Daten einlesen
+      *byte_p = (byte)Serial1.read(); // Byte einlesen
+      byte_p++; // Pointer iterieren
+    }
 
-  for (int i = 0; i < sizeof(data_to_dash); i++) { // Daten einlesen
-    *byte_p = (byte)Serial1.read();
-    byte_p++;
+    if (Serial1.read() == '>') {  // Auf Stopp-Byte checken
+      data_to_dash = *data_p_d;   // Daten aus Puffer in Speicher schreiben
+    }
   }
-
-  if (Serial1.read() == '>') {
-    data_to_dash = *data_p_d;
-  }
-  }
-
-  data_p_c = &data_to_car;
-  byte_p = (uint8_t*)data_p_c;
-  Serial1.write('<');
+  // Daten zum Auto senden
+  data_p_c = &data_to_car;      // Pointer vorbereiten
+  byte_p = (uint8_t*)data_p_c;  // Hilfspointer casten
+  Serial1.write('<');           // Start-Byte senden
   for (int i = 0; i < sizeof(data_to_car); i++) {
-    //Serial.print(*byte_p, BIN);
-    Serial1.write(*byte_p++);
+    Serial1.write(*byte_p++); // Daten schreiben
   }
-  //Serial.println();
-  Serial1.write('>');
-  //Serial1.flush(); // Warten bis alle Daten im Puffer gesendet wurden
+  Serial1.write('>'); // Stopp-Byte sendne
 
   /*
   //Debug:

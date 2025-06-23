@@ -2,6 +2,8 @@
 Einrichten und Auswerten von Tastern
 geschrieben von Adrian Behrens
 */
+#ifndef BUTTONS
+#define BUTTONS
 
 #define T_1         5   // Tempomat
 #define T_2         6   // Licht
@@ -37,3 +39,5 @@ void Button_Setup() {
     
 
 }
+
+#endif

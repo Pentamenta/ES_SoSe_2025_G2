@@ -9,21 +9,23 @@
 
 #include <Arduino_BMI270_BMM150.h>
 #include <ArduinoBLE.h>
-#include "EBS_BLE.h" //Custom Header mit BLE definitionen (Adrian)
-#include "acc_data.h" // Custom Header mit Funktionen für Accelerometer
+#include "EBS_BLE.h"    //Custom Header mit BLE definitionen (Adrian)
+#include "acc_data.h"   // Custom Header mit Funktionen für Accelerometer (Adrian)
+#include "Temperature.h"// Custom Header für Temperaturmessung (Adrian)
 
-unsigned long t_debug, t_fast, t_slow, t_acc;
+unsigned long t_debug, t_fast, t_slow, t_acc, t_temp;
 
 void setup() {
 Serial.begin(9600);
 Serial1.begin(115200, SERIAL_8N1);
 
-t_debug, t_fast, t_slow, t_acc = millis();
+t_debug, t_fast, t_slow, t_acc, t_temp = millis();
 
 pinMode(BLE_LED, OUTPUT);
 pinMode(CONNECT_NOTIFY, OUTPUT);
 
 Acc_Setup();
+HTS_Setup();
 
 digitalWrite(CONNECT_NOTIFY, LOW);
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Peripherial Device (Adrian)
@@ -48,6 +50,11 @@ void loop() {
   if (millis() >= t_acc + ACC_WAIT_TIME) { // Auslesen der Neigungswinkel (Adrian)
     Acc_Read();
     t_acc = millis();
+  }
+
+  if (millis() >= t_temp + TEMP_CYCLE) { // Auslesen der Temperatur (Adrian)
+    data_to_dash.temperature_val = temp_read();
+    t_temp = millis();
   }
 
   if (millis() >= t_debug + 500){ // Debug Loop

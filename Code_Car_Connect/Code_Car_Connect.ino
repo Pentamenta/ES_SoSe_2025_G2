@@ -53,7 +53,7 @@ void loop() {
   }
 
   if (millis() >= t_temp + TEMP_CYCLE) { // Auslesen der Temperatur (Adrian)
-    data_to_dash.temperature_val = temp_read();
+    data_to_car.temperature_val = temp_read();
     t_temp = millis();
   }
 

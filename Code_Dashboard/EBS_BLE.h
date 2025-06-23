@@ -173,6 +173,11 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
     }
   } while (!car);
 
+  if (car.advertisedServiceUuid() != remote_service_Uuid) {
+    Serial.println("Wrong Device found!");
+    return;
+  }
+
   BLE.stopScan();
 
   Serial.println("- Connecting to peripheral Car...");

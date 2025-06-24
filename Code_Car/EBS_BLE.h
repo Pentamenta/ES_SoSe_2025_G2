@@ -72,24 +72,7 @@ bool boolean_to_dash_arr[BOOLNUM][16];
 
 // BOOLEAN Zuweisung
 
-enum bool_1_names {
-	blink_r
-	blink_l
-	blink_warn
-	headlight
-	headlight_far
-	brakelight
-	luefter
-	heating
-	parking_r
-	parking_l
-	abs_active
-	ueberschlag_aktiv
-	diebstahl_aktiv
-	esp_aktiv
-}
 
-enum bool_1_names bool_1;
 
 
 /// UUID und BLE Dekleration (Adrian)

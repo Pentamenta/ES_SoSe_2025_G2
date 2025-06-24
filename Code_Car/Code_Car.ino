@@ -17,7 +17,11 @@ const int MIN_PWM = 50;
 float speed_target_val;
 int stear_target_val;
 int MotorGrad = 90;
-int pwm = 0;
+int pwmVal;
+float speed_buffer_val;
+float avgSpeed = 0.0;
+int speed_buffer_pwm = 0;
+float speed_reg;
 
 //Geschwindigkeitsmessung (Jan)
 const byte sensorDigitalPin = 2;
@@ -94,9 +98,17 @@ void countPulse() {
   pulseCount++;
 }
 
+//buffer
+void buffer() {
+  data_to_car.speed_target_val = speed_buffer_val;
+  float error = speed_buffer_val - avgSpeed;
+  const float KP = 100.0;
+  speed_buffer_pwm = constrain(error * KP, -255, 255);
+}
+
 //jan
 void handleSteering() {
-  int xVal = stear_target_val;
+  int xVal = data_to_car.stear_target_val;
 
   if (xVal > -5 && xVal < 5) {
     MotorGrad = 90; // Zentrum
@@ -107,40 +119,31 @@ void handleSteering() {
   }
   srv.write(MotorGrad);
   
-  int stear_actual_val = xVal;
-  
-  
+  data_to_dash.stear_actual_val = xVal;
 }
 
 //jan
 void handleDrive() {
-  float yVal = speed_target_val;  // Wert im Bereich -10.0 bis +10.0
-  int pwm;
 
-  if (yVal > 0.0) {
+  int pwmVal = speed_buffer_pwm; 
+
+  if (speed_buffer_pwm > 0.0) {
     // Vorwärts
-    float norm = yVal / 10.0;  // Normierung auf 0.0 – 1.0
-    pwm = MIN_PWM + norm * (255 - MIN_PWM);
-
     digitalWrite(IN1, HIGH);
     digitalWrite(IN2, LOW);
-    analogWrite(ENA, (int)pwm);
+    analogWrite(ENA, max(pwmVal, MIN_PWM));
   }
-  else if (yVal < 0.0) {
+  else if (speed_buffer_pwm < 0.0) {
     // Rückwärts
-    float norm = -yVal / 10.0;  // Normierung auf 0.0 – 1.0
-    pwm = MIN_PWM + norm * (255 - MIN_PWM);
-
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, HIGH);
-    analogWrite(ENA, (int)pwm);
+    analogWrite(ENA, max(-pwmVal, MIN_PWM));
   }
   else {
     // Stop
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, LOW);
     analogWrite(ENA, 0);
-    pwm = 0;
   }
 }
 
@@ -151,9 +154,13 @@ void handleRPMandSpeed() {
   if (currentTime - lastMeasurementTime >= interval) {
     detachInterrupt(digitalPinToInterrupt(sensorDigitalPin));
 
-    // Direkt hier RPM berechnen
     float currentRPM = pulseCount * 60.0;
-    float currentSpeed = (currentRPM * wheelCircumference * 60.0) / 1000.0;
+
+    // Direkt in m/s berechnen
+    float currentSpeed = (pulseCount * wheelCircumference) / (interval / 1000.0);  // m/s
+
+    // Alternativ mit RPM (zur besseren Lesbarkeit):
+    // float currentSpeed = (currentRPM / 60.0) * wheelCircumference;
 
     rpmValues[index] = currentRPM;
     speedValues[index] = currentSpeed;
@@ -162,12 +169,12 @@ void handleRPMandSpeed() {
     float avgRPM = (rpmValues[0] + rpmValues[1] + rpmValues[2]) / 3.0;
     float avgSpeed = (speedValues[0] + speedValues[1] + speedValues[2]) / 3.0;
 
-
     pulseCount = 0;
     lastMeasurementTime = currentTime;
 
     attachInterrupt(digitalPinToInterrupt(sensorDigitalPin), countPulse, FALLING);
 
-    float speed_actual_val = avgSpeed;
+    data_to_dash.speed_actual_val = avgSpeed;  // Jetzt direkt in m/s
   }
 }
+

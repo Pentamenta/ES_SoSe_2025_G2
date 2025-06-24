@@ -17,7 +17,7 @@ unsigned long t_debug, t_fast, t_slow, t_acc;
 
 void setup() {
 Serial.begin(9600);
-Serial1.begin(115200, SERIAL_8N1);
+Serial1.begin(9600, SERIAL_8N1);
 
 t_debug, t_fast, t_slow, t_acc = millis();
 

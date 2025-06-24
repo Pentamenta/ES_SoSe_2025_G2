@@ -15,7 +15,7 @@ bool tempo_on = false;  // Ist der Tempomat an?
 #include "Leds.h"
 //#include <U8g2lib.h> //Software I2C Display Ansteuerung (Eva)
 #include <math.h>    //für Grafiken auf Displays (Eva)
-#include "Tacho_Tempomat.h" //Einbindung der Funktionen/Variablen für mittleres Display: Tache & Tempomat (Eva)
+//#include "Tacho_Tempomat.h" //Einbindung der Funktionen/Variablen für mittleres Display: Tache & Tempomat (Eva)
 
 unsigned long t_debug, t_fast, t_slow;
 

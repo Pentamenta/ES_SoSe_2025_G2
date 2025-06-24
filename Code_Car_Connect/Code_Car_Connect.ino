@@ -9,6 +9,7 @@
 
 #include <Arduino_BMI270_BMM150.h>
 #include <ArduinoBLE.h>
+#include <Arduino_HTS221.h>
 #include "EBS_BLE.h" //Custom Header mit BLE definitionen (Adrian)
 #include "acc_data.h" // Custom Header mit Funktionen für Accelerometer
 

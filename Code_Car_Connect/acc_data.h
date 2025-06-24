@@ -1,17 +1,23 @@
 #ifndef ACC_DATA
 #define ACC_DATA
 
+
+
+float old_temp;
+
 void Acc_Setup(){
 	
 	if (!IMU.begin()) {
     Serial.println("Failed to initialize IMU!");
     while (1);
-	
-	
+  }
 	Serial.print("Accelerometer sample rate = ");
 	Serial.print(IMU.accelerationSampleRate());
 	Serial.println(" Hz");
 	
+  if (!HTS.begin()) {
+    Serial.println("Failed to initialize humidity temperature sensor!");
+    while (1);
   }	
 }
 
@@ -68,6 +74,12 @@ void Acc_Read() {
 	data_to_car.dps_Y_val = gy;
 	data_to_car.dps_Z_val = gz;
 	  
+  }
+  float temperature = HTS.readTemperature();
+
+  if (abs(old_temp - temperature) >= 0.5 ){
+    old_temp = temperature;
+    data_to_car.temperature_val = temperature;
   }
 	
 }

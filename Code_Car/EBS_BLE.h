@@ -161,6 +161,7 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
 
   BLE.scan();
 
+  SEARCHING:
   do  //Suche nach dem peripheral Device, bis es gefunden wurde
   {
     car = BLE.available();
@@ -174,7 +175,7 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
 
   if (car.advertisedServiceUuid() != remote_service_Uuid) {
     Serial.println("This is not the Car!");
-    return;
+    goto SEARCHING;
   }
 
   BLE.stopScan();
@@ -640,6 +641,9 @@ void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
   Serial.print("Bool 1 to dash: ");
   Serial.println(data_to_dash.boolean_0_val, BIN);
   
+  Serial.print("Temp: ");
+  Serial.print(data_to_dash.temperature_val);
+  Serial.println("°C");
   /*
   Serial.print("AngleX: ");
   Serial.println(data_to_car.angleX);

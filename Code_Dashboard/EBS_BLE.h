@@ -641,6 +641,9 @@ void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
   Serial.print("Bool 1 to dash: ");
   Serial.println(data_to_dash.boolean_0_val, BIN);
   
+  Serial.print("Temp: ");
+  Serial.print(data_to_dash.temperature_val);
+  Serial.println("°C");
   /*
   Serial.print("AngleX: ");
   Serial.println(data_to_car.angleX);

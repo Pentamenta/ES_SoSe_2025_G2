@@ -161,6 +161,7 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
 
   BLE.scan();
 
+  SEARCHING:
   do  //Suche nach dem peripheral Device, bis es gefunden wurde
   {
     car = BLE.available();
@@ -174,7 +175,7 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
 
   if (car.advertisedServiceUuid() != remote_service_Uuid) {
     Serial.println("This is not the Car!");
-    return;
+    goto SEARCHING;
   }
 
   BLE.stopScan();

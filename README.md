@@ -1,21 +1,21 @@
 # ES_SoSe_2025_G1
  Projekt zur Entwicklung eines automatisierten Fahrzeuges und eines Dashboards für den Kurs Embedded Systems 1 an der BHT Berlin.
 
+ Dozent: Prof. Dr.-Ing. Ronny Jahnke
+
 ## Workflow
 
 ### Git
 
-Es wird mit Git gearbeitet. 
+Es wird mit Git gearbeitet.  
 Vor jeder Arbeitsphase wird das Repository gepullt.
 Gearbeitet wird nur in Branches, niemals direkt im Main. Es wird nur gemerged, wenn der Branch erfolgreich getestet wurde.
-Vor dem commit wird ein weiteres mal gepullt, um Mergefehler durch paralleles Arbeiten zu vermeiden.
-
+Vor dem Commit wird ein weiteres mal gepullt, um Mergefehler durch paralleles Arbeiten zu vermeiden.
 
 ## Hardware
 
-Als Basis für beide Projektteile wird ein Arduino Nano BLE Sense verwendet.
-Weitere Arduinos können ins Projekt implementiert werden, der Nano BLE muss aber die Zentrale Anlaufstelle bleiben.
-Um das Board zu bespielen:
+Als Basis für beide Projektteile wird ein Arduino Nano BLE 33 verwendet. Das Auto verfügt zusätzlich über einen Arduino MEGA, da weitere Pins für die Steuerung der IOs benötigt wurden. Der Arduino Nano BLE 33 bleicht zentrale Anlaufstelle für die Drahtloskommunikationj
+Um das Board Arduino Nano BLE 33 zu bespielen:
  1. Unter Werkzeuge --> Board --> Boardverwalter wählen
  2. Nach "Arduino Mbed OS Nano Boards" suchen und installieren
  3. Unter Board erscheint nun die neue Option "Arduino Mbed OS Nano Boards"
@@ -29,6 +29,7 @@ Für das Projekt zu installierende Bibliotheken:
 - ArduinoBLE
 - U8g2 von olikraus (beim Inkludieren werden 3 Bibliotheken eingefügt, wir brauchen nur die U8g2lib)
 - Arduino_BMI270_BMM150
+
 
 ### Softwarestruktur
 

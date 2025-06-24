@@ -9,7 +9,7 @@
 
 #include <Arduino_BMI270_BMM150.h>
 #include <ArduinoBLE.h>
-#include <Arduino_HTS221.h>
+//#include <Arduino_HTS221.h>
 #include "EBS_BLE.h" //Custom Header mit BLE definitionen (Adrian)
 #include "acc_data.h" // Custom Header mit Funktionen für Accelerometer
 
@@ -28,7 +28,7 @@ Acc_Setup();
 
 digitalWrite(CONNECT_NOTIFY, LOW);
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Peripherial Device (Adrian)
-
+data_to_car.temperature_val = 24; // Debug da Temperatursensor nicht vorhanden
 }
 
 void loop() {

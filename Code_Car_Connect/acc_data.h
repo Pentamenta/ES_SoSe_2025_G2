@@ -15,10 +15,12 @@ void Acc_Setup(){
 	Serial.print(IMU.accelerationSampleRate());
 	Serial.println(" Hz");
 	
+  /*
   if (!HTS.begin()) {
     Serial.println("Failed to initialize humidity temperature sensor!");
     while (1);
   }	
+  */
 }
 
 void Acc_Read() {
@@ -75,12 +77,14 @@ void Acc_Read() {
 	data_to_car.dps_Z_val = gz;
 	  
   }
+  /*
   float temperature = HTS.readTemperature();
 
   if (abs(old_temp - temperature) >= 0.5 ){
     old_temp = temperature;
     data_to_car.temperature_val = temperature;
   }
+  */
 	
 }
 

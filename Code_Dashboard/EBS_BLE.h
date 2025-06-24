@@ -459,7 +459,7 @@ void Serial_val_exchange() { // Variablen an MEGA Senden und Empfangen (Adrian)
 // Übergreifende Funktionen
 
 void unpack_bool() {  // heir werden die Boolean Variablen aus einem Int extrahiert (Adrian)
-
+  #ifdef DASH
   for (int i = 0; i < 16; i++) {	// Erstes Int entpacken
     if ((data_to_dash.boolean_0_val & (1 << i))) {
       boolean_to_dash_arr[0][i] = true;
@@ -474,30 +474,75 @@ void unpack_bool() {  // heir werden die Boolean Variablen aus einem Int extrahi
       boolean_to_dash_arr[1][i] = false;
     }
   }
+  #endif
+  #ifdef CAR
+    for (int i = 0; i < 16; i++) {	// Erstes Int entpacken
+    if ((data_to_car.boolean_0_val & (1 << i))) {
+      boolean_to_car_arr[0][i] = true;
+    } else {
+      boolean_to_car_arr[0][i] = false;
+    }
+  }
+  for (int i = 0; i < 16; i++) {	// Erstes Int entpacken
+    if ((data_to_car.boolean_1_val & (1 << i))) {
+      boolean_to_car_arr[1][i] = true;
+    } else {
+      boolean_to_car_arr[1][i] = false;
+    }
+  }
+  #endif
+
+
 }
 
 void package_bool() {  // hier werden die Boolean Variablen in einen int Zusammengefasst (Adrian)
+  #ifdef DASH
+  data_to_car.boolean_0_val, data_to_car.boolean_1_val = 0;
+  for (int i = 0; i < 16; i++) {	// Erstes Int verpacken
+    if (boolean_to_car_arr[0][i]) {
+      data_to_car.boolean_0_val = data_to_car.boolean_0_val | (1 << i);
+    }
+    else {
+      data_to_car.boolean_0_val = data_to_car.boolean_0_val & ~(1 << i);
+    }
+  }
+  for (int i = 0; i < 16; i++) {	// Erstes Int verpacken
+    if (boolean_to_car_arr[1][i]) {
+      data_to_car.boolean_1_val = data_to_car.boolean_1_val | (1 << i);
+    }
+    else {
+      data_to_car.boolean_1_val = data_to_car.boolean_1_val & ~(1 << i);
+    }
+  }
+  #endif
+  #ifdef CAR
+  data_to_dash.boolean_0_val, data_to_dash.boolean_1_val = 0;
+  for (int i = 0; i < 16; i++) {	// Erstes Int verpacken
+    if (boolean_to_dash_arr[0][i]) {
+      data_to_dash.boolean_0_val = data_to_dash.boolean_0_val | (1 << i);
+    }
+    else {
+      data_to_dash.boolean_0_val = data_to_dash.boolean_0_val & ~(1 << i);
+    }
+  }
+  for (int i = 0; i < 16; i++) {	// Erstes Int verpacken
+    if (boolean_to_dash_arr[1][i]) {
+      data_to_dash.boolean_1_val = data_to_dash.boolean_1_val | (1 << i);
+    }
+    else {
+      data_to_dash.boolean_1_val = data_to_dash.boolean_1_val & ~(1 << i);
+    }
+  }
+  #endif
 
-  for (int i = 0; i < 16; i++) {	// Erstes Int verpacken
-    if (boolean_to_car_arr[0][15 - i]) {
-      data_to_car.boolean_0_val++;
-    }
-    data_to_car.boolean_0_val << 1;
-  }
-  for (int i = 0; i < 16; i++) {	// Erstes Int verpacken
-    if (boolean_to_car_arr[1][15 - i]) {
-      data_to_car.boolean_1_val++;
-    }
-    data_to_car.boolean_1_val << 1;
-  }
+
 }
 
 
 void BLE_fast_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
-
-  package_bool();
   
 #ifdef DASH
+  package_bool();
   // Variablen Senden Dashboard
   speed_target.writeValue(&data_to_car.speed_target_val, 4);  // Float
   stear_target.writeValue(&data_to_car.stear_target_val, 4);  // Int
@@ -515,6 +560,7 @@ void BLE_fast_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
   speed_actual.readValue(&data_to_dash.speed_actual_val, 4);
   boolean_to_dash_0.readValue(&data_to_dash.boolean_0_val, 2);
   boolean_to_dash_1.readValue(&data_to_dash.boolean_1_val, 2);
+    unpack_bool();
 #endif
 #ifdef CAR_CONNECT
   // Variablen Lesen
@@ -523,8 +569,6 @@ void BLE_fast_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
   boolean_to_car_0.readValue(&data_to_car.boolean_0_val, 2);
   boolean_to_car_1.readValue(&data_to_car.boolean_1_val, 2);
 #endif
-
-  unpack_bool();
 }
 
 void BLE_slow_exchange() { // BLE Variablen Senden und Empfangen (Adrian)
@@ -573,18 +617,31 @@ void Debug_data() { // Debug Ausgabe des Data Structs (Adrian)
   Serial.print("Stear_actual: ");
   Serial.println(data_to_dash.stear_actual_val);
   
+  Serial.print("ARR to car: ");
+  for (int i = 0; i < 16; i++) {
+    Serial.print(boolean_to_car_arr[0][15 - i], BIN);
+  }
+  Serial.println();
+
   Serial.print("Bool 1 to car: ");
   Serial.println(data_to_car.boolean_0_val, BIN);
+
+  Serial.print("ARR to dash: ");
+  for (int i = 0; i < 16; i++) {
+    Serial.print(boolean_to_dash_arr[0][15 - i], BIN);
+  }
+  Serial.println();
   
   Serial.print("Bool 1 to dash: ");
   Serial.println(data_to_dash.boolean_0_val, BIN);
   
+  /*
   Serial.print("AngleX: ");
   Serial.println(data_to_car.angleX);
   
   Serial.print("AngleY: ");
   Serial.println(data_to_car.angleY);
-
+  */
 }
 
 #endif

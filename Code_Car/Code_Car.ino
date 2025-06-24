@@ -71,9 +71,7 @@ else {
 
 
 if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
-  package_bool();
   Serial_val_exchange();
-  unpack_bool();
   t_exchange = millis();
   }
 

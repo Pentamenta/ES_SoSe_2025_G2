@@ -1,6 +1,3 @@
-#ifndef LED
-#define LED
-
 // LED Pins
 #define LED1  A6 // Blinker R
 #define LED2  A7 // Blinker L
@@ -59,5 +56,3 @@ void Led_Update() {
   blinker();
 
 }
-
-#endif

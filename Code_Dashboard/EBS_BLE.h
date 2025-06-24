@@ -13,7 +13,6 @@ struct exchange_data_to_car { // Alle Variablen vom Dashboard zum Auto
 // speed_val > 0 vorwärts
 // speed_val < 0 rückwärts
 float speed_target_val = 0; // Zu erreichende Geschwindigkeit
-float temperature_val;		  // Temperatur am Auto
 
 float dps_X_val;
 float dps_Y_val;
@@ -172,11 +171,6 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
       digitalWrite(BLE_LED, !digitalRead(BLE_LED));
     }
   } while (!car);
-
-  if (car.advertisedServiceUuid() != remote_service_Uuid) {
-    Serial.println("Wrong Device found!");
-    return;
-  }
 
   BLE.stopScan();
 

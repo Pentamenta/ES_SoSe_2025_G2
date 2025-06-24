@@ -29,8 +29,6 @@ Für das Projekt zu installierende Bibliotheken:
 - ArduinoBLE
 - U8g2 von olikraus (beim Inkludieren werden 3 Bibliotheken eingefügt, wir brauchen nur die U8g2lib)
 - Arduino_BMI270_BMM150
-- Arduino_HTS221
-- Servo
 
 ### Softwarestruktur
 

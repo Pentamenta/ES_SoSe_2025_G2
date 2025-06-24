@@ -65,7 +65,7 @@ void loop() {
 handleSteering();   // Servo Motor
 handleDrive();      // DC Motor
 handleRPMandSpeed(); //RPM Messung
-
+buffer();
 if (digitalRead(CONNECT_NOTIFY)) {
   digitalWrite(UART_LED, HIGH);
 }

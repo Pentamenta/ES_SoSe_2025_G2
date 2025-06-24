@@ -13,6 +13,7 @@ struct exchange_data_to_car { // Alle Variablen vom Dashboard zum Auto
 // speed_val > 0 vorwärts
 // speed_val < 0 rückwärts
 float speed_target_val = 0; // Zu erreichende Geschwindigkeit
+float temperature_val;		  // Temperatur am Auto
 
 float dps_X_val;
 float dps_Y_val;
@@ -90,8 +91,8 @@ const char* boolean_to_dash_1_Uuid    = "4c7f1db6-173c-46ea-9729-f2eb5cd2e839";
 
 const char* temperature_Uuid		  = "3d7ae5af-3f77-4a6a-b17d-9ba9fd495f61";
 
-const char* angleX_Uuid               = "d457688d-774c-4263-83fe-a5ff0ccadf18";
-const char* angleY_Uuid               = "88596d2b-649e-4487-b654-f9b340242ebf";
+const char* angleX_Uuid           = "d457688d-774c-4263-83fe-a5ff0ccadf18";
+const char* angleY_Uuid           = "88596d2b-649e-4487-b654-f9b340242ebf";
 
 //const char* dps_X_Uuid				= "bae5d570-f4be-41ac-8b4f-af6855bd2732";
 //const char* dps_Y_Uuid				= "e48e5f2e-8f87-4df8-ad31-861477c22439";

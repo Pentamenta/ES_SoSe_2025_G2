@@ -75,7 +75,7 @@ float max = MAX_SPEED;
 float dead = DEADZONE_LOWER;
 
 float speed = (max/dead)*buffer;
-return speed;
+return -speed;
 
 }
 

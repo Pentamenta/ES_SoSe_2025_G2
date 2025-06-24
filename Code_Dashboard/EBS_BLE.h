@@ -13,7 +13,7 @@ struct exchange_data_to_car { // Alle Variablen vom Dashboard zum Auto
 // speed_val > 0 vorwärts
 // speed_val < 0 rückwärts
 float speed_target_val = 0; // Zu erreichende Geschwindigkeit
-
+float temperature_val;		// Temperatur am Auto
 float dps_X_val;
 float dps_Y_val;
 float dps_Z_val;

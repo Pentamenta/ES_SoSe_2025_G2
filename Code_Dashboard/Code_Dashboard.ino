@@ -13,7 +13,7 @@ bool tempo_on = false;  // Ist der Tempomat an?
 #include "Joystick.h" // Custom Header mit Joystick Funktionen (Adrian)
 #include "Buttons.h"  // Custom Header für Button Anfrage (Adrian)
 #include "Leds.h"
-//#include <U8g2lib.h> //Software I2C Display Ansteuerung (Eva)
+#include <U8g2lib.h> //Software I2C Display Ansteuerung (Eva)
 #include <math.h>    //für Grafiken auf Displays (Eva)
 //#include "Tacho_Tempomat.h" //Einbindung der Funktionen/Variablen für mittleres Display: Tache & Tempomat (Eva)
 
@@ -40,7 +40,7 @@ unsigned long t_exchange;
 // Variablen zur Abstandsmessung
 void setup() {
 Serial.begin(9600);
-delay(50);
+while(!Serial); 
 t_debug, t_fast, t_slow = millis();
 
 pinMode(BLE_LED, OUTPUT);

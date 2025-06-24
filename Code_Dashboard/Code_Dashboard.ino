@@ -13,9 +13,9 @@ bool tempo_on = false;  // Ist der Tempomat an?
 #include "Joystick.h" // Custom Header mit Joystick Funktionen (Adrian)
 #include "Buttons.h"  // Custom Header für Button Anfrage (Adrian)
 #include "Leds.h"
-//#include <U8g2lib.h> //Software I2C Display Ansteuerung (Eva)
+#include <U8g2lib.h> //Software I2C Display Ansteuerung (Eva)
 #include <math.h>    //für Grafiken auf Displays (Eva)
-//#include "Tacho_Tempomat.h" //Einbindung der Funktionen/Variablen für mittleres Display: Tache & Tempomat (Eva)
+
 
 unsigned long t_debug, t_fast, t_slow;
 
@@ -31,9 +31,12 @@ const int SCREEN_HEIGHT = 64;       // Höhe in Pixel
 // Erstellen des Displayobjekts über I2C-Verbindung
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
+//Software I2C Pininitialisierung (Eva) für linkes Display, R3 für die Displaydrehung
+U8G2_SSD1306_128X64_NONAME_F_SW_I2C ldisplay(U8G2_R3, /* clock=*/ 8, /* data=*/ 9, /* reset=*/ U8X8_PIN_NONE);
+
 #include "Tacho.h" //Einbindung der Funktionen/Variablen für mittleres Display: Tache & Tempomat (Shari)
-#include "Ladung.h"  //Einbindung der Funktionen/Variablen für die Ladung (Eva)
 #include "Abstandsmessung.h" //Einbindung der Funktionen/Variablen zur Abstandsmessung (Shari)
+#include "leftDisplay.h" //Einbindung der Funktionen/Variablen für linkes Display: Tempomat (Eva)
 
 unsigned long t_exchange;
 
@@ -47,7 +50,7 @@ pinMode(BLE_LED, OUTPUT);
 Led_Setup();
 joystick_setup(); // Initialisiert Joysticks (Adrian)
 Button_Setup();
-//display.begin();
+ldisplay.begin();
 
 // Ausgabe des Dysplays 3D über I2C (Shari)
  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3D)) {
@@ -83,10 +86,10 @@ void loop() {
     t_fast = millis();
   }
 
-// Funktionen Tasterabfrage + LEDs
-Led_Update();
-speed_control();
-button_eval();
+  // Funktionen Tasterabfrage + LEDs
+  Led_Update();
+  speed_control();
+  button_eval();
 
 
   if (millis() >= t_slow + SLOW_CYCLE) { // langsame BLE Kommunikation (Adrian)
@@ -99,7 +102,9 @@ button_eval();
     Debug_data();
     //joystick_debug();
     t_debug = millis();
-    }
+  }
+
+  writedispl(speed_actual_val);
 
 }
 

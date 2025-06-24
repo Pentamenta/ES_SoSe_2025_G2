@@ -70,6 +70,7 @@ bool boolean_to_car_arr[BOOLNUM][16];
 
 bool boolean_to_dash_arr[BOOLNUM][16];
 
+
 /// UUID und BLE Dekleration (Adrian)
 
 // UUID des vom Dashboard bereitgestellten Services

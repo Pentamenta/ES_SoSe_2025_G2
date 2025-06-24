@@ -75,7 +75,9 @@ else {
 
 
 if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
+  package_bool();
   Serial_val_exchange();
+  unpack_bool();
   t_exchange = millis();
   }
 
@@ -100,7 +102,7 @@ void countPulse() {
 
 //buffer
 void buffer() {
-  data_to_car.speed_target_val = speed_buffer_val;
+  speed_buffer_val = data_to_car.speed_target_val;
   float error = speed_buffer_val - avgSpeed;
   const float KP = 100.0;
   speed_buffer_pwm = constrain(error * KP, -255, 255);

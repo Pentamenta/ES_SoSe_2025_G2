@@ -32,7 +32,7 @@ void tachorech() {
 }
 
 // Funktion zum Zeichnen des Tachos mit Nadel und Textanzeige
-void writeTacho(uint16_t kmh, uint16_t tempo, int tempo_on, int temp, int neig) {
+void writeTacho(uint16_t ms, uint16_t tempo, int tempo_on, int temp, int neig) {
   display.clearDisplay();  // Anzeige löschen
 
   // Skala zeichnen
@@ -41,8 +41,7 @@ void writeTacho(uint16_t kmh, uint16_t tempo, int tempo_on, int temp, int neig) 
   }
 
   // Geschwindigkeit → Winkel umrechnen (zwischen -180° und 0°)
-  int maxSpeed = 200;
-  float angle = map(kmh, 0, maxSpeed, -180, 0);
+  float angle = map(ms, 0, MAX_SPEED, -180, 0);
   float rad = angle * 3.1416 / 180.0;
 
   // Koordinaten für Nadelspitze berechnen
@@ -69,7 +68,7 @@ void writeTacho(uint16_t kmh, uint16_t tempo, int tempo_on, int temp, int neig) 
   }
 
   // Textausgabe der Geschwindigkeit
-  String dataStr = String(kmh) + " km/h";
+  String dataStr = String(ms) + " m/s";
   display.setTextSize(1);           // Textgröße
   display.setTextColor(WHITE);      // Textfarbe
   display.setCursor(47, 0);         // Position des Textes

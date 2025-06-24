@@ -179,12 +179,14 @@ void button_eval() {
   if (t3) {
     // Scheinwerfer toggeln
     boolean_to_car_arr[0][3] = !boolean_to_car_arr[0][3];
+    t3 = false;
   }
 
   // Button 4 - Fernlicht
-    if (t3 && boolean_to_dash_arr[0][3]) {
+    if (t4 && boolean_to_dash_arr[0][3]) {
     // Fernlicht toggeln
     boolean_to_car_arr[0][4] = !boolean_to_car_arr[0][4];
+    t4 = false;
   }
 
   // Joystick Buttons - Blinker

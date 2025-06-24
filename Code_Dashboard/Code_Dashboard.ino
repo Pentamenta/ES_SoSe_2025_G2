@@ -8,7 +8,7 @@
 #include <U8g2lib.h> //Software I2C Display Ansteuerung (Eva)
 #include <math.h>    //für Grafiken auf Displays (Eva)
 
-#include "Tacho_Tempomat.h" //Einbindung der Funktionen/Variablen für mittleres Display: Tache & Tempomat (Eva)
+#include "Tacho_Tempomat.h" //Einbindung der Funktionen/Variablen für mittleres Display: Tacho & Tempomat (Eva)
 
 unsigned long t_debug;
 unsigned long t_exchange;
@@ -45,7 +45,8 @@ void loop() {
   if (millis() >= t_debug + 500){ // Debug Loop
     Serial.println("Bin im Main");
     t_debug = millis();
-    }
+  }
 
-
+  writeTacho(100);
 }
+

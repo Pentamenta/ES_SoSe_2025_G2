@@ -15,9 +15,36 @@ bool tempo_on = false;  // Ist der Tempomat an?
 #include "Leds.h"
 #include <U8g2lib.h> //Software I2C Display Ansteuerung (Eva)
 #include <math.h>    //für Grafiken auf Displays (Eva)
-#include "Tacho_Tempomat.h" //Einbindung der Funktionen/Variablen für mittleres Display: Tache & Tempomat (Eva)
+
+
+//#include "Tacho_Tempomat.h" //Einbindung der Funktionen/Variablen für mittleres Display: Tache & Tempomat (Eva)
 
 unsigned long t_debug, t_fast, t_slow;
+
+//===============================
+
+// Einbinden der Bibliotheken für I2C-Kommunikation und Display-Ansteuerung
+#include <Wire.h>                   // Für I2C-Kommunikation
+#include <Adafruit_GFX.h>           // Grundlegende Grafikfunktionen (Text, Linien etc.)
+#include <Adafruit_SSD1306.h>       // Treiber für SSD1306 OLED-Display
+
+// Konstante Maße des Displays
+const int SCREEN_WIDTH = 128;       // Breite in Pixel
+const int SCREEN_HEIGHT = 64;       // Höhe in Pixel
+
+// Erstellen des Displayobjekts über I2C-Verbindung
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+#include "Tacho.h" //Einbindung der Funktionen/Variablen für mittleres Display: Tache & Tempomat (Shari)
+#include "Ladung.h"  //Einbindung der Funktionen/Variablen für die Ladung (Eva)
+#include "Abstandsmessung.h" //Einbindung der Funktionen/Variablen zur Abstandsmessung (Shari)
+
+//===================================
+
+unsigned long t_debug;
+unsigned long t_exchange;
+
+// Variablen zur Abstandsmessung
 
 void setup() {
 Serial.begin(9600);
@@ -25,16 +52,30 @@ delay(50);
 t_debug, t_fast, t_slow = millis();
 
 pinMode(BLE_LED, OUTPUT);
+
 Led_Setup();
 joystick_setup(); // Initialisiert Joysticks (Adrian)
 Button_Setup();
 display.begin();
+
+
+// Ausgabe des Dysplays 3D über I2C (Shari)
+ if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3D)) {
+    Serial.println(F("SSD1306 allocation failed")); // Fehlerausgabe, wenn das Dysplay nicht erkannt wird
+    while (true); // Endlosschleife bei Fehler
+  }
+  abstand(data_to_dash.distance_f_val, data_to_dash.distance_l_f_val, data_to_dash.distance_r_f_val, data_to_dash.distance_b_val, data_to_dash.distance_l_b_val, data_to_dash.distance_r_b_val, boolean_to_dash_arr[0][9], boolean_to_dash_arr[0][8], boolean_to_dash_arr[0][3], boolean_to_dash_arr[0][4], boolean_to_dash_arr[0][7], boolean_to_dash_arr[0][6]);
+
+//Ausgabe der Dysplays 3C über I2C (Shari)
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x64
+    Serial.println(F("SSD1306 allocation failed")); // Fehlerausgabe, wenn das Dysplay nicht erkannt wird
+    while (true); // Endlosschleife bei Fehler;
+  }
+ tachorech(); // Skalenpunkte vorberechnen
+
+
 BLE_Setup(); //Öffnet die BLE-Schnittstelle und initiallisiert das Central Device (Adrian)
 connect_car(); //Stellt Verbindung mit dem Auto her (Adrian)
-
-}
-
-void loop() {
 
   if (!car.connected()) { // Stellt Verbindung wieder her (Adrian)
     // Anzeige auf dem Bildschirm
@@ -66,6 +107,7 @@ button_eval();
     t_debug = millis();
     }
 
+  writeTacho(data_to_dash.speed_actual_val, tempo_speed, tempo_on, data_to_dash.temperature_val, data_to_dash.angleY); 
 }
 
 float read_speed() { // Ließt linken Joystick für Beschleunigung aus (Adrian)
@@ -161,5 +203,7 @@ void button_eval() {
     jr_sw = false;
   }
 }
+
+  //writeTacho(speed, tempo_speed, tempo_on);                        // Tacho aktualisieren 
 
 

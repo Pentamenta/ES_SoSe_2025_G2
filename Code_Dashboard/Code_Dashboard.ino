@@ -32,11 +32,11 @@ const int SCREEN_HEIGHT = 64;       // Höhe in Pixel
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 //Software I2C Pininitialisierung (Eva) für linkes Display, R3 für die Displaydrehung
-U8G2_SSD1306_128X64_NONAME_F_SW_I2C ldisplay(U8G2_R3, /* clock=*/ 8, /* data=*/ 9, /* reset=*/ U8X8_PIN_NONE);
+//U8G2_SSD1306_128X64_NONAME_F_SW_I2C ldisplay(U8G2_R3, /* clock=*/ 8, /* data=*/ 9, /* reset=*/ U8X8_PIN_NONE);
 
 #include "Tacho.h" //Einbindung der Funktionen/Variablen für mittleres Display: Tache & Tempomat (Shari)
 #include "Abstandsmessung.h" //Einbindung der Funktionen/Variablen zur Abstandsmessung (Shari)
-#include "leftDisplay.h" //Einbindung der Funktionen/Variablen für linkes Display: Tempomat (Eva)
+//#include "leftDisplay.h" //Einbindung der Funktionen/Variablen für linkes Display: Tempomat (Eva)
 
 unsigned long t_exchange;
 

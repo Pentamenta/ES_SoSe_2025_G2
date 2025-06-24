@@ -14,7 +14,8 @@ Vor dem Commit wird ein weiteres mal gepullt, um Mergefehler durch paralleles Ar
 
 ## Hardware
 
-Als Basis für beide Projektteile wird ein Arduino Nano BLE 33 verwendet. Das Auto verfügt zusätzlich über einen Arduino MEGA, da weitere Pins für die Steuerung der IOs benötigt wurden. Der Arduino Nano BLE 33 bleicht zentrale Anlaufstelle für die Drahtloskommunikationj
+Als Basis für beide Projektteile wird ein Arduino Nano BLE 33 verwendet. Das Auto verfügt zusätzlich über einen Arduino MEGA, da weitere Pins für die Steuerung der IOs benötigt wurden. Der Arduino Nano BLE 33 bleicht zentrale Anlaufstelle für die Drahtloskommunikation.
+
 Um das Board Arduino Nano BLE 33 zu bespielen:
  1. Unter Werkzeuge --> Board --> Boardverwalter wählen
  2. Nach "Arduino Mbed OS Nano Boards" suchen und installieren
@@ -23,44 +24,45 @@ Um das Board Arduino Nano BLE 33 zu bespielen:
 
 ## Software
 
-### Bibliotheken (Bitte erweitern)
+### Bibliotheken (Fortlaufend zu erweitern)
 
 Für das Projekt zu installierende Bibliotheken:
 - ArduinoBLE
 - U8g2 von olikraus (beim Inkludieren werden 3 Bibliotheken eingefügt, wir brauchen nur die U8g2lib)
 - Arduino_BMI270_BMM150
-
+- Adafruit_SSD1306
+- Adafruit_GFX
+- Wire
+- Servo
 
 ### Softwarestruktur
 
 Im Repository befinden sich zwei Ordner mit darin jeweils gleichnamigen Arduino Programmen.
-- Code_Car	  --> Code_Car.ino
 - Code_ Dashboard --> Code_Dashboard.ino
+- Code_Car_Connect --> Code_Car_Connect.ino
+- Code_Car --> Code_Car.ino
 
-In diesen Dateien wird programmiert. Ein Aufteilen in mehrere Dateien ist unter Arduino NICHT möglich.
+In diesen Dateien wird programmiert. Ein Aufteilen in ausgelagerte .h Dateien ist erwünscht.  
 
-In dder Externen Datei EBS_BLE.h werden Variablen für die BLE Kommunikation definiert, die in beiden Programmen gleich seien müssen. Aufgrund von beschränkungen der Arduino IDE kann diese Datei nicht extern verlinkt werden, sondern muss in jedem Programmordner einzeln existieren. Deshalb ist es Extrem Wichtig, dass diese Beiden Dateien immer auf dem selben stand sind.
+In der externen Datei EBS_BLE.h werden Variablen für die BLE Kommunikation definiert, die in allen Programmen gleich seien müssen. Aufgrund von beschränkungen der Arduino IDE kann diese Datei nicht extern verlinkt werden, sondern muss in jedem Programmordner einzeln existieren. Es ist extrem wichtig, dass diese Dateien immer auf dem selben Stand sind.
 
 ### Coding
 
 - Es ist soviel wir möglich über Funktionen zu lösen, um den Main loop so übersichtlich wie möglich zu halten.
-- Bitte kommentiert den Code ausführlich und fügt am Ende das Kommentars euren Namen hinzu, um Rückfragen zu vereinfachen. Es Reicht wenn der Namen einmal vor einer ganzen Funktion angegeben wird.
+- Delays und längere Loops sind zu vermeiden. Das Programm muss den Loop ständig durchlaufen, um die Drahtloskpommunikation nicht zu behindern.
+- Der Code ist ausführlich zu kommentieren und am Ende der Kommentare der Name des bearbeiters hinzuzufügen, um Rückfragen zu vereinfachen. Es Reicht wenn der Namen einmal zu Begin einer Funktion notiert wird.
 
-### BLE Documentation
+## BLE Documentation
 
 Die Drahtlosverbindung zwischen Dashboard und Auto wird über Bluetooth Low Energy gelöst. 
 Hierbei dient das Dashboard als Central Device und das Auto als Peripheral Device.
 
 ### Einführung BLE
 
-Folgende Kommunikationen sind über BLE möglich:
-
-- Reading: Das Peripherial Device ließt Daten vom Central Device aus
-	- Dies wird in unserem Falle nur generelle Statusabfragen betreffen.
-- Writing: Das Peripherial Device schreibt Daten andas Central Device.
+- Das Peripherial Device ließt Daten vom Central Device aus
+	- Darunter fallen sämtliche Anweisungen an das Auto, wie zu erreichende Geschwindigkeit und Lenkeinschlag
+- Das Peripherial Device schreibt Daten andas Central Device.
 	- Hiermit werden laufende Daten wie Sensor - Messwerte und Geschwindigkeit an das Dashboard übergeben.
-- Notifying: Das Central Device schreibt Daten an ein Peripherial Device
-	- Hiermit werden Anweisungen wie zu fahrende Geschwindigkeit und andere Aktionen an das Auto übergeben.
 
 ### Datenstruktur BLE im Projekt
 
@@ -73,32 +75,29 @@ Eine Gruppe aus Service nennt man Profil.
 Jeder Service besitzt eine einzigartige UUID. Entdeckt ein Peripheral Device einen Service kann dieses, die darin enthaltenen Charakteristiken, lesen, beschreiben, oder überwachen.
 Jede Charakteristik besitzt ebenfalls eine einzigartige UUID.
 
+Die Uuids un dazugehörigen Charakteristika werden in der Datei "EBS_BLE.h" deklariert. Mittels bedigter Kompilierung werden Funktionen an den jeweiligen Code angepasst.
 
+Die Tags für die bedingte Programmierung der einzelnen Programme lauten:
+- Code_Dashboard.ino --> DASH
+- Code_Car_Connect.ino --> CAR_CONNECT
+- Code_Car.ino --> CAR
 
+## Features
 
-## Fahrzeug
+### Fahrzeug
 
-Eigenes Chassy oder eigenes Design?
-
-Features:
 - Blinker / Warnlicht
 - Lenkung
-	- Heckantrieb mit Servolenkung vorne?
-	- Panzerkontrolle mit Mekanium?
+	- Heckantrieb mit Servolenkung vorne
 - Abstandssensor mit Buzzer
 - Geschwindigkeitssensor
 - Tempomat
 
-## Dashboard
+### Dashboard
 
-- Akkustand
 - Steuerung
-	- Servolenkung mit Lenkrad und Pedal
-	- Joystick bei Tank Controlls
+	- Servolenkung über Joystick
+	- Gas/Bremse über Joystick
 - Tacho auf Bildschirm 
-- Taster für Blinker
-- Soundausgabe
-- Bildschirme (1-3): Tachoanzeige, Parkanzeige, Akkustand, Tempomat Geschwindigkeit, 
-- Bildschirm links: Akkustand Car und Akkustand Dashboard gleichzeitig,
-- Bildschirm Mitte: Tachoanzeige, Tempomat Geschwindigkeit (Anzeige wechselt wenn Tempomat an/aus geschaltet wird)
-- Bildschirm rechts: Parkanzeige 
+- Taster für Blinker, Tempomat, Scheinwerfer
+- Bildschirme (1-3): Tachoanzeige, Parkanzeige, Tempomat Geschwindigkeit, Lüfter, Heizung

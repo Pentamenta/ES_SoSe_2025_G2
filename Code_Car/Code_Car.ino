@@ -110,7 +110,12 @@ void buffer() {
 
 //jan
 void handleSteering() {
-  int xVal = data_to_car.stear_target_val;
+  int xVal;
+  if(digitalRead(CONNECT_NOTIFY)){
+  xVal = data_to_car.stear_target_val;
+  }
+  else{ xVal = 0;
+  }
 
   if (xVal > -5 && xVal < 5) {
     MotorGrad = 90; // Zentrum
@@ -126,8 +131,13 @@ void handleSteering() {
 
 //jan
 void handleDrive() {
+  
+  if(digitalRead(CONNECT_NOTIFY)){
+  int pwmVal = speed_buffer_pwm;
+  }
+  else{int pwmVal = 0;}
 
-  int pwmVal = speed_buffer_pwm; 
+   
 
   if (speed_buffer_pwm > 0.0) {
     // Vorwärts

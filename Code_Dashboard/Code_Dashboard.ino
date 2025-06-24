@@ -50,7 +50,7 @@ pinMode(BLE_LED, OUTPUT);
 Led_Setup();
 joystick_setup(); // Initialisiert Joysticks (Adrian)
 Button_Setup();
-ldisplay.begin();
+//ldisplay.begin();
 
 // Ausgabe des Dysplays 3D über I2C (Shari)
  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3D)) {
@@ -104,7 +104,7 @@ void loop() {
     t_debug = millis();
   }
 
-  writedispl(speed_actual_val);
+  //writedispl(speed_actual_val);
 
 }
 

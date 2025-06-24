@@ -172,6 +172,11 @@ void connect_car(){ //Stellt Verbindung mit dem Auto her (Adrian)
     }
   } while (!car);
 
+  if (car.advertisedServiceUzid() != remote_service_Uuid) {
+    Serial.println("This is not the Car!");
+    return;
+  }
+
   BLE.stopScan();
 
   Serial.println("- Connecting to peripheral Car...");

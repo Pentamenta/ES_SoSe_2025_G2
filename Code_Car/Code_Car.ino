@@ -125,22 +125,22 @@ if (millis() >= t_debug + 500){ // Debug Loop
 // Messwerte aktualisieren und direkt in vorhandene Variablen schreiben
 float current;
 current = sensors[FRONT]->measureDistanceCm();
-distance_f_val = getDistanceLevel(current);
+data_to_dash.distance_f_val = getDistanceLevel(current);
 
 current = sensors[BACK]->measureDistanceCm();
-distance_b_val = getDistanceLevel(current);
+data_to_dash.distance_b_val = getDistanceLevel(current);
 
 current = sensors[RIGHT_FRONT]->measureDistanceCm();
-distance_r_f_val = getDistanceLevel(current);
+data_to_dash.distance_r_f_val = getDistanceLevel(current);
 
 current = sensors[RIGHT_BACK]->measureDistanceCm();
-distance_r_b_val = getDistanceLevel(current);
+data_to_dash.distance_r_b_val = getDistanceLevel(current);
 
 current = sensors[LEFT_FRONT]->measureDistanceCm();
-distance_l_f_val = getDistanceLevel(current);
+data_to_dash.distance_l_f_val = getDistanceLevel(current);
 
 current = sensors[LEFT_BACK]->measureDistanceCm();
-distance_l_b_val = getDistanceLevel(current);
+data_to_dash.distance_l_b_val = getDistanceLevel(current);
 
 // Parkstatus in globales Array speichern
 boolean_to_car_arr[0][9] = isParkingFree(distance_l_f_val, distance_l_b_val);

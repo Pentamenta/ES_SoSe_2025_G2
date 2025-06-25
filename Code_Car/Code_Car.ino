@@ -37,6 +37,37 @@ Servo srv;
 
 unsigned long t_debug;
 unsigned long t_exchange;
+
+//JJ
+//aktive und passive Fahrsicherheit 
+
+float speed = data_to_dash.speed_actual_val;       
+float dps_Z = data_to_car.dps_Z_val;     
+float acc_Y = data_to_car.acc_Y_val;     
+float acc_Z = data_to_car.acc_Z_val;   
+float angleX = data_to_car.angleX;
+float angleY = data_to_car.angleY;
+int16_t distance_f = data_to_dash.distance_f_val;
+//Schwellwerte zur Entscheidung der Auslösechrekteristik 
+const float schwelle_fahrzeug_ABS   = 0.5f;    
+const float schwelle_fahrzeug_ASR   = 0.2f;    
+const float schwelle_drehzahl_ASR   = 50.0f;   
+const float schwelle_esp            = 30.0f;  
+const float schwelle_diebstahl      = 1.5f;
+const float schwelle_crash          = -0.6f;   
+const float schwelle_angle_x	      = 45.0f;
+const float schwelle_angle_y	      = 45.0f; 
+//JJ
+//Ergebnis-Flags
+bool abs_active        = false;
+bool asr_active        = false;
+bool esp_active        = false;
+bool diebstahl_active   = false;
+bool airbag_active     = false;
+bool ueberschlag_active = false;
+bool abstand_active     = false;  
+
+
 //Test Jan
 void setup() {
 Serial.begin(9600);
@@ -66,6 +97,25 @@ handleSteering();   // Servo Motor
 handleDrive();      // DC Motor
 handleRPMandSpeed(); //RPM Messung
 buffer();
+
+//JJ
+abs_active        = checkABS(pulseCount ,  speed, schwelle_fahrzeug_ABS);
+asr_active        = checkASR(speed, pulseCount, schwelle_drehzahl_ASR, schwelle_fahrzeug_ASR);
+esp_active        = checkESP( dps_Z, schwelle_esp);
+diebstahl_active   = checkDiebstahl( acc_Z,schwelle_diebstahl);
+airbag_active      = checkAirbag(acc_Y, schwelle_crash );
+ueberschlag_active = checkAbstand(distance_f,speed);
+abstand_active     = checkAbstand(distance_f,speed); 
+
+boolean_to_dash_arr[0][10]= abs_active;
+boolean_to_dash_arr[0][11]= ueberschlag_active;
+boolean_to_dash_arr[0][12]= diebstahl_active;
+boolean_to_dash_arr[0][13]= airbag_active;
+boolean_to_dash_arr[0][14]= esp_active;
+boolean_to_dash_arr[0][15]= asr_active;
+boolean_to_dash_arr[1][0]= abstand_active;
+
+
 if (digitalRead(CONNECT_NOTIFY)) {
   digitalWrite(UART_LED, HIGH);
 }
@@ -188,5 +238,60 @@ void handleRPMandSpeed() {
 
     data_to_dash.speed_actual_val = avgSpeed;  // Jetzt direkt in m/s
   }
+}
+
+
+//JJ aktive passive sicher heit -> bool Fuktionen
+
+// ABS: Rad blockiert, wenn Fahrzeug schnell genug und Raddrehzahl = 0
+bool checkABS(volatile unsigned int pulseCount , float speed, float schwelle_fahrzeug_ABS) 
+
+  {
+    float currentRPM = pulseCount * 60.0f;
+  return (speed> schwelle_fahrzeug_ABS) && (currentRPM == 0.0f);
+  }
+  
+  
+
+// ASR: Antriebsschlupf, wenn Fahrzeug langsam und Räder zu schnell
+bool checkASR(float speed,volatile unsigned int pulseCount, float schwelle_drehzahl_ASR, float schwelle_fahrzeug_ASR) 
+{
+  float currentRPM = pulseCount * 60.0;
+  return ( speed < schwelle_fahrzeug_ASR  && currentRPM > schwelle_drehzahl_ASR);
+
+}
+
+// ESP: Schleudern erkannt, wenn Z-Gyro > Schwelle
+bool checkESP(float dps_Z, float schwelle_esp) 
+{
+  return (abs( dps_Z) > schwelle_esp);
+}
+
+// Diebstahl: Anheben erkannt, wenn Z-Beschleunigung < -Schwelle
+bool checkDiebstahl(float acc_Z, float schwelle_diebstahl)
+{
+  return (acc_Z <= schwelle_diebstahl );
+}
+
+
+// Airbag: Crash erkannt, wenn Y-Beschleunigung < Schwelle
+bool checkAirbag(float acc_Y, float schwelle_crash ) 
+{
+  return (acc_Y <   schwelle_crash  );
+}
+
+// Überschlag: erkannt, wenn angleX oder angleY > Schwelle
+bool checkUeberschlag(float angleX,float angleY , float schwelle_angle_y,float schwelle_angle_x) 
+{
+  return (abs(angleX) >= schwelle_angle_x || abs(angleY) >= schwelle_angle_y);
+}
+
+// kritischer Abstand: erkannt, wenn Abstand vorne < dynamische Schwelle
+bool checkAbstand(int16_t distance_f, float speed) 
+{ 
+//Schwelle für Abstand – wird dynamisch berechnet
+ float schwelle_abstand = ( speed * 100.)/2;
+
+  return (distance_f < schwelle_abstand);
 }
 

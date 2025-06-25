@@ -143,11 +143,11 @@ current = sensors[LEFT_BACK]->measureDistanceCm();
 data_to_dash.distance_l_b_val = getDistanceLevel(current);
 
 // Parkstatus in globales Array speichern
-boolean_to_car_arr[0][9] = isParkingFree(distance_l_f_val, distance_l_b_val);
-boolean_to_car_arr[0][8] = isParkingFree(distance_r_f_val, distance_r_b_val);
+boolean_to_car_arr[0][9] = isParkingFree(data_to_dash.distance_l_f_val, data_to_dash.distance_l_b_val);
+boolean_to_car_arr[0][8] = isParkingFree(data_to_dash.distance_r_f_val, data_to_dash.distance_r_b_val);
 
 // Buzzer abhängig von Rücksensor
-updateBuzzer(distance_b_val);
+updateBuzzer(data_to_dash.distance_b_val);
 }
 
 

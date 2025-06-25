@@ -6,6 +6,9 @@
 #define UART_LED 5
 
 #include <Servo.h>  //Servo Motor Library (jan)
+
+#include <HCSR04.h> //HC-SR04 Sensor Library (Konstantin)
+
 #define MAX_SPEED 10
 
 //Motorsteuerung (Jan)
@@ -33,6 +36,23 @@ float rpmValues[3] = {0, 0, 0};
 float speedValues[3] = {0, 0, 0};
 int index = 0;
 
+// Abstandsmessung (Konstantin)
+// Pin-Konfiguration (Reihenfolge: f, r_f, l_f, r_b, l_b, b)
+const uint8_t echoPins[6] = {43, 47, 39, 53, 46, 50};
+const uint8_t trigPins[6] = {42, 37, 38, 52, 49, 51};
+enum SensorIndex : uint8_t { FRONT, RIGHT_FRONT, LEFT_FRONT, RIGHT_BACK, LEFT_BACK, BACK };
+UltraSonicDistanceSensor* sensors[6];
+
+// Konfiguration-Buzzer (Konstantin)
+const uint8_t buzzerPin = 6;
+const uint16_t BUZZER_PULSE_MS = 50;
+const float MAX_VALID_DISTANCE = 300.0;
+
+// Levelgrenzen für die Stufenberechnung (Konstantin)
+const uint8_t levelThresholds[] = {10, 20, 30, 40, 50, 60};
+const uint8_t LEVEL_COUNT = sizeof(levelThresholds) / sizeof(levelThresholds[0]);
+
+
 Servo srv;
 
 unsigned long t_debug;
@@ -58,6 +78,14 @@ pinMode(IN2, OUTPUT);
 //Geschwindigkeitsmesser Setup
 pinMode(sensorDigitalPin, INPUT);
 attachInterrupt(digitalPinToInterrupt(sensorDigitalPin), countPulse, FALLING);
+
+// Abstandsmessung (Konstantin)
+for (uint8_t i = 0; i < 6; i++) {
+sensors[i] = new UltraSonicDistanceSensor(trigPins[i], echoPins[i]);
+}
+// Buzzer (Konstantin)
+pinMode(buzzerPin, OUTPUT);
+digitalWrite(buzzerPin, LOW);
 }
 
 void loop() {
@@ -93,6 +121,33 @@ if (millis() >= t_debug + 500){ // Debug Loop
   t_debug = millis();
   }
 
+// Abstandsmessung (Konstantin)
+// Messwerte aktualisieren und direkt in vorhandene Variablen schreiben
+float current;
+current = sensors[FRONT]->measureDistanceCm();
+distance_f_val = getDistanceLevel(current);
+
+current = sensors[BACK]->measureDistanceCm();
+distance_b_val = getDistanceLevel(current);
+
+current = sensors[RIGHT_FRONT]->measureDistanceCm();
+distance_r_f_val = getDistanceLevel(current);
+
+current = sensors[RIGHT_BACK]->measureDistanceCm();
+distance_r_b_val = getDistanceLevel(current);
+
+current = sensors[LEFT_FRONT]->measureDistanceCm();
+distance_l_f_val = getDistanceLevel(current);
+
+current = sensors[LEFT_BACK]->measureDistanceCm();
+distance_l_b_val = getDistanceLevel(current);
+
+// Parkstatus in globales Array speichern
+boolean_to_car_arr[0][9] = isParkingFree(distance_l_f_val, distance_l_b_val);
+boolean_to_car_arr[0][8] = isParkingFree(distance_r_f_val, distance_r_b_val);
+
+// Buzzer abhängig von Rücksensor
+updateBuzzer(distance_b_val);
 }
 
 
@@ -190,3 +245,47 @@ void handleRPMandSpeed() {
   }
 }
 
+// Stufenberechnung (Konstantin)
+uint8_t getDistanceLevel(float d) {
+  if (isnan(d) || d < 0 || d > MAX_VALID_DISTANCE) return 255;
+  for (uint8_t i = 0; i < LEVEL_COUNT; i++) {
+    if (d < levelThresholds[i]) return i;
+  }
+  return 255;
+}
+
+// Parklückenerkennung (Konstantin)
+bool isParkingFree(uint8_t level1, uint8_t level2) {
+  return !(level1 == 0 || level1 == 1 || level2 == 0 || level2 == 1);
+}
+
+// Pieper-Intervall (Konstantin)
+unsigned long getBeepInterval(uint8_t level) {
+  return (level < LEVEL_COUNT) ? 100 + level * 200 : 0;
+}
+
+// Pieper (Konstantin)
+void updateBuzzer(uint8_t level) {
+  static unsigned long lastBeepTime = 0;
+  static bool buzzerState = false;
+  static unsigned long beepStartTime = 0;
+
+  unsigned long now = millis();
+  unsigned long interval = getBeepInterval(level);
+
+  if (interval > 0) {
+    if (!buzzerState && now - lastBeepTime >= interval) {
+      digitalWrite(buzzerPin, HIGH);
+      buzzerState = true;
+      beepStartTime = now;
+      lastBeepTime = now;
+    }
+    if (buzzerState && now - beepStartTime >= BUZZER_PULSE_MS) {
+      digitalWrite(buzzerPin, LOW);
+      buzzerState = false;
+    }
+  } else {
+    digitalWrite(buzzerPin, LOW);
+    buzzerState = false;
+  }
+}

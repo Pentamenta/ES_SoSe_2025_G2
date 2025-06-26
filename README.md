@@ -1,4 +1,4 @@
-# ES_SoSe_2025_G1
+# ES_SoSe_2025_G2
  Projekt zur Entwicklung eines automatisierten Fahrzeuges und eines Dashboards für den Kurs Embedded Systems 1 an der BHT Berlin.
 
  Dozent: Prof. Dr.-Ing. Ronny Jahnke

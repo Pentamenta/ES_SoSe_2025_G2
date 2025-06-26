@@ -99,7 +99,7 @@ void loop() {
 
   if (millis() >= t_debug + 500){ // Debug Loop
     //Serial.println("Bin im Main");
-    Debug_data();
+    //Debug_data();
     //joystick_debug();
     t_debug = millis();
   }

@@ -53,7 +53,7 @@ void loop() {
 
   if (millis() >= t_debug + 500){ // Debug Loop
     
-    Serial.println("Bin im Main");
+    //Serial.println("Bin im Main");
 
     if (dashboard.connected()) {
       //Debug_data();

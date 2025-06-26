@@ -266,13 +266,13 @@ if (millis() >= t_exchange + 20) { // BLE und Serial Kommunikation (Adrian)
   }
 
 if (millis() >= t_debug + 500){ // Debug Loop
-  Serial.println("Bin im Main");
+  //Serial.println("Bin im Main");
 
-  Debug_data();
-  Serial.print("To Car: ");
-  Serial.println(sizeof(data_to_car));
-  Serial.print("To Dash: ");
-  Serial.println(sizeof(data_to_dash));
+  //Debug_data();
+  //Serial.print("To Car: ");
+  //Serial.println(sizeof(data_to_car));
+  //Serial.print("To Dash: ");
+  //Serial.println(sizeof(data_to_dash));
 
   t_debug = millis();
   }

@@ -56,11 +56,11 @@ void loop() {
     Serial.println("Bin im Main");
 
     if (dashboard.connected()) {
-      Debug_data();
-      Serial.print("To Car: ");
-      Serial.println(sizeof(data_to_car));
-      Serial.print("To Dash: ");
-      Serial.println(sizeof(data_to_dash));
+      //Debug_data();
+      //Serial.print("To Car: ");
+      //Serial.println(sizeof(data_to_car));
+      //Serial.print("To Dash: ");
+      //Serial.println(sizeof(data_to_dash));
     }
     else {
       // Alert car that connection was lost

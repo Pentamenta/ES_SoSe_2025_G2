@@ -14,8 +14,6 @@ const int ENA = 10;
 const int IN1 = 11;
 const int IN2 = 12;
 const int MIN_PWM = 50;
-float speed_target_val;
-int stear_target_val;
 int MotorGrad = 90;
 int pwmVal;
 float speed_buffer_val;
@@ -32,6 +30,7 @@ const float wheelCircumference = 0.305;  // Meter
 float rpmValues[3] = {0, 0, 0};
 float speedValues[3] = {0, 0, 0};
 int index = 0;
+int Val_x;
 
 Servo srv;
 
@@ -65,7 +64,7 @@ void loop() {
 handleSteering();   // Servo Motor
 handleDrive();      // DC Motor
 handleRPMandSpeed(); //RPM Messung
-buffer();
+//buffer();
 if (digitalRead(CONNECT_NOTIFY)) {
   digitalWrite(UART_LED, HIGH);
 }
@@ -101,12 +100,12 @@ void countPulse() {
 }
 
 //buffer
-void buffer() {
-  speed_buffer_val = data_to_car.speed_target_val;
+/*void buffer() {
+  speed_buffer_val = 10; //data_to_car.speed_target_val;
   float error = speed_buffer_val - avgSpeed;
   const float KP = 100.0;
   speed_buffer_pwm = constrain(error * KP, -255, 255);
-}
+}*/
 
 //jan
 void handleSteering() {
@@ -133,23 +132,24 @@ void handleSteering() {
 void handleDrive() {
   
   if(digitalRead(CONNECT_NOTIFY)){
-  int pwmVal = speed_buffer_pwm;
+  pwmVal = data_to_car.speed_target_val;
+  
   }
   else{int pwmVal = 0;}
 
-   
+  Val_x = map(pwmVal,-10,10,-255,255);
 
-  if (speed_buffer_pwm > 0.0) {
+  if (Val_x > 0.0) {
     // Vorwärts
     digitalWrite(IN1, HIGH);
     digitalWrite(IN2, LOW);
-    analogWrite(ENA, max(pwmVal, MIN_PWM));
+    analogWrite(ENA, max(Val_x, MIN_PWM));
   }
-  else if (speed_buffer_pwm < 0.0) {
+  else if (Val_x < 0.0) {
     // Rückwärts
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, HIGH);
-    analogWrite(ENA, max(-pwmVal, MIN_PWM));
+    analogWrite(ENA, max(-Val_x, MIN_PWM));
   }
   else {
     // Stop

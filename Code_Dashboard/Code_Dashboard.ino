@@ -43,7 +43,7 @@ unsigned long t_exchange;
 // Variablen zur Abstandsmessung
 void setup() {
 Serial.begin(9600);
-while(!Serial); 
+//while(!Serial); // Nur für Debug Zwecke verwenden
 t_debug, t_fast, t_slow = millis();
 
 pinMode(BLE_LED, OUTPUT);

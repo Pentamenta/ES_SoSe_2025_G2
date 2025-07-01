@@ -5186,7 +5186,7 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 40.64) (xy 176.53 115.57)
+			(xy 181.61 40.64) (xy 181.61 115.57)
 		)
 		(stroke
 			(width 0)
@@ -5376,6 +5376,16 @@
 	)
 	(wire
 		(pts
+			(xy 187.96 60.96) (xy 204.47 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3228b3b5-490c-4c7f-a811-81ad12e1b336")
+	)
+	(wire
+		(pts
 			(xy 218.44 55.88) (xy 218.44 95.25)
 		)
 		(stroke
@@ -5416,7 +5426,7 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 115.57) (xy 203.2 115.57)
+			(xy 181.61 115.57) (xy 203.2 115.57)
 		)
 		(stroke
 			(width 0)
@@ -5596,13 +5606,23 @@
 	)
 	(wire
 		(pts
-			(xy 220.98 80.01) (xy 266.7 80.01)
+			(xy 220.98 80.01) (xy 251.46 80.01)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "79d5f156-a567-4cf5-85a4-673329f724cc")
+	)
+	(wire
+		(pts
+			(xy 184.15 78.74) (xy 251.46 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "79e8ae37-0521-4b16-b4ee-01609e6b642a")
 	)
 	(wire
 		(pts
@@ -5613,16 +5633,6 @@
 			(type default)
 		)
 		(uuid "7bab52d0-07b0-4197-92f3-d9029071f8a8")
-	)
-	(wire
-		(pts
-			(xy 257.81 77.47) (xy 257.81 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "82a207b5-19f7-424d-b5c7-db7433d0e1ae")
 	)
 	(wire
 		(pts
@@ -5726,7 +5736,7 @@
 	)
 	(wire
 		(pts
-			(xy 175.26 40.64) (xy 176.53 40.64)
+			(xy 175.26 40.64) (xy 181.61 40.64)
 		)
 		(stroke
 			(width 0)
@@ -5773,6 +5783,16 @@
 			(type default)
 		)
 		(uuid "a0a6ed19-c189-421a-a727-81917a7bb39c")
+	)
+	(wire
+		(pts
+			(xy 187.96 44.45) (xy 204.47 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a13eab81-0706-4f3b-afdd-4eee408a544f")
 	)
 	(wire
 		(pts
@@ -5856,7 +5876,17 @@
 	)
 	(wire
 		(pts
-			(xy 204.47 44.45) (xy 204.47 60.96)
+			(xy 251.46 78.74) (xy 251.46 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bf959476-9f6f-4586-aa7c-202f122a9d48")
+	)
+	(wire
+		(pts
+			(xy 187.96 44.45) (xy 187.96 60.96)
 		)
 		(stroke
 			(width 0)
@@ -5886,7 +5916,7 @@
 	)
 	(wire
 		(pts
-			(xy 243.84 82.55) (xy 266.7 82.55)
+			(xy 243.84 82.55) (xy 251.46 82.55)
 		)
 		(stroke
 			(width 0)
@@ -5923,16 +5953,6 @@
 			(type default)
 		)
 		(uuid "e34d6096-802d-4bb5-a56a-c6a7e6be9708")
-	)
-	(wire
-		(pts
-			(xy 266.7 77.47) (xy 257.81 77.47)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e7e60a08-9922-4b2f-a005-12961cadaa34")
 	)
 	(wire
 		(pts
@@ -6043,16 +6063,6 @@
 			(type default)
 		)
 		(uuid "faf954c3-99cf-4ee5-9c76-f2a85c2423b1")
-	)
-	(wire
-		(pts
-			(xy 257.81 78.74) (xy 184.15 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fd18e3e9-0c2c-411f-a436-e05575b257eb")
 	)
 	(symbol
 		(lib_id "Device:LED")
@@ -7235,7 +7245,7 @@
 	)
 	(symbol
 		(lib_id "Motor:Motor_Servo")
-		(at 274.32 80.01 0)
+		(at 259.08 80.01 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7244,7 +7254,7 @@
 		(fields_autoplaced yes)
 		(uuid "bcbbaa60-e772-49e0-91c9-c909a2872508")
 		(property "Reference" "M2"
-			(at 283.21 78.3068 0)
+			(at 267.97 78.3068 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7253,7 +7263,7 @@
 			)
 		)
 		(property "Value" "Motor_Servo"
-			(at 283.21 80.8468 0)
+			(at 267.97 80.8468 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7262,7 +7272,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 274.32 84.836 0)
+			(at 259.08 84.836 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7271,7 +7281,7 @@
 			)
 		)
 		(property "Datasheet" "http://forums.parallax.com/uploads/attachments/46831/74481.png"
-			(at 274.32 84.836 0)
+			(at 259.08 84.836 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7280,7 +7290,7 @@
 			)
 		)
 		(property "Description" "Servo Motor (Futaba, HiTec, JR connector)"
-			(at 274.32 80.01 0)
+			(at 259.08 80.01 0)
 			(effects
 				(font
 					(size 1.27 1.27)

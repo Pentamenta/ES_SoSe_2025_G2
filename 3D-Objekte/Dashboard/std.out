@@ -1,0 +1,11 @@
+License request failed for feature
+
+Requesting CREOPMA_SchoolSTD6 ...
+C:\ProgramData\PTC\Licensing\BE110908EDSTUDENTEDK12_license.dat: (-9) Invalid host.
+Run ptcstatus.bat for server status.ERROR - C:\Program Files\PTC\Creo 11.0.0.0\Common Files\text\config.sup, linenum 51:  Keyword 'WINDOWS_BROWSER_TYPE' is not valid.
+WARNING - C:\Program Files\PTC\Creo 11.0.0.0\Common Files\text\config.pro, linenum 1 : Configuration file parameter 'DRAWING_SETUP_FILE' can not be reset.
+WARNING - C:\Program Files\PTC\Creo 11.0.0.0\Common Files\text\config.pro, linenum 5 : Configuration file parameter 'TEMPLATE_DESIGNASM' can not be reset.
+WARNING - C:\Program Files\PTC\Creo 11.0.0.0\Common Files\text\config.pro, linenum 7 : Configuration file parameter 'TEMPLATE_DRAWING' can not be reset.
+WARNING - C:\Program Files\PTC\Creo 11.0.0.0\Common Files\text\config.pro, linenum 8 : Configuration file parameter 'TEMPLATE_SHEETMETALPART' can not be reset.
+WARNING - C:\Program Files\PTC\Creo 11.0.0.0\Common Files\text\config.pro, linenum 9 : Configuration file parameter 'TEMPLATE_SOLIDPART' can not be reset.
+WARNING - C:\Program Files\PTC\Creo 11.0.0.0\Common Files\text\config.pro, linenum 12: Configuration file parameter 'TOLERANCE_STANDARD' can not be reset.
